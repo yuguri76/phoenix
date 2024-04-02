@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>야나두 로그인</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #FFFDF3;
+        }
+
+        #container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: 50%;
+            padding: 200px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        #logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            text-align: center;
+            font-size: 50px;
+            color: #79B96E;
+        }
+
+        #subtext {
+            font-size: 20px;
+            font-weight: normal;
+        }
+
+        #logo:hover {
+            transform: translateY(-2px);
+        }
+
+        #tab-container {
+            margin-top: 50px;
+        }
+
+        .tab {
+            width: 60%;
+            background-color: #C7DAC2;
+            border-radius: 40px;
+            margin-bottom: 30px;
+            box-sizing: border-box;
+            padding: 20px;
+            margin: 40px auto;
+        }
+
+        .tab p {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .tab ul {
+            margin-bottom: 20px;
+        }
+
+        .tab li {
+            margin-bottom: 5px;
+        }
+
+        .tab-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .input-field {
+            width: 50%;
+            padding: 10px;
+            border: 1px solid #000000;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin: 0 auto;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        .login-btn {
+            background-color: #FFDB28;
+            color: black;
+        }
+
+        .signup-btn {
+            background-color: #79B96E;
+            color: rgb(255, 255, 255);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="logo">야나두 <span id="subtext">너도 할 수 있어</span></div>
+        <div id="tab-container">
+            <div class="tab">
+                <p>주의사항</p>
+                <ul>
+                    <li>욕쓰지 마십쇼</li>
+                    <li>비밀번호 겁나 길게 치지 마십쇼</li>
+                    <li>한번 가입하면 탈퇴 못해요 ㅅㄱ</li>
+                    <li>개인정보 야미~</li>
+            </div>
+            <div class="tab">
+                <div class="tab-content">
+                    <input type="text" class="input-field" placeholder="아이디">
+                    <input type="password" class="input-field" placeholder="비밀번호">
+                    <div class="btn-container">
+                        <button class="btn login-btn">로그인하기</button>
+                        <button class="btn signup-btn">회원가입하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
