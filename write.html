@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #logo {
+            font-weight: bold;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            text-align: left;
+            font-size: 50px;
+            color: #79B96E;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+
+        #subtext {
+            font-size: 20px;
+            font-weight: normal;
+        }
+
+        #logo:hover {
+            transform: translateY(-2px);
+        }
+
+        table {
+            margin: auto;
+        }
+
+        input[type="text"] {
+            border: none;
+            border-bottom: 1px solid;
+            width: 500px;
+            height: 30px;
+            font-size: 20px;
+        }
+
+        textarea {
+            border: 1.5px solid;
+            width: 500px;
+            height: 400px;
+            border-radius: 5px;
+            padding-left: 10px;
+            padding-top: 10px;
+            resize: none;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            width: 100px;
+            height: 40px;
+            font-size: 15px;
+            border: 0;
+            outline: 1.5px rgb(68, 136, 244) solid;
+            border-radius: 5px;
+            padding-left: 10px;
+            background-color: #FFDB28;
+        }
+
+        input[type="submit"]:active {
+            width: 100px;
+            height: 40px;
+            font-size: 15px;
+            border: 0;
+            border-radius: 5px;
+            outline: 1.5px solid;
+            padding-left: 10px;
+            background-color: #79B96E;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="logo">야나두 <span id="subtext">너도 할 수 있어</span></div>
+
+    <form action="plan.html" method="post">
+        <table>
+            <tr>
+                <td>
+                    <h2>계획전시</h2>
+                </td>
+            </tr>
+            <tr>
+                <td class="header"></td>
+            </tr>
+            <tr>
+                <td><input type="text" placeholder="제목을 입력하세요" name="title"></td>
+            </tr>
+            <tr>
+                <td class="header">Comment</td>
+            </tr>
+            <tr>
+                <td><textarea placeholder="내용을 입력하세요" name="detail"></textarea></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="등록" onclick="alert('작성 완료!')"></td>
+            </tr>
+        </table>
+    </form>
+</body>
+
+</html>
