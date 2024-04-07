@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>메인-내 프로필</title>
+    <title>야나두 프로필</title>
 
     <!-- 부트스트랩 가져오기 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -78,7 +78,7 @@
         .myimfor-box-text {
             background-color: #FBFBFA;
             border-radius: 2px;
-            margin: 0px 0px 0px 70px;
+            margin-left: 70px;
             text-align: center;
         }
 
@@ -95,10 +95,22 @@
             overflow: auto;
         }
 
+        .myintroduce-change {
+            width: 800px;
+            height: 240px;
+            margin: auto;
+            margin-bottom: 30px;
+            padding: 20px;
+            display: none;
+            border-radius: 10px;
+            border: 2px solid #79B96E;
+        }
+
         .mypostlist {
             width: 1000px;
             height: 400px;
             margin: auto;
+            margin-bottom: 50px;
             border-radius: 10px;
             border: 2px solid #79B96E;
         }
@@ -111,6 +123,13 @@
             border-radius: 10px;
             padding: 20px;
             float: left;
+            overflow: auto;
+        }
+
+        .mypostlist-box-list {
+            border-bottom: solid 2px #020715;
+            margin-bottom: 10px;
+            padding: 5px;
         }
 
         .textheader {
@@ -125,21 +144,213 @@
             background-color: #F7819F;
             border-radius: 2px;
             float: right;
+            font-size: 13px;
         }
     </style>
 
     <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js';
+        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js';
+        import { getDatabase, ref, child, get, set, update } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+
+        // Firebase 구성
+        const firebaseConfig = {
+            apiKey: "AIzaSyBy-5HWDgxJ6hZ5h30Is7xCAZm3W7HmR78",
+            authDomain: "yanado-a4df1.firebaseapp.com",
+            databaseURL: "https://yanado-a4df1-default-rtdb.firebaseio.com",
+            projectId: "yanado-a4df1",
+            storageBucket: "yanado-a4df1.appspot.com",
+            messagingSenderId: "1082911983171",
+            appId: "1:1082911983171:web:f8843a3015379b859236f6",
+            measurementId: "G-YKDTZ5B6Z7"
+        };
+
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getDatabase();
+
+        const id = 'oplk'; // 일단 직접 lol 선언하고, 후에 메인페이지에서 받아오기
+        const userRef = ref(db, 'users/' + id + '/' + id);
+        const profileRef = ref(db, 'profiles/' + id + '/' + id);
+
+        // DB에서 프로필 정보(이름, 나이, 성별, 지역) 가져오기
+        get(userRef).then((usersnapshot) => {
+            if (usersnapshot.exists()) {
+                const userData = usersnapshot.val();
+                if (userData.id == id) {
+                    let temp_html_name = `${userData.name}`;
+                    let temp_html_age = `${userData.age}`;
+                    let temp_html_gender = `${userData.gender}`;
+                    let temp_html_region = `${userData.region}`;
+                    $('#imfor-name').empty().append(temp_html_name);
+                    $('#imfor-age').empty().append(temp_html_age);
+                    $('#imfor-gender').empty().append(temp_html_gender);
+                    $('#imfor-region').empty().append(temp_html_region);
+                } else {
+                    alert('해당 아이디가 없습니다.');
+                }
+            } else {
+                alert('데이터 검색에 실패했습니다.');
+            }
+        }).catch((error) => {
+            console.error('Error getting user data: ', error);
+        });
+
+        // DB에서 프로필 사진, 자기소개 가져오기
+        get(profileRef).then((profilesnapshot) => {
+            if (profilesnapshot.exists()) {
+                const profileData = profilesnapshot.val();
+                let profileimage_exist = Object.keys(profileData).includes('profileimage');
+                let introduce_exist = Object.keys(profileData).includes('introduce');
+                if (profileimage_exist == true) {
+                    let temp_html_image = `<img src="${profileData.profileimage}" style="margin-top: 10px; text-align: center; border-radius: 50%; width: 250px; height: 250px;"/>`;
+                    $('#profileimage').empty().append(temp_html_image);
+                }
+                if (introduce_exist == true) {
+                    let temp_html_intro = `<div>${profileData.introduce}</div>`;
+                    $('#introduce').empty().append(temp_html_intro);
+                }
+                if (profileimage_exist == false && introduce_exist == true) {
+                    alert('프로필 사진을 수정을 통해 설정해주세요.');
+                }
+                if (profileimage_exist == true && introduce_exist == false) {
+                    alert('자기소개를 수정 도구를 통해 설정해주세요.');
+                }
+            } else {
+                alert('프로필 사진과 자기소개를 수정을 통해 설정해주세요.');
+            }
+        }).catch((error) => {
+            console.error('Error getting user data: ', error);
+        });
+
+        // 버튼으로 프로필 사진 수정하기
         $("#imagechangebtn").click(async function () {
-            let profileimage = prompt("프로필 이미지 주소를 정확히 입력해주세요.");
-            console.log(profileimage);
-            $('#profileimage img').attr('src', profileimage); // Set the src attribute of the image
+            let profileimageinput = prompt("프로필 이미지 주소를 정확히 입력해주세요.");
+            if (profileimageinput == null || profileimageinput == "") {
+                alert('프로필 이미지 수정이 취소되었습니다. "취소"를 누르셨거나 잘못된 값을 입력했습니다.')
+            } else {
+                const imagechangeRef = ref(db, 'profiles/' + id);
+                const imagechangesnapshot = await get(child(imagechangeRef, id));
+                if (imagechangesnapshot.exists()) { // profiles 테이블에 해당 id가 존재하고
+                    const imagechangeData = imagechangesnapshot.val();
+                    let profile_change_exist = Object.keys(imagechangeData).includes('profileimage');
+                    let introduce_change_exist = Object.keys(imagechangeData).includes('introduce');
+                    if (profile_change_exist == true) { // 저장된 프로필 사진이 있다면 있는거랑 비교해서 수정하기
+                        if (imagechangeData.profileimage == profileimageinput) {
+                            alert('이미 설정된 프로필 사진입니다.');
+                        } else if (imagechangeData.profileimage != profileimageinput) {
+                            if (introduce_change_exist == true) {
+                                const changeprofileimage = {
+                                    id: imagechangeData.id,
+                                    profileimage: profileimageinput,
+                                    introduce: imagechangeData.introduce
+                                };
+                                const profileimage_updates = {};
+                                profileimage_updates['profiles/' + id + '/' + id] = changeprofileimage;
+                                update(ref(db), profileimage_updates); // DB에 프로필 사진 업데이트
+                                let temp_html_image_change = `<img src="${profileimageinput}" style="margin-top: 10px; text-align: center; border-radius: 50%; width: 250px; height: 250px;"/>`;
+                                $('#profileimage').empty().append(temp_html_image_change); // 웹페이지에 프로필 사진 수정
+                                alert('프로필 사진 변경 완료!');
+                            } else if (introduce_change_exist == false) {
+                                const changeprofileimage = {
+                                    id: imagechangeData.id,
+                                    profileimage: profileimageinput
+                                };
+                                const profileimage_updates = {};
+                                profileimage_updates['profiles/' + id + '/' + id] = changeprofileimage;
+                                update(ref(db), profileimage_updates); // DB에 프로필 사진 업데이트
+                                let temp_html_image_change = `<img src="${profileimageinput}" style="margin-top: 10px; text-align: center; border-radius: 50%; width: 250px; height: 250px;"/>`;
+                                $('#profileimage').empty().append(temp_html_image_change); // 웹페이지에 프로필 사진 수정
+                                alert('프로필 사진 변경 완료!');
+                            }
+                        }
+                    } else if (profile_change_exist == false) { // 저장된 프로필 사진이 없다면
+                        const changeprofileimage = {
+                            id: imagechangeData.id,
+                            profileimage: profileimageinput,
+                            introduce: imagechangeData.introduce
+                        };
+                        const profileimage_updates = {};
+                        profileimage_updates['profiles/' + id + '/' + id] = changeprofileimage;
+                        update(ref(db), profileimage_updates); // DB에 프로필 사진 업데이트
+                        let temp_html_image_change = `<img src="${profileimageinput}" style="margin-top: 10px; text-align: center; border-radius: 50%; width: 250px; height: 250px;"/>`;
+                        $('#profileimage').empty().append(temp_html_image_change); // 웹페이지에 프로필 사진 수정
+                        alert('프로필 사진 변경 완료!');
+                    }
+                } else { // profiles 테이블에 해당 id가 존재하지 않으면
+                    await set(child(imagechangeRef, id), { // DB에 해당 id에 대한 id, profileimage를 저장
+                        id: id,
+                        profileimage: profileimageinput
+                    });
+                    let temp_html_image_change = `<img src="${profileimageinput}" style="margin-top: 10px; text-align: center; border-radius: 50%; width: 250px; height: 250px;"/>`;
+                    $('#profileimage').empty().append(temp_html_image_change); // 웹페이지에 프로필 사진 수정
+                    alert('프로필 사진 저장 완료!');
+                }
+            }
         });
 
+        //자기소개 수정도구 토글
         $("#textchangebtn").click(async function () {
-            alert('팝업테스트');
+            $('#introduce-change').toggle();
         });
-    </script>
 
+        // 자기소개 수정도구 저장하기 버튼
+        $("#savebtn").click(async function () {
+            let introducechange = document.getElementById("introduce-input").value;
+            if (introducechange == null || introducechange == " ") {
+                alert('잘못된 입력이거나 공백만 있는 입력입니다.');
+            } else {
+                const introducechangeRef = ref(db, 'profiles/' + id);
+                const introducechangesnapshot = await get(child(introducechangeRef, id));
+                if (introducechangesnapshot.exists()) { // profiles 테이블에 해당 id가 존재하고
+                    const introducechangeData = introducechangesnapshot.val();
+                    let profile_change_exist = Object.keys(introducechangeData).includes('profileimage');
+                    let introduce_change_exist = Object.keys(introducechangeData).includes('introduce');
+                    if (profile_change_exist == true) { // 프로필 사진 o
+                        const changeprofileintroduce = {
+                            id: introducechangeData.id,
+                            profileimage: introducechangeData.profileimage,
+                            introduce: introducechange
+                        };
+                        const introduce_updates = {};
+                        introduce_updates['profiles/' + id + '/' + id] = changeprofileintroduce;
+                        update(ref(db), introduce_updates); // DB에 프로필 자기소개 업데이트
+                        let temp_html_text = `<div>${introducechange}</div>`;
+                        $('#introduce').empty().append(temp_html_text);
+                        $(function () { //저장 후 textarea 초기화
+                            $('#inputform')[0].reset();
+                        });
+                        alert('자기소개 수정 완료!');
+                    } else if (profile_change_exist == false) { // 프로필 사진 x
+                        const changeprofileintroduce = {
+                            id: introducechangeData.id,
+                            introduce: introducechange
+                        };
+                        const introduce_updates = {};
+                        introduce_updates['profiles/' + id + '/' + id] = changeprofileintroduce;
+                        update(ref(db), introduce_updates); // DB에 프로필 자기소개 업데이트
+                        let temp_html_text = `<div>${introducechange}</div>`;
+                        $('#introduce').empty().append(temp_html_text);
+                        $(function () { //저장 후 textarea 초기화
+                            $('#inputform')[0].reset();
+                        });
+                        alert('자기소개 수정 완료!');
+                    }
+                } else {
+                    await set(child(introducechangeRef, id), { // DB에 해당 id에 대한 id, introduce를 저장
+                        id: id,
+                        introduce: introducechange
+                    });
+                    let temp_html_text = `<div>${introducechange}</div>`;
+                    $('#introduce').empty().append(temp_html_text);
+                    $(function () { //저장 후 textarea 초기화
+                        $('#inputform')[0].reset();
+                    });
+                    alert('자기소개 저장 완료!');
+                }
+            }
+        });
     </script>
 </head>
 
@@ -170,41 +381,57 @@
     </div>
 
     <div class="myimfor">
-        <div class="myimfor-box" id="profileimage"> <!-- 프로필 사진 -->
+        <div class="myimfor-box"> <!-- 프로필 사진 -->
             <h4 class="textheader">프로필 사진<button class="changebtn" id="imagechangebtn">수정</button></h4>
-            <!-- <img id="profileimage" src="https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F1f95d583-8326-4159-8560-161f7c520992%2F%25EC%258A%25A4%25ED%2581%25AC%25EB%25A6%25B0%25EC%2583%25B7_2024-04-01_154748.png?table=block&id=d9aff323-ff40-4d58-8237-df1c8cdf3a81&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=250&userId=&cache=v2"
-                style="text-align: center; border-radius: 50%; width: 250px; height: 250;" /> -->
+            <div id="profileimage"> <!-- JS에서 보낸 HTMl 이미지 태그 자리 --> </div>
         </div>
         <div class="myimfor-box"> <!-- 내 정보 -->
             <h4 class="textheader">내 정보</h4>
             <div style="margin-top: 30px;"><label class="myimfor-box-label">이름 :</label>
-                <div class="myimfor-box-text">김승수</div>
+                <div class="myimfor-box-text" id="imfor-name">홍길동</div>
             </div>
             <div style="margin-top: 30px;"><label class="myimfor-box-label">나이 :</label>
-                <div class="myimfor-box-text">28</div>
+                <div class="myimfor-box-text" id="imfor-age">20</div>
             </div>
             <div style="margin-top: 30px;"><label class="myimfor-box-label">성별 :</label>
-                <div class="myimfor-box-text">남</div>
+                <div class="myimfor-box-text" id="imfor-gender">남</div>
             </div>
             <div style="margin-top: 30px;"><label class="myimfor-box-label">지역 :</label>
-                <div class="myimfor-box-text">용인시 수지구</div>
+                <div class="myimfor-box-text" id="imfor-region">서울</div>
             </div>
         </div>
     </div>
 
     <div class="myintroduce" style="clear: both;"> <!-- 소개글 -->
-        <h4 class="textheader" style="background-color: #79B96E;">자기소개<button class="changebtn"
-                id="textchangebtn">수정</button></h4>
-        <div> 안녕하세요. </div>
+        <h4 class="textheader" style="background-color: #79B96E;">자기소개
+            <button class="changebtn" id="textchangebtn">수정 도구 펼치기/접기</button>
+        </h4>
+        <div id="introduce"><span style="color: gray;">자기소개 수정 도구를 펼쳐 자기소개를 입력해주세요.</span></div>
+    </div>
+    <div class="myintroduce-change" id="introduce-change"> <!-- 소개 수정 도구 -->
+        <span class="input-group-text" style="background-color: #79B96E;">아래 칸에 수정할 내용을 입력하세요.</span>
+        <form id="inputform">
+            <textarea class="form-control" id="introduce-input" aria-label="With textarea" style="height: 120px;"
+                placeholder="내용을 입력하세요"></textarea>
+            <button type="button" class="changebtn" id="savebtn" style="margin-top: 20px;">저장하기</button>
+            <button type="reset" class="changebtn"
+                style="background-color: #7582F4; margin-top: 20px; margin-right: 10px;">초기화</button>
+        </form>
     </div>
 
     <div class="mypostlist"> <!-- 내글 목록 -->
         <h3 class="textheader" style="background-color: #79B96E; font-size: 22px;">내 글 목록</h4>
             <div class="mypostlist-box">
                 <h4 class="textheader">계획전시</h4>
+                <div class="mypostlist-box-list">계획1</div>
+                <div class="mypostlist-box-list">계획2</div>
+                <div class="mypostlist-box-list">계획3</div>
             </div>
             <div class="mypostlist-box">
                 <h4 class="textheader">파티모집</h4>
+                <div class="mypostlist-box-list">파티1</div>
+                <div class="mypostlist-box-list">파티2</div>
+                <div class="mypostlist-box-list">파티3</div>
             </div>
     </div>
 
