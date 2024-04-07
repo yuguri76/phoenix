@@ -160,6 +160,8 @@
                         alert('로그인 성공');
                         // 로그인 성공 시 다음 페이지로 이동
                         window.location.href = 'main.html';
+
+                        sessionStorage.setItem('loggedInUser', id);
                     } else {
                         alert('아이디 혹은 비밀번호가 일치하지 않습니다');
                     }
@@ -170,6 +172,22 @@
                 console.error('Error getting user data: ', error);
             });
         });
+
+        //로그아웃하면 로그인비우고 메인페이지로
+        function logout() {
+            sessionStorage.removeItem('loggedInUser');
+            window.location.href = 'main.html';//나중에 용도에 맞게 수정해도 ㄱㅊ
+        }
+
+        // 페이지 로드 시 로그인 상태 확인
+        window.onload = function () {
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                // 이미 로그인한 사용자라면 메인 페이지로 이동
+                window.location.href = 'main.html';//나중에 용도에 맞게 수정해도 ㄱㅊ
+            }
+        };
+
     </script>
 
 </head>
