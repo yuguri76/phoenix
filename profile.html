@@ -63,15 +63,15 @@
             background-color: #79B96E;
             width: 300px;
             height: 320px;
-            margin: 20px 50px 20px 50px;
-            border: 2px solid #79B96E;
+            margin: 30px 50px 30px 120px;
             border-radius: 10px;
             padding: 20px;
             float: left;
         }
 
         .myimfor-box-label {
-            font-size: 20px;
+            font-size: 18px;
+            font-weight: bold;
             float: left;
         }
 
@@ -81,11 +81,70 @@
             margin: 0px 0px 0px 70px;
             text-align: center;
         }
+
+        .myintroduce {
+            display: block;
+            width: 800px;
+            height: 200px;
+            padding: 20px;
+            margin-right: auto;
+            margin-left: auto;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            border: 2px solid #79B96E;
+            overflow: auto;
+        }
+
+        .mypostlist {
+            width: 1000px;
+            height: 400px;
+            margin: auto;
+            border-radius: 10px;
+            border: 2px solid #79B96E;
+        }
+
+        .mypostlist-box {
+            background-color: #79B96E;
+            width: 300px;
+            height: 320px;
+            margin: 20px 50px auto 120px;
+            border-radius: 10px;
+            padding: 20px;
+            float: left;
+        }
+
+        .textheader {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #FBFBFA;
+            border-radius: 2px;
+        }
+
+        .changebtn {
+            background-color: #F7819F;
+            border-radius: 2px;
+            float: right;
+        }
     </style>
+
+    <script type="module">
+        $("#imagechangebtn").click(async function () {
+            let profileimage = prompt("프로필 이미지 주소를 정확히 입력해주세요.");
+            console.log(profileimage);
+            $('#profileimage img').attr('src', profileimage); // Set the src attribute of the image
+        });
+
+        $("#textchangebtn").click(async function () {
+            alert('팝업테스트');
+        });
+    </script>
+
+    </script>
 </head>
 
 <body>
-    <header class="p-3 text-bg-dark"> <!--로그인 후 -->
+    <header class="p-3 text-bg-dark"> <!-- 헤더 로그인 후 -->
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <a href="main.html" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
@@ -100,7 +159,7 @@
                 <div class="text-end">
                     <button type="button" class="btn" style="color: #020715; background-color: #79B96E;"
                         onClick="location.href='profile.html'">내 프로필 보기</button>
-                    <button type="button" class="btn btn-outline-light me-2" style="color: #020715;">로그아웃</button>
+                    <button type="button" class="btn" style="color: #020715; background-color: #F7819F;">로그아웃</button>
                 </div>
             </div>
         </div>
@@ -109,28 +168,45 @@
     <div>
         배너
     </div>
+
     <div class="myimfor">
-        <div class="myimfor-box"> <!-- 프로필 사진 -->
-            <h4 style="text-align: center; font-size: 18px; background-color: #FBFBFA; border-radius: 2px;">프로필 사진</h4>
-            <img src="https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F1f95d583-8326-4159-8560-161f7c520992%2F%25EC%258A%25A4%25ED%2581%25AC%25EB%25A6%25B0%25EC%2583%25B7_2024-04-01_154748.png?table=block&id=d9aff323-ff40-4d58-8237-df1c8cdf3a81&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=250&userId=&cache=v2"
-                style="text-align: center; border-radius: 200px; width: 250px; height: 250;" />
+        <div class="myimfor-box" id="profileimage"> <!-- 프로필 사진 -->
+            <h4 class="textheader">프로필 사진<button class="changebtn" id="imagechangebtn">수정</button></h4>
+            <!-- <img id="profileimage" src="https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F1f95d583-8326-4159-8560-161f7c520992%2F%25EC%258A%25A4%25ED%2581%25AC%25EB%25A6%25B0%25EC%2583%25B7_2024-04-01_154748.png?table=block&id=d9aff323-ff40-4d58-8237-df1c8cdf3a81&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=250&userId=&cache=v2"
+                style="text-align: center; border-radius: 50%; width: 250px; height: 250;" /> -->
         </div>
-        <div class="myimfor-box">
-            <div style="margin-top: 35px;"><label class="myimfor-box-label">이름 :</label>
+        <div class="myimfor-box"> <!-- 내 정보 -->
+            <h4 class="textheader">내 정보</h4>
+            <div style="margin-top: 30px;"><label class="myimfor-box-label">이름 :</label>
                 <div class="myimfor-box-text">김승수</div>
             </div>
-            <div style="margin-top: 35px;"><label class="myimfor-box-label">나이 :</label>
+            <div style="margin-top: 30px;"><label class="myimfor-box-label">나이 :</label>
                 <div class="myimfor-box-text">28</div>
             </div>
-            <div style="margin-top: 35px;"><label class="myimfor-box-label">성별 :</label>
+            <div style="margin-top: 30px;"><label class="myimfor-box-label">성별 :</label>
                 <div class="myimfor-box-text">남</div>
             </div>
-            <div style="margin-top: 35px;"><label class="myimfor-box-label">지역 :</label>
+            <div style="margin-top: 30px;"><label class="myimfor-box-label">지역 :</label>
                 <div class="myimfor-box-text">용인시 수지구</div>
             </div>
         </div>
     </div>
 
+    <div class="myintroduce" style="clear: both;"> <!-- 소개글 -->
+        <h4 class="textheader" style="background-color: #79B96E;">자기소개<button class="changebtn"
+                id="textchangebtn">수정</button></h4>
+        <div> 안녕하세요. </div>
+    </div>
+
+    <div class="mypostlist"> <!-- 내글 목록 -->
+        <h3 class="textheader" style="background-color: #79B96E; font-size: 22px;">내 글 목록</h4>
+            <div class="mypostlist-box">
+                <h4 class="textheader">계획전시</h4>
+            </div>
+            <div class="mypostlist-box">
+                <h4 class="textheader">파티모집</h4>
+            </div>
+    </div>
 
 </body>
 
