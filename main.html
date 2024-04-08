@@ -20,7 +20,6 @@
             font-family: 'Roboto', sans-serif;
             background-color: #FFFDF3;
             color: #333;
-            margin-top: 20px;
         }
 
         header {
@@ -31,7 +30,7 @@
 
         #logo {
             font-weight: bold;
-            color: #4CAF50;
+            color: #e2821c;
             text-decoration: none;
             font-size: 30px;
         }
@@ -48,7 +47,7 @@
         }
 
         .nav-link:hover {
-            color: #4CAF50 !important;
+            color: #e2821c !important;
         }
 
         .btn {
@@ -145,6 +144,22 @@
             color: #CC8400;
             /* 호버 시 색상을 더 어두운 주황색으로 변경 */
         }
+
+        .lineCustom1 {
+            z-index: 30;
+            position: absolute;
+            margin-top: -270px;
+            width: 0;
+            height: 650px;
+            border-width: 4px;
+            border-left-style: solid;
+            border-right-style: solid;
+            border-image: linear-gradient(0deg, #FF1361 20%, #FFF800 50%, #fbd4aa 70%, #fbd4aa 100%);
+
+            border-image-slice: 1;
+            left: 50%;
+            transform: translateX(-50%);
+        }
     </style>
 </head>
 
@@ -193,7 +208,7 @@
 
                     <div class="text-end">
                         <button type="button" class="btn" onclick="location.href='Login.html'"
-                            style="color: #020715; background-color: #79B96E;">로그인</button>
+                            style="color: #020715; background-color: #e2821c;">로그인</button>
                     </div>
                 </div>
             </div>
@@ -243,7 +258,8 @@
                 <div class="col-md-2"></div> <!-- 중간 간격 추가 -->
                 <div class="col-md-5">
                     <h3>파티모집 게시판</h3>
-                    <h4>함께 공부하고 일상을 나누며 성장할 동료들을 찾아보세요!</h4>
+                    <h4>함께 공부하고 일상을 나누며</h4>
+                    <h4>성장할 동료들을 찾아보세요!</h4>
                 </div>
             </div>
         </div>
@@ -252,9 +268,15 @@
 
     <div class="container mt-4">
         <div class="row">
+            <div class="lineCustom1"></div>
+            <div class="lineCustom2"></div>
             <!-- 계획전시 게시판 -->
             <div class="col-md-5">
-                <h2 class="board-title" onclick="location.href='plan.html'">계획자랑 게시판</h2>
+                <h2 class="board-title" onclick="location.href='plan.html'">계획자랑 게시판
+                    <img src="https://github.com/yuguri76/phoenix/blob/main/images/orangewing.png?raw=true"
+                        style="height: 50px; width: auto; margin-left: 5px; vertical-align: -10px;"
+                        alt="Orangewing Icon">
+                </h2>
                 <div class="row">
                     <!-- 1열 -->
                     <div class="col-4">
@@ -315,12 +337,15 @@
                 </div>
             </div>
 
-            <div class="col-md-2 my-auto">
-            </div>
+            <div class="col-md-2"></div>
 
             <!-- 파티모집 게시판 -->
             <div class="col-md-5">
-                <h2 class="board-title" onclick="location.href='party.html'">파티모집 게시판</h2>
+                <h2 class="board-title" onclick="location.href='party.html'">파티모집 게시판
+                    <img src="https://github.com/yuguri76/phoenix/blob/main/images/orangewing.png?raw=true"
+                        style="height: 50px; width: auto; margin-left: 5px; vertical-align: -10px;"
+                        alt="Orangewing Icon">
+                </h2>
                 <div class="row">
                     <!-- 1열 -->
                     <div class="col-4">
