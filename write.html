@@ -6,10 +6,6 @@
     <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
     <title>Document</title>
 
-    <!-- Firebase 구성 -->
-    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js"></script>
-
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js';
@@ -34,31 +30,49 @@
         const analytics = getAnalytics(app);
         const db = getDatabase();
 
-        const id = 'oplk'; // 일단 직접 lol 선언하고, 후에 메인페이지에서 받아오기
-        const userRef = ref(db, 'users/' + id + '/' + id);
-        const profileRef = ref(db, 'profiles/' + id + '/' + id);
+        const id = sessionStorage.getItem('loggedInUser'); // 로그인한 아이디 가져오기
+        const userRef = ref(db, 'users/' + id);
 
         // 폼 제출 핸들러
         document.querySelector('form').addEventListener('submit', function (event) {
             event.preventDefault(); // 기본 제출 행동 방지
 
             // 입력된 제목과 내용 가져오기
-            const title = document.querySelector('input[name="title"]').value;
-            const detail = document.querySelector('textarea[name="detail"]').value;
+            let title = document.querySelector('input[name="title"]').value;
+            let detail = document.querySelector('textarea[name="detail"]').value;
+            let image = "";
+            let writer = sessionStorage.getItem('loggedInUser');
+            let date = new Date().toISOString();
 
-            // Firebase Realtime Database에 데이터 저장
-            const plansRef = database.ref('plans'); // 'plans' 경로의 참조
-            plansRef.push().set({
-                title: title,
-                detail: detail
-            }).then(() => {
-                alert('작성 완료!'); // 성공 메시지 표시
-                // 입력 필드 초기화
-                document.querySelector('input[name="title"]').value = '';
-                document.querySelector('textarea[name="detail"]').value = '';
-            }).catch((error) => {
-                console.error('데이터 저장 중 오류 발생:', error); // 오류 메시지 표시
-            });
+            const lastplanidrdf = ref(db, 'lastplanid');
+
+            get(lastplanidrdf).then((snapshot) => {
+                let lastid = snapshot.val() || 0;
+                const newid = lastid + 1;
+
+                const newplanref = ref(db, `plans_letter/${newid}`);
+
+                // Firebase Realtime Database에 데이터 저장
+                set(newplanref, {
+                    id: newid, //0부터 생성된 순서(글의 id)
+                    title: title,
+                    detail: detail,
+                    image: image,
+                    writer: writer,
+                    date: date
+                }).then(() => {
+                    alert('작성 완료!'); // 성공 메시지 표시
+                    // 입력 필드 초기화
+                    document.querySelector('input[name="title"]').value = '';
+                    document.querySelector('textarea[name="detail"]').value = '';
+                    set(lastplanidrdf, newid);
+                    window.location.href = 'writeview.html';
+                }).catch((error) => {
+                    console.error('데이터 저장 중 오류 발생:', error); // 오류 메시지 표시
+                });
+            })
+        }).catch((error) => {
+            console.error('마지막 글 id 읽기 실패:', error);
         });
     </script>
 
@@ -154,7 +168,7 @@
                 <td><textarea placeholder="내용을 입력하세요" name="detail"></textarea></td>
             </tr>
             <tr>
-                <td><input type="submit" value="등록" onclick="alert('작성 완료!')"></td>
+                <td><input type="submit" value="등록"></td>
             </tr>
         </table>
     </form>
