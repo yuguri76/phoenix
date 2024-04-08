@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>테스트용</title>
+
+    
+</head>
+
+<body>
+    <button id="openPopupBtn">팝업 창 열기</button>
+    <script>
+        document.getElementById('openPopupBtn').addEventListener('click', function () {
+
+            const url = "https://naver.com";
+
+            const name = 'popup';
+
+            const width = 1000;
+            const height = 1200;   
+            const left = (window.screen.width / 2) - (width / 2);
+            const top = (window.screen.height / 2) - (height / 2);
+            const options = `width=${width},height=${height},left=${left},top=${top}`;
+
+            window.open(url, name, options);
+        });
+    </script>
+
+</body>
+
+
+</html>
