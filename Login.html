@@ -26,25 +26,14 @@
         }
 
         #logo {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            background-color: transparent;
-            border: none;
-            text-align: center;
-            font-size: 50px;
-            color: #79B96E;
-        }
-
-        #subtext {
-            font-size: 20px;
-            font-weight: normal;
-        }
-
-        #logo:hover {
-            transform: translateY(-2px);
+            position: fixed;
+            /* Fixed position relative to the viewport */
+            top: 0;
+            /* Align top edge to the top of the viewport */
+            left: 0;
+            /* Align left edge to the left of the viewport */
+            z-index: 1000;
+            /* Ensure it's above other content */
         }
 
         #tab-container {
@@ -106,12 +95,13 @@
         }
 
         .login-btn {
-            background-color: #FFDB28;
+            background-color: #97fc00;
             color: black;
+            border: 1px solid #123210;
         }
 
         .signup-btn {
-            background-color: #79B96E;
+            background-color: #5b7ed8;
             color: rgb(255, 255, 255);
         }
     </style>
@@ -194,8 +184,12 @@
 
 <body>
     <div id="container">
-        <div id="logo">야나두 <span id="subtext">너도 할 수 있어</span></div>
-        <div id="tab-container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="main.html" id="logo"
+                class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img src="https://github.com/yuguri76/phoenix/blob/gyul/images/%EC%95%BC%EB%82%98%EB%91%90%EB%A1%9C%EA%B3%A0%EC%B5%9C%EC%A2%85%EB%B3%B82.png?raw=true"
+                    alt="야나두 로고" style="height: 230px;">
+            </a>
             <div class="tab">
                 <p>주의사항</p>
                 <ul>
