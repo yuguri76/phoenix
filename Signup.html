@@ -28,24 +28,14 @@
         }
 
         #logo {
-            font-weight: bold;
-            cursor: pointer;
-            background-color: transparent;
-            border: none;
-            text-align: left;
-            font-size: 50px;
-            color: #e2821c;
-            z-index: 1;
-            margin-bottom: 20px;
-        }
-
-        #subtext {
-            font-size: 20px;
-            font-weight: normal;
-        }
-
-        #logo:hover {
-            transform: translateY(-2px);
+            position: fixed;
+            /* 뷰포트에 대해 고정된 위치 */
+            top: 0;
+            /* 뷰포트의 상단 가장자리에 맞춤 */
+            left: 0;
+            /* 뷰포트의 왼쪽 가장자리에 맞춤 */
+            z-index: 1000;
+            /* 다른 내용 위에 있도록 함 */
         }
 
         div[id^="container"]>div {
@@ -275,7 +265,10 @@
 
 <body>
     <div id="container">
-        <div id="logo">야나두 <span id="subtext">너도 할 수 있어</span></div>
+        <a href="main.html" id="logo" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            <img src="https://github.com/yuguri76/phoenix/blob/gyul/images/%EC%95%BC%EB%82%98%EB%91%90%EB%A1%9C%EA%B3%A0%EC%B5%9C%EC%A2%85%EB%B3%B82.png?raw=true"
+                alt="야나두 로고" style="height: 230px;">
+        </a>
         <h1 class="soakadldi">회원가입</h1>
         <div class="space_login">
             <div class="space_login_item">

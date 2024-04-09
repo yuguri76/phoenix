@@ -16,6 +16,13 @@
         @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
 
+        @font-face {
+            font-family: 'iceJaram-Rg';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/iceJaram-Rg.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #FFFDF3;
@@ -44,6 +51,8 @@
         .nav-link {
             color: #555 !important;
             transition: color 0.3s ease;
+            font-family: 'iceJaram-Rg', sans-serif;
+            font-size: 30px;
         }
 
         .nav-link:hover {
@@ -67,6 +76,14 @@
             color: #333;
             padding: 50px 10%;
             text-align: center;
+            font-family: 'KCCChassam', sans-serif;
+        }
+
+        @font-face {
+            font-family: 'KCCChassam';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/KCCChassam.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
         }
 
         .team-introduction img {
@@ -208,6 +225,7 @@
                     </ul>
 
                     <div class="text-end">
+                        <link rel="stylesheet" href="path/to/your/stylesheet.css">
                         <button type="button" class="btn" onclick="location.href='Login.html'"
                             style="color: #020715; background-color: #e2821c;">로그인</button>
                     </div>
