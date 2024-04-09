@@ -123,7 +123,7 @@
             padding: 30px;
             text-align: left;
         }
-        
+
         .nav-link {
             color: #555 !important;
             transition: color 0.3s ease;
@@ -134,19 +134,6 @@
         .nav-link:hover {
             color: #e2821c !important;
         }
-        
-        /* .container1 {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50%;
-            height: 5%;
-            padding: 30px;
-            text-align: center;
-            background-color: green;
-            margin: 100px auto 20px auto;
-        } */
 
         #commentsList li {
             border-bottom: 1px solid #ccc;
@@ -204,6 +191,8 @@
         const letter_id = 1;
         const letterRef = ref(db, 'plans_letter/' + letter_id);
 
+
+
         get(letterRef).then((lettersnapshot) => {
             if (lettersnapshot.exists()) {
                 const letterData = lettersnapshot.val();
@@ -216,55 +205,55 @@
 
 
 
-        // $("#commentbtn").click(async function (event) {
-        //     event.preventDefault(); // 폼 제출 방지
-        //     const commentinput = document.getElementById("commentinput").value; // 댓글 내용
-        //     console.log(commentinput);
+        $("#commentbtn").click(async function (event) {
+            event.preventDefault(); // 폼 제출 방지
+            const commentinput = document.getElementById("commentinput").value; // 댓글 내용
+            console.log(commentinput);
 
-        //     // /*if (!commentinput.trim()) {
-        //     //     alert("댓글을 입력하세요.");
-        //     //     console.log('11')
-        //     //     return;
-        //     // }*/
+            if (!commentinput.trim()) {
+                alert("댓글을 입력하세요.");
+                console.log('11')
+                return;
+            }
 
-        //     // 고유한 경로(여기서는 댓글을 위한 새 경로)를 생성하기 위해 push() 대신 사용
-        //     const commentsRef = ref(db, 'commentsList/');
+            // 고유한 경로(여기서는 댓글을 위한 새 경로)를 생성하기 위해 push() 대신 사용
+            const commentsRef = ref(db, 'commentsList/');
 
-        //     try {
-        //         await set(newCommentRef, {
-        //             comment: commentinput, // commentinput 변수의 값을 사용
-        //             // 필요한 경우 여기에 더 많은 데이터 추가(예: 사용자 ID, 작성 시간 등)
-        //         });
-        //         alert("댓글이 성공적으로 작성되었습니다.");
-        //         document.getElementById("commentinput").value = ''; // 입력 필드 초기화
-        //     } catch (error) {
-        //         console.error("댓글 작성 오류:", error);
-        //         alert("댓글 작성에 실패했습니다.");
-        //     }
-        // });
-
-
-
-        // 댓글 테스트
-        $(document).ready(function () {
-            $("#commentbtn").click(function () {
-                const commentInput = $("#commentinput").val().trim(); // 댓글 입력값 가져오기 및 공백 제거
-
-                if (!commentInput) {
-                    alert("댓글을 입력하세요."); // 댓글 입력값이 없는 경우 알림
-                    return;
-                }
-
-                const commentsList = $("#commentsList"); // 댓글 목록 컨테이너 선택
-                const newComment = $("<li>").text(commentInput); // 새 댓글 엘리먼트 생성
-                commentsList.append(newComment); // 새 댓글을 댓글 목록에 추가
-
-                $("#commentinput").val(''); // 입력 필드 초기화
-            });
-
-            // loadComments 함수와 관련된 호출 및 정의는 삭제하거나 주석 처리합니다.
+            try {
+                await set(newCommentRef, {
+                    comment: commentinput // commentinput 변수의 값을 사용
+                    // 필요한 경우 여기에 더 많은 데이터 추가(예: 사용자 ID, 작성 시간 등)
+                });
+                alert("댓글이 성공적으로 작성되었습니다.");
+                document.getElementById("commentinput").value = ''; // 입력 필드 초기화
+            } catch (error) {
+                console.error("댓글 작성 오류:", error);
+                alert("댓글 작성에 실패했습니다.");
+            }
         });
-        // 댓글 테스트
+
+
+
+        // // 댓글 테스트
+        // $(document).ready(function () {
+        //     $("#commentbtn").click(function () {
+        //         const commentInput = $("#commentinput").val().trim(); // 댓글 입력값 가져오기 및 공백 제거
+
+        //         if (!commentInput) {
+        //             alert("댓글을 입력하세요."); // 댓글 입력값이 없는 경우 알림
+        //             return;
+        //         }
+
+        //         const commentsList = $("#commentsList"); // 댓글 목록 컨테이너 선택
+        //         const newComment = $("<li>").text(commentInput); // 새 댓글 엘리먼트 생성
+        //         commentsList.append(newComment); // 새 댓글을 댓글 목록에 추가
+
+        //         $("#commentinput").val(''); // 입력 필드 초기화
+        //     });
+
+        //     // loadComments 함수와 관련된 호출 및 정의는 삭제하거나 주석 처리합니다.
+        // });
+        // // 댓글 테스트
 
 
         // 댓글목록 관련
@@ -302,6 +291,37 @@
         }
 
         // 댓글목록 관련 끝
+
+
+
+        
+
+        window.onload = checkLoginStatus;
+
+        $(document).ready(function () {
+            // 세션 스토리지에서 현재 로그인한 사용자의 이름을 가져옵니다.
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                // 로그인한 사용자가 있으면 댓글 입력란에 이름을 미리 표시합니다.
+                $("#commentinput").attr("placeholder", `${loggedInUser} : 댓글 삭제나 수정이 불가하니 신중히 입력하세요`);
+            }
+
+            $("#commentbtn").click(function () {
+                const commentInput = $("#commentinput").val().trim(); // 댓글 입력값 가져오기 및 공백 제거
+
+                if (!commentInput) {
+                    alert("댓글을 입력하세요."); // 댓글 입력값이 없는 경우 알림
+                    return;
+                }
+
+                const commentsList = $("#commentsList"); // 댓글 목록 컨테이너 선택
+                const newComment = $("<li>").text(loggedInUser ? `${loggedInUser} : ${commentInput}` : commentInput); // 새 댓글 엘리먼트 생성
+                commentsList.append(newComment); // 새 댓글을 댓글 목록에 추가
+
+                $("#commentinput").val(''); // 입력 필드 초기화
+            });
+        });
+
 
     </script>
 
@@ -384,14 +404,6 @@
     </div>
 
 
-    <!-- 댓글 목록 -->
-    <!-- <div class="container1">
-            <div id="comments" class="row-cols-1 row-cols-md-4 g-4">
-
-            </div> -->
-
-
-
     <script>
         function checkLoginStatus() {
             const loggedInUser = sessionStorage.getItem('loggedInUser');
@@ -408,11 +420,7 @@
             sessionStorage.removeItem("loggedInUser");
             checkLoginStatus(); // 로그아웃 후 즉시 로그인 상태 확인
         }
-
-        window.onload = checkLoginStatus;
     </script>
-
-
 
 </body>
 
