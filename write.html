@@ -33,46 +33,65 @@
         const id = sessionStorage.getItem('loggedInUser'); // 로그인한 아이디 가져오기
         const userRef = ref(db, 'users/' + id);
 
-        // 폼 제출 핸들러
-        document.querySelector('form').addEventListener('submit', function (event) {
-            event.preventDefault(); // 기본 제출 행동 방지
+        document.addEventListener('DOMContentLoaded', () => {
+            const imageInput = document.getElementById('imageInput');
+            const imagePreview = document.getElementById('imagePreview');
 
-            // 입력된 제목과 내용 가져오기
-            let title = document.querySelector('input[name="title"]').value;
-            let detail = document.querySelector('textarea[name="detail"]').value;
-            let image = "";
-            let writer = sessionStorage.getItem('loggedInUser');
-            let date = new Date().toISOString();
+            // Listen for changes in the image input field
+            imageInput.addEventListener('change', () => {
+                const imageUrl = imageInput.value.trim();
 
-            const lastplanidrdf = ref(db, 'lastplanid');
+                // Update the image preview src with the entered URL
+                if (imageUrl) {
+                    imagePreview.src = imageUrl;
+                    imagePreview.style.display = 'block'; // Show the image preview
+                } else {
+                    imagePreview.src = ''; // Clear the image preview
+                    imagePreview.style.display = 'none'; // Hide the image preview
+                }
+            });
 
-            get(lastplanidrdf).then((snapshot) => {
-                let lastid = snapshot.val() || 0;
-                const newid = lastid + 1;
+            // 폼 제출 핸들러
+            document.querySelector('form').addEventListener('submit', function (event) {
+                event.preventDefault(); // 기본 제출 행동 방지
 
-                const newplanref = ref(db, `plans_letter/${newid}`);
+                // 입력된 제목과 내용 가져오기
+                let title = document.querySelector('input[name="title"]').value;
+                let detail = document.querySelector('textarea[name="detail"]').value;
+                let image = imageInput.value.trim();
+                let writer = sessionStorage.getItem('loggedInUser');
+                let date = new Date().toISOString();
 
-                // Firebase Realtime Database에 데이터 저장
-                set(newplanref, {
-                    id: newid, //0부터 생성된 순서(글의 id)
-                    title: title,
-                    detail: detail,
-                    image: image,
-                    writer: writer,
-                    date: date
-                }).then(() => {
-                    alert('작성 완료!'); // 성공 메시지 표시
-                    // 입력 필드 초기화
-                    document.querySelector('input[name="title"]').value = '';
-                    document.querySelector('textarea[name="detail"]').value = '';
-                    set(lastplanidrdf, newid);
-                    window.location.href = 'writeview.html';
-                }).catch((error) => {
-                    console.error('데이터 저장 중 오류 발생:', error); // 오류 메시지 표시
-                });
-            })
-        }).catch((error) => {
-            console.error('마지막 글 id 읽기 실패:', error);
+                const lastplanidrdf = ref(db, 'lastplanid');
+
+                get(lastplanidrdf).then((snapshot) => {
+                    let lastid = snapshot.val() || 0;
+                    const newid = lastid + 1;
+
+                    const newplanref = ref(db, `plans_letter/${newid}`);
+
+                    // Firebase Realtime Database에 데이터 저장
+                    set(newplanref, {
+                        id: newid, //0부터 생성된 순서(글의 id)
+                        title: title,
+                        detail: detail,
+                        image: image,
+                        writer: writer,
+                        date: date
+                    }).then(() => {
+                        alert('작성 완료!'); // 성공 메시지 표시
+                        // 입력 필드 초기화
+                        document.querySelector('input[name="title"]').value = '';
+                        document.querySelector('textarea[name="detail"]').value = '';
+                        set(lastplanidrdf, newid);
+                        window.location.href = 'writeview.html';
+                    }).catch((error) => {
+                        console.error('데이터 저장 중 오류 발생:', error); // 오류 메시지 표시
+                    });
+                })
+            }).catch((error) => {
+                console.error('마지막 글 id 읽기 실패:', error);
+            });
         });
     </script>
 
@@ -166,6 +185,12 @@
             </tr>
             <tr>
                 <td><textarea placeholder="내용을 입력하세요" name="detail"></textarea></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" id="imageInput" placeholder="Image URL">
+                    <img id="imagePreview" src="" style="display: none;">
+                </td>
             </tr>
             <tr>
                 <td><input type="submit" value="등록"></td>
