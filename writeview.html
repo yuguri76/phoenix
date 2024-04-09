@@ -13,12 +13,57 @@
 
 
     <style>
-        #container {
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+        @font-face {
+            font-family: 'iceJaram-Rg';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/iceJaram-Rg.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'KCCChassam';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/KCCChassam.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SBAggroB';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'SBAggroB', sans-serif;
+            background-color: #FFFDF3;
+            color: #333;
+            font-weight: 700;
+        }
+
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px 0;
+        }
+
+        #containerwrite {
             position: absolute;
-            top: 50%;
+            /* 글상자 */
+            top: 65%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 50%;
+            width: 60%;
             height: 70%;
             padding: 30px;
             border: 1px solid #ccc;
@@ -67,16 +112,29 @@
         }
 
         .commentbox {
-            width: 850px;
-            margin: 1400px auto 20px auto;
+            /* 댓글 작성칸 */
+            position: absolute;
+            top: 210%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: 70%;
+            padding: 30px;
+            text-align: left;
         }
 
-        .submit {
-            width: 850px;
-            margin: 700px auto 20px auto;
+        .nav-link {
+            color: #555 !important;
+            transition: color 0.3s ease;
+            font-family: 'iceJaram-Rg', sans-serif;
+            font-size: 30px;
         }
 
-        .container1 {
+        .nav-link:hover {
+            color: #e2821c !important;
+        }
+
+        /* .container1 {
             position: absolute;
             top: 100%;
             left: 50%;
@@ -87,22 +145,22 @@
             text-align: center;
             background-color: green;
             margin: 100px auto 20px auto;
-
-        }
+        } */
 
         #commentsList li {
             border-bottom: 1px solid #ccc;
-            padding: 8px;
+            padding: 15px;
             list-style-type: none;
         }
 
         #commentsList {
+            /* 댓글 목록칸 */
             padding: 0;
             position: absolute;
-            top: 125%;
+            top: 138%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 50%;
+            width: 60%;
             height: 70%;
             padding: 30px;
             border: 1px solid #ccc;
@@ -110,6 +168,12 @@
             box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.1);
             text-align: left;
             overflow: auto
+        }
+
+        /* 게시판 컨테이너의 하단 마진을 조정하여 "Meet the Team"과의 간격 확대 */
+        .container.mt-4 {
+            margin-bottom: 50px;
+            /* 게시판 섹션의 하단 간격 조정 */
         }
     </style>
 
@@ -240,31 +304,64 @@
         // 댓글목록 관련 끝
 
     </script>
+
 </head>
 
 <body>
-    <header class="p-3 text-bg-dark"> <!-- 헤더 로그인 후 -->
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href="main.html" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                    <div id="logo">야나두 <span id="subtext">너도 할 수 있어</span></div>
-                </a>
 
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="#" class="nav-link px-2" style="color: #020715;">계획전시</a></li>
-                    <li><a href="#" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
-                </ul>
+    <div id="header-before-login" style="display: none;">
+        <!--로그인 전 헤더-->
+        <header class="p-3 text-bg-dark">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <a href="main.html" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <img src="https://github.com/yuguri76/phoenix/blob/gyul/images/%EC%95%BC%EB%82%98%EB%91%90%EB%A1%9C%EA%B3%A0%EC%B5%9C%EC%A2%85%EB%B3%B82.png?raw=true"
+                            alt="야나두 로고" style="height: 230px;">
+                    </a>
 
-                <div class="text-end">
-                    <button type="button" class="btn" style="color: #020715; background-color: #79B96E;">내 프로필
-                        보기</button>
-                    <button type="button" class="btn" style="color: #020715; background-color: #F7819F;">로그아웃</button>
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획전시</a></li>
+                        <li><a href="party.html" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
+                    </ul>
+
+                    <div class="text-end">
+                        <link rel="stylesheet" href="path/to/your/stylesheet.css">
+                        <button type="button" class="btn" onclick="location.href='Login.html'"
+                            style="color: white; background-color: #fc7600; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; border-radius: 10px; opacity: 0.9; padding: 10px 15px; text-align: center;">로그인</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
+    </div>
 
-    <div class="container" id="container">
+    <div id="header-after-login" style="display: none;">
+        <!--로그인 후 헤더-->
+        <header class="p-3 text-bg-dark">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <a href="main.html" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <img src="https://github.com/yuguri76/phoenix/blob/gyul/images/%EC%95%BC%EB%82%98%EB%91%90%EB%A1%9C%EA%B3%A0%EC%B5%9C%EC%A2%85%EB%B3%B82.png?raw=true"
+                            alt="야나두 로고" style="height: 230px;">
+                    </a>
+
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획전시</a></li>
+                        <li><a href="party.html" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
+                    </ul>
+
+                    <div class="text-end" style="display: flex; justify-content: end; gap: 20px;">
+                        <button type="button" class="btn" onclick="location.href='profile.html'"
+                            style="color: #fc7600; background-color: white; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; opacity: 0.9;border: 2px solid #fc7600; border-radius: 10px;">내
+                            프로필 보기</button>
+                        <button type="button" class="btn" onclick="logout()"
+                            style="color: white; background-color: #fc7600; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; border-radius: 10px; opacity: 0.9; color:white">로그아웃</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <div class="containerwrite" id="containerwrite">
         <!-- 게시글 내용 -->
         <h1>게시글 제목</h1>
         <p>게시글 내용 </p>
@@ -273,25 +370,47 @@
     <!-- 댓글 작성 양식 -->
 
     <div class="commentbox">
-        <form class="container" id="comment-form">
+        <form id="comment-form">
             <textarea id="commentinput" placeholder="댓글 삭제나 수정이 불가하니 신중히 입력하세요"></textarea>
             <button id="commentbtn" type="button" class="btn btn-warning">댓글 작성</button>
 
         </form>
+    </div>
 
 
 
-        <div id="commentsSection">
-            <ul id="commentsList"></ul>
-        </div>
+    <div class="commentsList" id="commentsSection">
+        <ul id="commentsList"></ul>
+    </div>
 
 
-        <!-- 댓글 목록 -->
-        <!-- <div class="container1">
+    <!-- 댓글 목록 -->
+    <!-- <div class="container1">
             <div id="comments" class="row-cols-1 row-cols-md-4 g-4">
 
             </div> -->
 
+
+
+    <script>
+        function checkLoginStatus() {
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            if (loggedInUser !== null) {
+                document.getElementById("header-after-login").style.display = "block";
+                document.getElementById("header-before-login").style.display = "none";
+            } else {
+                document.getElementById("header-before-login").style.display = "block";
+                document.getElementById("header-after-login").style.display = "none";
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem("loggedInUser");
+            checkLoginStatus(); // 로그아웃 후 즉시 로그인 상태 확인
+        }
+
+        window.onload = checkLoginStatus;
+    </script>
 
 
 
