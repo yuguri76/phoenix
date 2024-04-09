@@ -13,12 +13,57 @@
 
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+        @font-face {
+            font-family: 'iceJaram-Rg';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/iceJaram-Rg.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'KCCChassam';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/KCCChassam.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SBAggroB';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'SBAggroB', sans-serif;
+            background-color: #FFFDF3;
+            color: #333;
+            font-weight: 700;
+        }
+
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px 0;
+        }
+
         #containerwrite {
-            position: absolute;                                                        /* 글상자 */
-            top: 50%;
+            position: absolute;
+            /* 글상자 */
+            top: 65%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 70%;
+            width: 60%;
             height: 70%;
             padding: 30px;
             border: 1px solid #ccc;
@@ -69,15 +114,26 @@
         .commentbox {
             /* 댓글 작성칸 */
             position: absolute;
-            top: 195%;
+            top: 210%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 73%;
+            width: 60%;
             height: 70%;
             padding: 30px;
             text-align: left;
         }
+        
+        .nav-link {
+            color: #555 !important;
+            transition: color 0.3s ease;
+            font-family: 'iceJaram-Rg', sans-serif;
+            font-size: 30px;
+        }
 
+        .nav-link:hover {
+            color: #e2821c !important;
+        }
+        
         /* .container1 {
             position: absolute;
             top: 100%;
@@ -93,7 +149,7 @@
 
         #commentsList li {
             border-bottom: 1px solid #ccc;
-            padding: 8px;
+            padding: 15px;
             list-style-type: none;
         }
 
@@ -101,10 +157,10 @@
             /* 댓글 목록칸 */
             padding: 0;
             position: absolute;
-            top: 123%;
+            top: 138%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 70%;
+            width: 60%;
             height: 70%;
             padding: 30px;
             border: 1px solid #ccc;
@@ -119,8 +175,6 @@
             margin-bottom: 50px;
             /* 게시판 섹션의 하단 간격 조정 */
         }
-
-
     </style>
 
     <script type="module">
@@ -254,7 +308,7 @@
 </head>
 
 <body>
-    
+
     <div id="header-before-login" style="display: none;">
         <!--로그인 전 헤더-->
         <header class="p-3 text-bg-dark">
@@ -336,6 +390,27 @@
 
             </div> -->
 
+
+
+    <script>
+        function checkLoginStatus() {
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            if (loggedInUser !== null) {
+                document.getElementById("header-after-login").style.display = "block";
+                document.getElementById("header-before-login").style.display = "none";
+            } else {
+                document.getElementById("header-before-login").style.display = "block";
+                document.getElementById("header-after-login").style.display = "none";
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem("loggedInUser");
+            checkLoginStatus(); // 로그아웃 후 즉시 로그인 상태 확인
+        }
+
+        window.onload = checkLoginStatus;
+    </script>
 
 
 
