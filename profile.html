@@ -179,8 +179,8 @@
     </style>
 
     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js';
-        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js';
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
         import { getDatabase, ref, child, get, set, update } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
         // Firebase 구성
@@ -200,7 +200,18 @@
         const analytics = getAnalytics(app);
         const db = getDatabase();
 
-        const id = 'oplk123'; // 일단 직접 lol 선언하고, 후에 메인페이지에서 받아오기
+        // 페이지 로드 시 로그인 상태 확인
+        window.onload = function () {
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            if (loggedInUser !== null) {
+                document.getElementById("header-after-login").style.display = 'block';
+            } else {
+                alert('로그인 되지 않았습니다.');
+                window.location.href = 'main.html';
+            }
+        }
+
+        const id = sessionStorage.getItem('loggedInUser');
         const userRef = ref(db, 'users/' + id + '/' + id);
 
         // DB(users 테이블)에서 프로필 정보(이름, 나이, 성별, 지역) 가져오기
@@ -315,11 +326,18 @@
                 $('#introduce-change').toggle();
             }
         });
+
+        // 로그아웃 버튼
+        $("#logoutbtn").click(async function () {
+            sessionStorage.removeItem("loggedInUser");
+            alert('로그아웃 되었습니다.');
+            window.location.href = 'main.html';
+        });
     </script>
 </head>
 
 <body>
-    <div id="header-after-login" style="display: block;">
+    <div id="header-after-login" style="display: none;">
         <!--로그인 후 헤더-->
         <header class="p-3 text-bg-dark">
             <div class="container">
@@ -338,7 +356,7 @@
                         <button type="button" class="btn" onclick="location.href='profile.html'"
                             style="color: #fc7600; background-color: white; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; opacity: 0.9;border: 2px solid #fc7600; border-radius: 10px;">내
                             프로필 보기</button>
-                        <button type="button" class="btn" onclick="logout()"
+                        <button type="button" class="btn" id="logoutbtn"
                             style="color: white; background-color: #fc7600; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; border-radius: 10px; opacity: 0.9; color:white">로그아웃</button>
                     </div>
                 </div>
