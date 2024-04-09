@@ -16,10 +16,39 @@
         @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
 
+        @font-face {
+            font-family: 'iceJaram-Rg';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/iceJaram-Rg.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'KCCChassam';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/KCCChassam.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SBAggroB';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'SBAggroB', sans-serif;
             background-color: #FFFDF3;
             color: #333;
+            font-weight: 700;
         }
 
         header {
@@ -44,6 +73,8 @@
         .nav-link {
             color: #555 !important;
             transition: color 0.3s ease;
+            font-family: 'iceJaram-Rg', sans-serif;
+            font-size: 30px;
         }
 
         .nav-link:hover {
@@ -67,6 +98,7 @@
             color: #333;
             padding: 50px 10%;
             text-align: center;
+            font-family: 'KCCChassam', sans-serif;
         }
 
         .team-introduction img {
@@ -132,7 +164,7 @@
         .board-title {
             cursor: pointer;
             /* 클릭할 수 있는 요소임을 나타내는 마우스 포인터로 변경 */
-            color: #FFA500;
+            color: #fc7600;
             /* 주황색으로 변경 */
             font-weight: bold;
             /* 글씨 굵기를 더 두껍게 */
@@ -198,19 +230,19 @@
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                     <a href="main.html" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                        <!-- Replace text logo with image -->
                         <img src="https://github.com/yuguri76/phoenix/blob/gyul/images/%EC%95%BC%EB%82%98%EB%91%90%EB%A1%9C%EA%B3%A0%EC%B5%9C%EC%A2%85%EB%B3%B82.png?raw=true"
-                            alt="야나두 로고" style="height: 300px;">
+                            alt="야나두 로고" style="height: 230px;">
                     </a>
 
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                        <li><a href="#" class="nav-link px-2" style="color: #020715;">계획전시</a></li>
-                        <li><a href="#" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
+                        <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획전시</a></li>
+                        <li><a href="party.html" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
                     </ul>
 
                     <div class="text-end">
+                        <link rel="stylesheet" href="path/to/your/stylesheet.css">
                         <button type="button" class="btn" onclick="location.href='Login.html'"
-                            style="color: #020715; background-color: #e2821c;">로그인</button>
+                            style="color: white; background-color: #fc7600; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; border-radius: 10px; opacity: 0.9; padding: 10px 15px; text-align: center;">로그인</button>
                     </div>
                 </div>
             </div>
@@ -223,21 +255,21 @@
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                     <a href="main.html" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                        <!-- Replace text logo with image -->
                         <img src="https://github.com/yuguri76/phoenix/blob/gyul/images/%EC%95%BC%EB%82%98%EB%91%90%EB%A1%9C%EA%B3%A0%EC%B5%9C%EC%A2%85%EB%B3%B82.png?raw=true"
-                            alt="야나두 로고" style="height: 300px;">
+                            alt="야나두 로고" style="height: 230px;">
                     </a>
 
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                        <li><a href="#" class="nav-link px-2" style="color: #020715;">계획전시</a></li>
-                        <li><a href="#" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
+                        <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획전시</a></li>
+                        <li><a href="party.html" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
                     </ul>
 
-                    <div class="text-end">
+                    <div class="text-end" style="display: flex; justify-content: end; gap: 20px;">
                         <button type="button" class="btn" onclick="location.href='profile.html'"
-                            style="color: #020715; background-color: #79B96E;">내 프로필 보기</button>
+                            style="color: #fc7600; background-color: white; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; opacity: 0.9;border: 2px solid #fc7600; border-radius: 10px;">내
+                            프로필 보기</button>
                         <button type="button" class="btn" onclick="logout()"
-                            style="color: #020715; background-color: #F7819F;">로그아웃</button>
+                            style="color: white; background-color: #fc7600; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; border-radius: 10px; opacity: 0.9; color:white">로그아웃</button>
                     </div>
                 </div>
             </div>
