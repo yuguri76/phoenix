@@ -11,7 +11,6 @@
     <!-- JQuery 가져오기 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
@@ -68,6 +67,7 @@
             padding: 30px;
             border: 1px solid #ccc;
             border-radius: 20px;
+            border-color: #e2821c;
             box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
@@ -153,6 +153,7 @@
             padding: 30px;
             border: 1px solid #ccc;
             border-radius: 20px;
+            border-color: #e2821c;
             box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.1);
             text-align: left;
             overflow: auto
@@ -189,8 +190,7 @@
         const db = getDatabase();
 
         const letter_id = 1;
-        const letterRef = ref(db, 'plans_letter/' + letter_id);
-
+        const letterRef = ref(db, 'party_letter/' + letter_id);
 
 
         get(letterRef).then((lettersnapshot) => {
@@ -202,59 +202,6 @@
             console.error('Error getting user data: ', error);
         });
         // const id = document.getElementById("id").value;
-
-
-
-        $("#commentbtn").click(async function (event) {
-            event.preventDefault(); // 폼 제출 방지
-            const commentinput = document.getElementById("commentinput").value; // 댓글 내용
-            console.log(commentinput);
-
-            if (!commentinput.trim()) {
-                alert("댓글을 입력하세요.");
-                console.log('11')
-                return;
-            }
-
-            // 고유한 경로(여기서는 댓글을 위한 새 경로)를 생성하기 위해 push() 대신 사용
-            const commentsRef = ref(db, 'commentsList/');
-
-            try {
-                await set(newCommentRef, {
-                    comment: commentinput // commentinput 변수의 값을 사용
-                    // 필요한 경우 여기에 더 많은 데이터 추가(예: 사용자 ID, 작성 시간 등)
-                });
-                alert("댓글이 성공적으로 작성되었습니다.");
-                document.getElementById("commentinput").value = ''; // 입력 필드 초기화
-            } catch (error) {
-                console.error("댓글 작성 오류:", error);
-                alert("댓글 작성에 실패했습니다.");
-            }
-        });
-
-
-
-        // // 댓글 테스트
-        // $(document).ready(function () {
-        //     $("#commentbtn").click(function () {
-        //         const commentInput = $("#commentinput").val().trim(); // 댓글 입력값 가져오기 및 공백 제거
-
-        //         if (!commentInput) {
-        //             alert("댓글을 입력하세요."); // 댓글 입력값이 없는 경우 알림
-        //             return;
-        //         }
-
-        //         const commentsList = $("#commentsList"); // 댓글 목록 컨테이너 선택
-        //         const newComment = $("<li>").text(commentInput); // 새 댓글 엘리먼트 생성
-        //         commentsList.append(newComment); // 새 댓글을 댓글 목록에 추가
-
-        //         $("#commentinput").val(''); // 입력 필드 초기화
-        //     });
-
-        //     // loadComments 함수와 관련된 호출 및 정의는 삭제하거나 주석 처리합니다.
-        // });
-        // // 댓글 테스트
-
 
         // 댓글목록 관련
 
@@ -272,6 +219,28 @@
         }
 
         $(document).ready(function () {
+            $("#commentbtn").click(async function (event) {
+                event.preventDefault(); // 폼 제출 방지
+                const commentinput = document.getElementById("commentinput").value; // 댓글 내용
+                console.log(commentinput);
+
+                // 고유한 경로(여기서는 댓글을 위한 새 경로)를 생성하기 위해 push() 대신 사용
+                // const commentsRef = ref(db, 'Comments/');
+                // const newCommentRef = push(commentsRef).key; // 새 댓글을 추가하기 위한 참조 생성
+
+                try {
+                    const newCommentRef = push(ref(db, 'commentdata')).key;
+                    await set(ref(db, 'commentdata/' + newCommentRef), {
+                        comment: commentinput // commentinput 변수의 값을 사용
+                        // 필요한 경우 여기에 더 많은 데이터 추가(예: 사용자 ID, 작성 시간 등)
+                    });
+                    alert("댓글이 성공적으로 작성되었습니다.");
+                    document.getElementById("commentinput").value = ''; // 입력 필드 초기화
+                } catch (error) {
+                    console.error("댓글 작성 오류:", error);
+                    alert("댓글 작성에 실패했습니다.");
+                }
+            });
             loadComments(); // 댓글 목록 로딩
         });
 
@@ -279,7 +248,7 @@
             const dbRef = ref(getDatabase());
             const commentsRef = ref(db, 'comments/');
 
-            onValue(commentsRef, (snapshot) => {
+            on('value', commentsRef, (snapshot) => {
                 const comments = snapshot.val();
                 if (comments) {
                     displayComments(comments);
@@ -289,12 +258,7 @@
                 }
             });
         }
-
         // 댓글목록 관련 끝
-
-
-
-        
 
         window.onload = checkLoginStatus;
 
@@ -321,14 +285,10 @@
                 $("#commentinput").val(''); // 입력 필드 초기화
             });
         });
-
-
     </script>
-
 </head>
 
 <body>
-
     <div id="header-before-login" style="display: none;">
         <!--로그인 전 헤더-->
         <header class="p-3 text-bg-dark">
@@ -388,21 +348,22 @@
     </div>
 
     <!-- 댓글 작성 양식 -->
-
     <div class="commentbox">
         <form id="comment-form">
-            <textarea id="commentinput" placeholder="댓글 삭제나 수정이 불가하니 신중히 입력하세요"></textarea>
-            <button id="commentbtn" type="button" class="btn btn-warning">댓글 작성</button>
+            <textarea id="commentinput"
+                style="font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold;"
+                placeholder="댓글 삭제나 수정이 불가하니 신중히 입력하세요"></textarea>
+            <button id="commentbtn" type="button" class="btn"
+                style="color : white ; background-color : #fc7600; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold;">댓글
+                작성</button>
 
         </form>
     </div>
 
-
-
-    <div class="commentsList" id="commentsSection">
+    <div class="commentsList" id="commentsSection"
+        style="font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold;">
         <ul id="commentsList"></ul>
     </div>
-
 
     <script>
         function checkLoginStatus() {

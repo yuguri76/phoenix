@@ -107,19 +107,14 @@
 
         .card {
             max-width: 100%;
-            /* Limit card size to the container width */
             margin: 10px;
-            /* Added margin for spacing between cards */
             transition: transform 0.3s ease;
-            /* Smooth transform transition */
         }
 
 
         .card:hover {
             transform: translateY(-5px);
-            /* Hover effect to move card up */
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-            /* Shadow effect for depth */
         }
 
         .team-introduction .col-2 {
@@ -152,16 +147,13 @@
             /* 카드 하단 마진 조정으로 카드 간 간격 확대 */
         }
 
-        /* 게시판 컨테이너의 하단 마진을 조정하여 "Meet the Team"과의 간격 확대 */
         .container.mt-4 {
             margin-bottom: 50px;
             /* 게시판 섹션의 하단 간격 조정 */
         }
 
-        /* "Meet the Team" 섹션의 상단 마진 조정 */
         .team-introduction {
             margin-top: 100px;
-            /* "Meet the Team" 섹션과 상단 컨텐츠와의 간격 확대 */
         }
 
         .team-introduction img {
@@ -261,9 +253,8 @@
             </header>
         </div>
 
-        <div class="banner-image"></div> <!-- Banner image section -->
-
-        <div class="banner-text"> <!-- Banner text section -->
+        <div class="banner-image"></div>
+        <div class="banner-text">
             <h2>"혼자서 빨리 갈 수는 있지만, 함께라면 더 멀리 갈 수 있다."</h2>
             <h2>야나두는 '함께'의 가치를 믿고 지지합니다.</h2>
         </div>
@@ -338,7 +329,7 @@
             const analytics = getAnalytics(app);
             const db = getDatabase();
 
-            async function loadCards(boardName, containerId) {
+            async function loadCards(boardName, containerId, detailPage) {
                 const container = document.getElementById(containerId);
                 const dbRef = ref(db, boardName);
                 const snapshot = await get(query(dbRef, orderByKey(), limitToLast(6)));
@@ -354,26 +345,58 @@
                 cards.forEach(childSnapshot => {
                     const cardData = childSnapshot.val();
                     const cardHTML = `
-            <div class="col-4">
-                <div class="card" onclick="location.href='writeview.html?post=${childSnapshot.key}'" style="cursor: pointer;">
-                    <img src="${cardData.image || 'path/to/default-image.jpg'}" class="card-img-top" alt="Post Image">
-                    <div class="card-body">
-                        <h5 class="card-title">${cardData.title}</h5>
-                        <p class="card-text">${cardData.content}</p>
-                    </div>
-                </div>
-            </div>`;
+                        <div class="col-4">
+                            <div class="card" onclick="savePostId('${childSnapshot.key}'); location.href='${detailPage}?post=${childSnapshot.key}';" style="cursor: pointer;">
+                                <img src="${cardData.image || 'path/to/default-image.jpg'}" class="card-img-top" alt="Post Image">
+                                    <div class="card-body">
+                                    <h5 class="card-title">${cardData.title}</h5>
+                                    <p class="card-text">${cardData.content}</p>
+                                </div>
+                            </div>
+                        </div>`;
                     container.innerHTML += cardHTML;
                 });
             }
 
+            function savePostId(postId) {
+                sessionStorage.setItem("selectedPostId", postId);
+            }
+
             document.addEventListener('DOMContentLoaded', () => {
-                loadCards('plans_letter', 'plan-posts');
-                loadCards('party_letter', 'party-posts');
+                loadCards('plans_letter', 'plan-posts', 'plan_writeview.html');
+                loadCards('party_letter', 'party-posts', 'party_writeview.html');
             });
         </script>
 
-
+        <script type="text/javascript">
+            function savePostId(postId) {
+                sessionStorage.setItem("selectedPostId", postId);
+            }
+            function checkLoginStatus() {
+                const loggedInUser = sessionStorage.getItem('loggedInUser');
+                if (loggedInUser) {
+                    document.getElementById("header-after-login").style.display = "block";
+                    document.getElementById("header-before-login").style.display = "none";
+                } else {
+                    document.getElementById("header-before-login").style.display = "block";
+                    document.getElementById("header-after-login").style.display = "none";
+                    restrictAccess();
+                }
+            }
+            function restrictAccess() {
+                const fullPath = window.location.pathname;
+                const fileName = fullPath.split('/').pop().split('\\').pop().toLowerCase();
+                const restrictedPages = ['plan_writeview.html', 'party_writeview.html'].map(page => page.toLowerCase());
+                if (restrictedPages.includes(fileName)) {
+                    alert("로그인 후 이용해주세요.");
+                    window.location.replace('Login.html');
+                }
+            }
+            function logout() {
+                sessionStorage.removeItem('loggedInUser');
+                window.location.replace('main.html');
+            }
+        </script>
 
         <section class="team-introduction mb-4">
             <div class="container">
@@ -429,26 +452,6 @@
                 </div>
             </div>
         </section>
-
-        <script>
-            function checkLoginStatus() {
-                const loggedInUser = sessionStorage.getItem('loggedInUser');
-                if (loggedInUser !== null) {
-                    document.getElementById("header-after-login").style.display = "block";
-                    document.getElementById("header-before-login").style.display = "none";
-                } else {
-                    document.getElementById("header-before-login").style.display = "block";
-                    document.getElementById("header-after-login").style.display = "none";
-                }
-            }
-
-            function logout() {
-                sessionStorage.removeItem("loggedInUser");
-                checkLoginStatus(); // 로그아웃 후 즉시 로그인 상태 확인
-            }
-
-            window.onload = checkLoginStatus;
-        </script>
     </body>
 
 </html>
