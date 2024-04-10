@@ -43,7 +43,8 @@
         }
 
         * {
-            font-family: "Nanum Pen Script", cursive;
+            font-family: 'SBAggroB', sans-serif;
+            font-weight: 700;
         }
 
         #logo {
@@ -54,11 +55,14 @@
         }
 
         .border-box {
-            border: 1px solid black;
-            width: 1250px;
+            border: 1px solid rgb(218, 155, 88);
+            width: 1350px;
             border-radius: 10px;
             text-align: center;
-            margin: 50px auto 20px auto;
+            margin: 10px auto 30px;
+            /* 상단 마진을 줄여 위치를 올림 */
+            padding: 50px;
+            /* 테두리 주변에 패딩 추가 */
         }
 
         body {
@@ -87,23 +91,75 @@
             align-items: center;
         }
 
+        .card {
+            padding-top: 30px;
+            border-color: #edc8ae;
+        }
+
         .writebtn {
             width: 1200px;
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: right;
+            justify-content: flex-end;
         }
 
-        .pgmv {
+        .writebtn button {
+            color: white;
+            background-color: #fc7600;
+            font-family: 'iceJaram-Rg', sans-serif;
+            font-size: 25px;
+            font-weight: bold;
+            border-radius: 10px;
+            opacity: 0.9;
+            padding: 10px 15px;
+            text-align: center;
+            border: none;
+        }
+
+        .pagebtn {
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: center;
+            margin-bottom: 50px;
+            /* 하단에 20px의 마진 추가 */
         }
 
-        .pgmv>button {
+        .pagebtn>button.active,
+        .pagebtn>button:hover {
+            background-color: #c0601a;
+            /* 더 진한 주황색으로 변경 */
+            color: white;
+            border: 1px solid #c0601a;
+            /* 경계선도 더 진한 주황색으로 변경 */
+        }
+
+        .pagebtn>button {
             margin-right: 5px;
+            transition: background-color 0.3s;
+            background-color: #e2821c;
+            /* 기본 버튼 배경색을 주황색으로 설정 */
+            color: white;
+            /* 텍스트 색상을 흰색으로 설정 */
+            border: 1px solid #e2821c;
+            /* 경계선 색상 설정 */
+        }
+
+        .pagebtn>button:hover {
+            background-color: #d77310;
+            /* 마우스 호버 시 조금 더 어두운 주황색으로 변경 */
+            color: white;
+            /* 텍스트 색상 유지 */
+            border: 1px solid #d77310;
+            /* 경계선도 조금 더 어두운 주황색으로 변경 */
+        }
+
+        .pagebtn>button:hover {
+            background-color: #e2821c;
+            /* 버튼 배경색을 주황색으로 변경 */
+            color: white;
+            /* 텍스트 색상을 변경하고 싶다면 여기를 조정 */
         }
 
         .pagination {
@@ -127,7 +183,7 @@
 
         .pagination li a.active,
         .pagination li a:hover {
-            background-color: #007bff;
+            background-color: #e2821c;
             color: #fff;
         }
     </style>
@@ -157,12 +213,28 @@
         const db = getDatabase();
 
         document.addEventListener('DOMContentLoaded', function () {
-            loadParties(1);
+            const logoutButton = document.getElementById('logoutButton');
+            if (logoutButton) {
+                logoutButton.addEventListener('click', function () {
+                    sessionStorage.removeItem("loggedInUser");
+                    checkLoginStatus(); // Update UI based on login status
+                });
+            }
         });
 
         // 페이지 로드 시 첫 페이지의 글 목록을 불러옵니다.
         document.addEventListener('DOMContentLoaded', function () {
-            loadParties(1);
+            // Your existing initialization code
+
+            // Logout button event listener
+            const logoutButton = document.getElementById('logoutButton');
+            if (logoutButton) {
+                logoutButton.addEventListener('click', function () {
+                    // Logout function logic
+                    sessionStorage.removeItem("loggedInUser");
+                    checkLoginStatus(); // Assuming this updates your UI accordingly
+                });
+            }
         });
 
         async function loadParties(page, limit = 9) {
@@ -189,15 +261,16 @@
 
             // 화면에 글 목록을 표시
             $('#card').empty(); // 기존 목록을 비우고
+
             partiesToShow.forEach(party => {
                 $('#card').append(`
-            <div class="col">
-                <div class="card h-100">
-                    <h5 class="card-title">${party.title}</h5>
-                    <img src="${party.image}" class="card-img-top" alt="...">
-                </div>
+        <div class="col">
+            <div class="card h-100" data-id="${party.id}">
+                <h5 class="card-title">${party.title}</h5>
+                <img src="${party.image}" class="card-img-top" alt="...">
             </div>
-        `);
+        </div>
+    `);
             });
 
             // 페이지네이션 버튼 설정
@@ -206,7 +279,7 @@
 
 
         function setupPagination(totalPages, currentPage) {
-            const paginationContainer = document.querySelector('.pgmv');
+            const paginationContainer = document.querySelector('.pagebtn');
             paginationContainer.innerHTML = ''; // 기존 페이지네이션을 비웁니다.
             for (let i = 1; i <= totalPages; i++) {
                 const button = document.createElement('button');
@@ -228,7 +301,7 @@
         });
 
         $("#writebtn").click(async function () {
-            window.location.href = "partywrite.html";
+            window.location.href = "party_write.html";
         });
 
         $("#title").click(async function () {
@@ -238,6 +311,7 @@
         $("#image").click(async function () {
             window.location.href = "";
         });
+
 
         function loadAllPartys() {
             const partyRef = ref(db, 'party_letter');
@@ -297,6 +371,12 @@
 
         window.onload = checkLoginStatus;
 
+        // 카드에 클릭 이벤트 리스너 추가
+        $('.cards').on('click', '.card', function () {
+            const postId = $(this).data('id'); // 카드의 data-id 속성에서 글 ID 추출
+            sessionStorage.setItem('selectedPostId', postId); // 세션 스토리지에 글 ID 저장
+            window.location.href = 'party_writeview.html'; // writeview.html로 페이지 전환
+        });
     </script>
 </head>
 
@@ -335,20 +415,23 @@
                         <img src="https://github.com/yuguri76/phoenix/blob/gyul/images/%EC%95%BC%EB%82%98%EB%91%90%EB%A1%9C%EA%B3%A0%EC%B5%9C%EC%A2%85%EB%B3%B82.png?raw=true"
                             alt="야나두 로고" style="height: 230px;">
                     </a>
-                    <div>
-                        <ul class="nav me-auto">
-                            <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획전시</a></li>
-                            <li><a href="party.html" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
-                        </ul>
+
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획전시</a></li>
+                        <li><a href="party.html" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
+                    </ul>
+
+                    <div class="text-end" style="display: flex; justify-content: end; gap: 20px;">
                         <button type="button" class="btn" onclick="location.href='profile.html'"
                             style="color: #fc7600; background-color: white; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; opacity: 0.9;border: 2px solid #fc7600; border-radius: 10px;">내
                             프로필 보기</button>
-                        <button type="button" class="btn" onclick="logout()"
+                        <button type="button" class="btn" id="logoutButton"
                             style="color: white; background-color: #fc7600; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; border-radius: 10px; opacity: 0.9;">로그아웃</button>
                     </div>
                 </div>
             </div>
-        </header>
+    </div>
+    </header>
     </div>
 
     <div class="border-box">
@@ -356,7 +439,8 @@
             <h1>파티모집 게시판</h1>
         </div>
         <div class="writebtn">
-            <button id="writebtn" type="button" class="btn btn-warning">글쓰기</button>
+            <button id="writebtn" type="button"
+                style="color: white; background-color: #fc7600; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; border-radius: 10px; opacity: 0.9;">글쓰기</button>
 
         </div>
         <div class="cards">
@@ -371,7 +455,9 @@
             </div>
         </div>
     </div>
-    <div class="pgmv"></div>
+    <div class="pagebtn">
+
+    </div>
 </body>
 
 </html>

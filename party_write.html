@@ -37,7 +37,11 @@
         const analytics = getAnalytics(app);
         const db = getDatabase();
 
+ 
         const id = sessionStorage.getItem('loggedInUser'); // Get logged-in user ID
+
+        
+
         const userRef = ref(db, 'users/' + id);
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -45,23 +49,26 @@
             const imagePreview = document.getElementById('imagePreview');
 
             imageInput.addEventListener('change', () => {
-                const imageUrl = imageInput.value.trim();
 
-                if (imageUrl) {
-                    imagePreview.src = imageUrl;
-                    imagePreview.style.display = 'block';
-                } else {
-                    imagePreview.src = '';
-                    imagePreview.style.display = 'none';
+                
+
+                let imageUrl = imageInput.value.trim();
+
+                if (!imageUrl) {
+                    imageUrl = 'https://static.inven.co.kr/image_2011/hs/dataninfo/card/image/46058.png?v=2';
                 }
+
+                imagePreview.src = imageUrl;
+                imagePreview.style.display = 'block';
             });
 
             document.querySelector('form').addEventListener('submit', function (event) {
-                event.preventDefault(); // Prevent default form submission
+                event.preventDefault();
 
                 let title = document.querySelector('input[name="title"]').value;
-                let detail = document.querySelector('textarea[name="detail"]').value;
-                let image = imageInput.value.trim();
+                let content = document.querySelector('textarea[name="content"]').value;
+                let image = imageInput.value.trim() || 'https://static.inven.co.kr/image_2011/hs/dataninfo/card/image/46058.png?v=2';
+
                 let writer = sessionStorage.getItem('loggedInUser');
                 let date = new Date().toISOString();
 
@@ -76,16 +83,24 @@
                     set(newpartyref, {
                         id: newid,
                         title: title,
-                        detail: detail,
+
+                      
+
+                        content: content,
+
                         image: image,
                         writer: writer,
                         date: date
                     }).then(() => {
                         alert('작성 완료!');
                         document.querySelector('input[name="title"]').value = '';
-                        document.querySelector('textarea[name="detail"]').value = '';
+
+                        
+
+                        document.querySelector('textarea[name="content"]').value = '';
                         set(lastpartyidref, newid);
-                        window.location.href = 'writeview.html';
+                        window.location.href = 'party_writeview.html';
+
                     }).catch((error) => {
                         console.error('Error saving data:', error);
                     });
@@ -187,7 +202,11 @@
                 <td class="header">Comment</td>
             </tr>
             <tr>
-                <td><textarea placeholder="내용을 입력하세요" name="detail"></textarea></td>
+
+
+
+                <td><textarea placeholder="내용을 입력하세요" name="content"></textarea></td>
+
             </tr>
             <tr>
                 <td>
