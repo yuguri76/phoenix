@@ -37,7 +37,7 @@
         const analytics = getAnalytics(app);
         const db = getDatabase();
 
-        const id = sessionStorage.getItem('loggedInUser'); // Get logged-in user ID
+        const id = sessionStorage.getItem('loggedInUser');
         const userRef = ref(db, 'users/' + id);
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -45,23 +45,22 @@
             const imagePreview = document.getElementById('imagePreview');
 
             imageInput.addEventListener('change', () => {
-                const imageUrl = imageInput.value.trim();
+                let imageUrl = imageInput.value.trim();
 
-                if (imageUrl) {
-                    imagePreview.src = imageUrl;
-                    imagePreview.style.display = 'block';
-                } else {
-                    imagePreview.src = '';
-                    imagePreview.style.display = 'none';
+                if (!imageUrl) {
+                    imageUrl = 'https://static.inven.co.kr/image_2011/hs/dataninfo/card/image/46058.png?v=2';
                 }
+
+                imagePreview.src = imageUrl;
+                imagePreview.style.display = 'block';
             });
 
             document.querySelector('form').addEventListener('submit', function (event) {
-                event.preventDefault(); // Prevent default form submission
+                event.preventDefault();
 
                 let title = document.querySelector('input[name="title"]').value;
                 let detail = document.querySelector('textarea[name="detail"]').value;
-                let image = imageInput.value.trim();
+                let image = imageInput.value.trim() || 'https://static.inven.co.kr/image_2011/hs/dataninfo/card/image/46058.png?v=2';
                 let writer = sessionStorage.getItem('loggedInUser');
                 let date = new Date().toISOString();
 
