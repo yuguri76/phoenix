@@ -225,12 +225,11 @@
                 console.log(commentinput);
 
                 // 고유한 경로(여기서는 댓글을 위한 새 경로)를 생성하기 위해 push() 대신 사용
-                // const commentsRef = ref(db, 'Comments/');
-                // const newCommentRef = push(commentsRef).key; // 새 댓글을 추가하기 위한 참조 생성
+                const commentsRef = ref(db, 'Comments/');
+                const newCommentRef = push(commentsRef).key; // 새 댓글을 추가하기 위한 참조 생성
 
                 try {
-                    const newCommentRef = push(ref(db, 'commentdata')).key;
-                    await set(ref(db, 'commentdata/' + newCommentRef), {
+                    await set(newCommentRef, {
                         comment: commentinput // commentinput 변수의 값을 사용
                         // 필요한 경우 여기에 더 많은 데이터 추가(예: 사용자 ID, 작성 시간 등)
                     });
@@ -248,7 +247,7 @@
             const dbRef = ref(getDatabase());
             const commentsRef = ref(db, 'comments/');
 
-            on('value', commentsRef, (snapshot) => {
+            onValue(commentsRef, (snapshot) => {
                 const comments = snapshot.val();
                 if (comments) {
                     displayComments(comments);
