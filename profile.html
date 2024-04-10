@@ -214,8 +214,6 @@
         const analytics = getAnalytics(app);
         const db = getDatabase();
 
-        sessionStorage.setItem('loggedInUser', 'oplk11'); // 테스트할때만 사용함
-
         // 페이지 로드 시 로그인 상태 확인
         window.onload = function () {
             const loggedInUser = sessionStorage.getItem('loggedInUser');
@@ -353,11 +351,11 @@
         // DB(plans_letter 테이블)에서 계획전시 정보(제목) 가져오기
         const plansRef = ref(db, 'plans_letter/');
         get(plansRef).then((planssnapshot) => {
-            let plansData = planssnapshot.val();
+            const plansData = planssnapshot.val();
             let a = 0;
             plansData.forEach(planData => { //plans_letter 테이블 전체 검색
                 if(planData.writer == id) { // users 테이블의 id와 plans_letter 테이블의 writer가 같으면
-                    let temp_html_titleplan = `<div class="mypostlist-box-list"><button class="mypostlist-box-listbtn" id="plantitlebtn">${planData.title}</button></div>`;
+                    let temp_html_titleplan = `<div class="mypostlist-box-list"><button type="button" class="mypostlist-box-listbtn" id="plantitlebtn" value="${planData.id}">${planData.title}</button></div>`;
                     $('#plantitlelist').append(temp_html_titleplan);
                 } else { // users 테이블의 id와 plans_letter 테이블의 writer가 다르면
                     a++;
@@ -375,11 +373,11 @@
         // DB(party_letter 테이블)에서 파티모집 정보(제목) 가져오기
         const partysRef = ref(db, 'party_letter/');
         get(partysRef).then((partyssnapshot) => {
-            let partysData = partyssnapshot.val();
+            const partysData = partyssnapshot.val();
             let b = 0;
             partysData.forEach(partyData => { //party_letter 테이블 전체 검색
                 if(partyData.writer == id) { // users 테이블의 id와 party_letter 테이블의 writer가 같으면
-                    let temp_html_titleparty = `<div class="mypostlist-box-list"><button class="mypostlist-box-listbtn" id="partytitlebtn">${partyData.title}</button></div>`;
+                    let temp_html_titleparty = `<div class="mypostlist-box-list"><button class="mypostlist-box-listbtn" id="partytitlebtn" value="${partyData.id}">${partyData.title}</button></div>`;
                     $('#partytitlelist').append(temp_html_titleparty);
                 } else { // users 테이블의 id와 party_letter 테이블의 writer가 다르면
                     b++;
@@ -394,9 +392,18 @@
             console.error('Error getting user data: ', error);
         });
 
-        // 계획전시 제목들 버튼을 눌렀을 때 이동
-        $("#plantitlebtn").click(async function () {
-            
+        // 계획전시 제목들 버튼을 눌렀을 때 계획전시 글뷰로 이동
+        $(document).on("click", "#plantitlebtn",async function () { // 동적으로 생성된 버튼 클릭 이벤트 발생
+            const planbtnid = this.value;
+            sessionStorage.setItem('selectedPostId', planbtnid);
+            window.location.href = 'plan_writeview.html';
+        });
+
+        // 파티모집 제목들 버튼을 눌렀을 때 파티모집 글뷰로 이동
+        $(document).on("click", "#partytitlebtn",async function () { // 동적으로 생성된 버튼 클릭 이벤트 발생
+            const partybtnid = this.value;
+            sessionStorage.setItem('selectedPostId', partybtnid);
+            window.location.href = 'party_writeview.html';
         });
     </script>
 </head>
@@ -478,7 +485,9 @@
         <h3 class="textheader" style="background-color: #fbd4aa; font-size: 22px;">내 글 목록</h4>
             <div class="mypostlist-box">
                 <h4 class="textheader">계획전시</h4>
-                <div id="plantitlelist"> <!-- 계획전시 제목 버튼 자리 --> </div>
+                <div id="plantitlelist"> <!-- 계획전시 제목 버튼 자리 --> 
+                    <!-- <div class="mypostlist-box-list"><button type="button" class="mypostlist-box-listbtn" id="plantitlebtn">테스트 제목</button></div> -->
+                </div>
             </div>
             <div class="mypostlist-box">
                 <h4 class="textheader">파티모집</h4>
