@@ -151,9 +151,23 @@
         }
 
         .mypostlist-box-list {
-            border-bottom: solid 2px #333;
-            margin-bottom: 10px;
-            padding: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .mypostlist-box-listbtn {
+            background-color: #FFFDF3;
+            width: 200px;
+            height: 50px;
+            text-align: center;
+            overflow: auto;
+            border: 2px solid #333;
+            font-size: 16px;
+        }
+
+        .mypostlist-box-listbtn:hover {
+            color: #e2821c !important;
+            border: 2px solid #e2821c !important;
         }
 
         .textheader {
@@ -200,6 +214,8 @@
         const analytics = getAnalytics(app);
         const db = getDatabase();
 
+        sessionStorage.setItem('loggedInUser', 'oplk11'); // 테스트할때만 사용함
+
         // 페이지 로드 시 로그인 상태 확인
         window.onload = function () {
             const loggedInUser = sessionStorage.getItem('loggedInUser');
@@ -210,6 +226,13 @@
                 window.location.href = 'main.html';
             }
         }
+
+        // 로그아웃 버튼
+        $("#logoutbtn").click(async function () {
+            sessionStorage.removeItem("loggedInUser");
+            alert('로그아웃 되었습니다.');
+            window.location.href = 'main.html';
+        });
 
         const id = sessionStorage.getItem('loggedInUser');
         const userRef = ref(db, 'users/' + id + '/' + id);
@@ -327,11 +350,53 @@
             }
         });
 
-        // 로그아웃 버튼
-        $("#logoutbtn").click(async function () {
-            sessionStorage.removeItem("loggedInUser");
-            alert('로그아웃 되었습니다.');
-            window.location.href = 'main.html';
+        // DB(plans_letter 테이블)에서 계획전시 정보(제목) 가져오기
+        const plansRef = ref(db, 'plans_letter/');
+        get(plansRef).then((planssnapshot) => {
+            let plansData = planssnapshot.val();
+            let a = 0;
+            plansData.forEach(planData => { //plans_letter 테이블 전체 검색
+                if(planData.writer == id) { // users 테이블의 id와 plans_letter 테이블의 writer가 같으면
+                    let temp_html_titleplan = `<div class="mypostlist-box-list"><button class="mypostlist-box-listbtn" id="plantitlebtn">${planData.title}</button></div>`;
+                    $('#plantitlelist').append(temp_html_titleplan);
+                } else { // users 테이블의 id와 plans_letter 테이블의 writer가 다르면
+                    a++;
+                }
+            });
+            const plansDataNum = plansData.length-2;
+            if(a == plansDataNum) {
+                let temp_html_titleplan_empty = `<div class="mypostlist-box-list">게시된 글이 없습니다.</div>`;
+                $('#plantitlelist').append(temp_html_titleplan_empty);
+            }
+        }).catch((error) => {
+            console.error('Error getting user data: ', error);
+        });
+
+        // DB(party_letter 테이블)에서 파티모집 정보(제목) 가져오기
+        const partysRef = ref(db, 'party_letter/');
+        get(partysRef).then((partyssnapshot) => {
+            let partysData = partyssnapshot.val();
+            let b = 0;
+            partysData.forEach(partyData => { //party_letter 테이블 전체 검색
+                if(partyData.writer == id) { // users 테이블의 id와 party_letter 테이블의 writer가 같으면
+                    let temp_html_titleparty = `<div class="mypostlist-box-list"><button class="mypostlist-box-listbtn" id="partytitlebtn">${partyData.title}</button></div>`;
+                    $('#partytitlelist').append(temp_html_titleparty);
+                } else { // users 테이블의 id와 party_letter 테이블의 writer가 다르면
+                    b++;
+                }
+            });
+            const partysDataNum = partysData.length-2;
+            if(b == partysDataNum) {
+                let temp_html_titleparty_empty = `<div class="mypostlist-box-list">게시된 글이 없습니다.</div>`;
+                $('#partytitlelist').append(temp_html_titleparty_empty);
+            }
+        }).catch((error) => {
+            console.error('Error getting user data: ', error);
+        });
+
+        // 계획전시 제목들 버튼을 눌렀을 때 이동
+        $("#plantitlebtn").click(async function () {
+            
         });
     </script>
 </head>
@@ -413,15 +478,11 @@
         <h3 class="textheader" style="background-color: #fbd4aa; font-size: 22px;">내 글 목록</h4>
             <div class="mypostlist-box">
                 <h4 class="textheader">계획전시</h4>
-                <div class="mypostlist-box-list">계획1</div>
-                <div class="mypostlist-box-list">계획2</div>
-                <div class="mypostlist-box-list">계획3</div>
+                <div id="plantitlelist"> <!-- 계획전시 제목 버튼 자리 --> </div>
             </div>
             <div class="mypostlist-box">
                 <h4 class="textheader">파티모집</h4>
-                <div class="mypostlist-box-list">파티1</div>
-                <div class="mypostlist-box-list">파티2</div>
-                <div class="mypostlist-box-list">파티3</div>
+                <div id="partytitlelist"> <!-- 파티모집 제목 버튼 자리 --> </div>
             </div>
     </div>
 
