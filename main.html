@@ -346,32 +346,30 @@
                     const cardData = childSnapshot.val();
                     const cardHTML = `
                         <div class="col-4">
-                            <div class="card" onclick="savePostId('${childSnapshot.key}'); location.href='${detailPage}?post=${childSnapshot.key}';" style="cursor: pointer;">
+                            <div class="card" onclick="location.href='${detailPage}?post=${childSnapshot.key}'" style="cursor: pointer;">
                                 <img src="${cardData.image || 'path/to/default-image.jpg'}" class="card-img-top" alt="Post Image">
                                     <div class="card-body">
-                                    <h5 class="card-title">${cardData.title}</h5>
-                                    <p class="card-text">${cardData.content}</p>
-                                </div>
+                                        <h5 class="card-title">${cardData.title}</h5>
+                                            <p class="card-text">${cardData.content}</p>
+                                    </div>
                             </div>
                         </div>`;
                     container.innerHTML += cardHTML;
                 });
             }
 
-            function savePostId(postId) {
-                sessionStorage.setItem("selectedPostId", postId);
-            }
-
             document.addEventListener('DOMContentLoaded', () => {
                 loadCards('plans_letter', 'plan-posts', 'plan_writeview.html');
                 loadCards('party_letter', 'party-posts', 'party_writeview.html');
             });
+
         </script>
 
-        <script type="text/javascript">
-            function savePostId(postId) {
-                sessionStorage.setItem("selectedPostId", postId);
-            }
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                checkLoginStatus();
+            });
+
             function checkLoginStatus() {
                 const loggedInUser = sessionStorage.getItem('loggedInUser');
                 if (loggedInUser) {
@@ -383,18 +381,21 @@
                     restrictAccess();
                 }
             }
+
             function restrictAccess() {
                 const fullPath = window.location.pathname;
-                const fileName = fullPath.split('/').pop().split('\\').pop().toLowerCase();
-                const restrictedPages = ['plan_writeview.html', 'party_writeview.html'].map(page => page.toLowerCase());
+                const fileName = fullPath.split('/').pop().toLowerCase();
+                const restrictedPages = ['plan_writeview.html', 'party_writeview.html'];
+
                 if (restrictedPages.includes(fileName)) {
                     alert("로그인 후 이용해주세요.");
-                    window.location.replace('Login.html');
+                    window.location.href = 'Login.html';
                 }
             }
+
             function logout() {
                 sessionStorage.removeItem('loggedInUser');
-                window.location.replace('main.html');
+                window.location.href = 'main.html';
             }
         </script>
 
