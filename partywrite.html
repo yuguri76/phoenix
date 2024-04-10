@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <meta name="viewport" content="width= <device-width>, initial-scale=1.0">
     <title>Document</title>
 
     <script type="module">
@@ -85,7 +85,6 @@
                         document.querySelector('input[name="title"]').value = '';
                         document.querySelector('textarea[name="detail"]').value = '';
                         set(lastpartyidref, newid);
-                        window.location.href = 'writeview.html';
                     }).catch((error) => {
                         console.error('Error saving data:', error);
                     });
@@ -94,7 +93,6 @@
                 });
             });
         });
-
 
     </script>
 
