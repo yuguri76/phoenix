@@ -301,7 +301,7 @@
         });
 
         $("#writebtn").click(async function () {
-            window.location.href = "partywrite.html";
+            window.location.href = "party_write.html";
         });
 
         $("#title").click(async function () {
@@ -375,7 +375,7 @@
         $('.cards').on('click', '.card', function () {
             const postId = $(this).data('id'); // 카드의 data-id 속성에서 글 ID 추출
             sessionStorage.setItem('selectedPostId', postId); // 세션 스토리지에 글 ID 저장
-            window.location.href = 'writeview.html'; // writeview.html로 페이지 전환
+            window.location.href = 'party_writeview.html'; // writeview.html로 페이지 전환
         });
     </script>
 </head>

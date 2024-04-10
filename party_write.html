@@ -59,7 +59,7 @@
                 event.preventDefault();
 
                 let title = document.querySelector('input[name="title"]').value;
-                let detail = document.querySelector('textarea[name="detail"]').value;
+                let content = document.querySelector('textarea[name="content"]').value;
                 let image = imageInput.value.trim() || 'https://static.inven.co.kr/image_2011/hs/dataninfo/card/image/46058.png?v=2';
                 let writer = sessionStorage.getItem('loggedInUser');
                 let date = new Date().toISOString();
@@ -75,16 +75,16 @@
                     set(newpartyref, {
                         id: newid,
                         title: title,
-                        detail: detail,
+                        content: content,
                         image: image,
                         writer: writer,
                         date: date
                     }).then(() => {
                         alert('작성 완료!');
                         document.querySelector('input[name="title"]').value = '';
-                        document.querySelector('textarea[name="detail"]').value = '';
+                        document.querySelector('textarea[name="content"]').value = '';
                         set(lastpartyidref, newid);
-                        window.location.href = 'writeview.html';
+                        window.location.href = 'party_writeview.html';
                     }).catch((error) => {
                         console.error('Error saving data:', error);
                     });
@@ -186,7 +186,7 @@
                 <td class="header">Comment</td>
             </tr>
             <tr>
-                <td><textarea placeholder="내용을 입력하세요" name="detail"></textarea></td>
+                <td><textarea placeholder="내용을 입력하세요" name="content"></textarea></td>
             </tr>
             <tr>
                 <td>
