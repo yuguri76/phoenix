@@ -7,13 +7,20 @@
     <title>Document</title>
 
     <script type="module">
+        document.addEventListener('DOMContentLoaded', function () {
+            var logo = document.getElementById('logo');
+
+            logo.addEventListener('click', function () {
+                window.location.href = 'main.html';
+            });
+        });
+
         // Import the functions you need from the SDKs you need
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js';
         import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js';
         import { getDatabase, ref, child, get, set } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
         // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
             apiKey: "AIzaSyBy-5HWDgxJ6hZ5h30Is7xCAZm3W7HmR78",
             authDomain: "yanado-a4df1.firebaseapp.com",
@@ -25,55 +32,69 @@
             measurementId: "G-YKDTZ5B6Z7"
         };
 
-        // Firebase 초기화
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const db = getDatabase();
 
-        const id = sessionStorage.getItem('loggedInUser'); // 로그인한 아이디 가져오기
+        const id = sessionStorage.getItem('loggedInUser');
         const userRef = ref(db, 'users/' + id);
 
-        // 폼 제출 핸들러
-        document.querySelector('form').addEventListener('submit', function (event) {
-            event.preventDefault(); // 기본 제출 행동 방지
+        document.addEventListener('DOMContentLoaded', () => {
+            const imageInput = document.getElementById('imageInput');
+            const imagePreview = document.getElementById('imagePreview');
 
-            // 입력된 제목과 내용 가져오기
-            let title = document.querySelector('input[name="title"]').value;
-            let detail = document.querySelector('textarea[name="detail"]').value;
-            let image = "";
-            let writer = sessionStorage.getItem('loggedInUser');
-            let date = new Date().toISOString();
+            imageInput.addEventListener('change', () => {
+                let imageUrl = imageInput.value.trim();
 
-            const lastplanidrdf = ref(db, 'lastplanid');
+                if (!imageUrl) {
+                    imageUrl = 'https://static.inven.co.kr/image_2011/hs/dataninfo/card/image/46058.png?v=2';
+                }
 
-            get(lastplanidrdf).then((snapshot) => {
-                let lastid = snapshot.val() || 0;
-                const newid = lastid + 1;
+                imagePreview.src = imageUrl;
+                imagePreview.style.display = 'block';
+            });
 
-                const newplanref = ref(db, `plans_letter/${newid}`);
+            document.querySelector('form').addEventListener('submit', function (event) {
+                event.preventDefault();
 
-                // Firebase Realtime Database에 데이터 저장
-                set(newplanref, {
-                    id: newid, //0부터 생성된 순서(글의 id)
-                    title: title,
-                    detail: detail,
-                    image: image,
-                    writer: writer,
-                    date: date
-                }).then(() => {
-                    alert('작성 완료!'); // 성공 메시지 표시
-                    // 입력 필드 초기화
-                    document.querySelector('input[name="title"]').value = '';
-                    document.querySelector('textarea[name="detail"]').value = '';
-                    set(lastplanidrdf, newid);
-                    window.location.href = 'writeview.html';
+                let title = document.querySelector('input[name="title"]').value;
+                let content = document.querySelector('textarea[name="content"]').value;
+                let image = imageInput.value.trim() || 'https://static.inven.co.kr/image_2011/hs/dataninfo/card/image/46058.png?v=2';
+                let writer = sessionStorage.getItem('loggedInUser');
+                let date = new Date().toISOString();
+
+                const lastpartyidref = ref(db, 'lastpartyid');
+
+                get(lastpartyidref).then((snapshot) => {
+                    let lastid = snapshot.val() || 0;
+                    const newid = lastid + 1;
+
+                    const newpartyref = ref(db, `party_letter/${newid}`);
+
+                    set(newpartyref, {
+                        id: newid,
+                        title: title,
+                        content: content,
+                        image: image,
+                        writer: writer,
+                        date: date
+                    }).then(() => {
+                        alert('작성 완료!');
+                        document.querySelector('input[name="title"]').value = '';
+                        document.querySelector('textarea[name="content"]').value = '';
+                        set(lastpartyidref, newid);
+                        window.location.href = 'party_writeview.html';
+                    }).catch((error) => {
+                        console.error('Error saving data:', error);
+                    });
                 }).catch((error) => {
-                    console.error('데이터 저장 중 오류 발생:', error); // 오류 메시지 표시
+                    console.error('Error reading last post id:', error);
                 });
-            })
-        }).catch((error) => {
-            console.error('마지막 글 id 읽기 실패:', error);
+            });
         });
+
+
     </script>
 
     <style>
@@ -152,7 +173,7 @@
         <table>
             <tr>
                 <td>
-                    <h2>계획전시</h2>
+                    <h2>파티모집</h2>
                 </td>
             </tr>
             <tr>
@@ -165,7 +186,13 @@
                 <td class="header">Comment</td>
             </tr>
             <tr>
-                <td><textarea placeholder="내용을 입력하세요" name="detail"></textarea></td>
+                <td><textarea placeholder="내용을 입력하세요" name="content"></textarea></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" id="imageInput" placeholder="Image URL">
+                    <img id="imagePreview" src="" style="display: none;">
+                </td>
             </tr>
             <tr>
                 <td><input type="submit" value="등록"></td>

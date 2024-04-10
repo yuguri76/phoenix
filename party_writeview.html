@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width= device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 부트스트랩 가져오기 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- JQuery 가져오기 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+        @font-face {
+            font-family: 'iceJaram-Rg';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/iceJaram-Rg.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'KCCChassam';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/KCCChassam.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SBAggroB';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'SBAggroB', sans-serif;
+            background-color: #FFFDF3;
+            color: #333;
+            font-weight: 700;
+        }
+
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px 0;
+        }
+
+        #containerwrite {
+            position: absolute;
+            /* 글상자 */
+            top: 65%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: 70%;
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            border-color: #e2821c;
+            box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        #logo {
+            font-weight: bold;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            text-align: left;
+            font-size: 50px;
+            color: #79B96E;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+
+        #subtext {
+            font-size: 20px;
+            font-weight: normal;
+        }
+
+        #logo:hover {
+            transform: translateY(-2px);
+        }
+
+        #comments-container {
+            margin-bottom: 20px;
+        }
+
+        .comment {
+            margin-bottom: 10px;
+        }
+
+        #commentinput {
+            width: 100%;
+            height: 60px;
+            margin-bottom: 5px;
+        }
+
+        #comment-form button {
+            cursor: pointer;
+
+        }
+
+        .commentbox {
+            /* 댓글 작성칸 */
+            position: absolute;
+            top: 210%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: 70%;
+            padding: 30px;
+            text-align: left;
+        }
+
+        .nav-link {
+            color: #555 !important;
+            transition: color 0.3s ease;
+            font-family: 'iceJaram-Rg', sans-serif;
+            font-size: 30px;
+        }
+
+        .nav-link:hover {
+            color: #e2821c !important;
+        }
+
+        #commentsList li {
+            border-bottom: 1px solid #ccc;
+            padding: 15px;
+            list-style-type: none;
+        }
+
+        #commentsList {
+            /* 댓글 목록칸 */
+            padding: 0;
+            position: absolute;
+            top: 138%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: 70%;
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            border-color: #e2821c;
+            box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            overflow: auto
+        }
+
+        /* 게시판 컨테이너의 하단 마진을 조정하여 "Meet the Team"과의 간격 확대 */
+        .container.mt-4 {
+            margin-bottom: 50px;
+            /* 게시판 섹션의 하단 간격 조정 */
+        }
+    </style>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js';
+        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js';
+        import { getDatabase, ref, child, get, set } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+
+
+        // Firebase 구성
+        const firebaseConfig = {
+            apiKey: "AIzaSyBy-5HWDgxJ6hZ5h30Is7xCAZm3W7HmR78",
+            authDomain: "yanado-a4df1.firebaseapp.com",
+            databaseURL: "https://yanado-a4df1-default-rtdb.firebaseio.com",
+            projectId: "yanado-a4df1",
+            storageBucket: "yanado-a4df1.appspot.com",
+            messagingSenderId: "1082911983171",
+            appId: "1:1082911983171:web:f8843a3015379b859236f6",
+            measurementId: "G-YKDTZ5B6Z7"
+        };
+
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getDatabase();
+
+        const letter_id = 1;
+        const letterRef = ref(db, 'party_letter/' + letter_id);
+
+
+        get(letterRef).then((lettersnapshot) => {
+            if (lettersnapshot.exists()) {
+                const letterData = lettersnapshot.val();
+
+            }
+        }).catch((error) => {
+            console.error('Error getting user data: ', error);
+        });
+        // const id = document.getElementById("id").value;
+
+        // 댓글목록 관련
+
+        function displayComments(comments) {
+            const commentsList = document.getElementById("commentsList");
+            commentsList.innerHTML = ''; // 기존 댓글 목록 초기화
+
+            Object.keys(comments).forEach((key) => {
+                const commentItem = comments[key];
+                const li = document.createElement("li");
+                li.innerText = commentItem.comment; // 여기에 댓글 텍스트를 추가
+                // 필요하다면 여기에 작성자 이름 등의 추가 정보를 포함할 수 있음
+                commentsList.appendChild(li);
+            });
+        }
+
+        $(document).ready(function () {
+            $("#commentbtn").click(async function (event) {
+                event.preventDefault(); // 폼 제출 방지
+                const commentinput = document.getElementById("commentinput").value; // 댓글 내용
+                console.log(commentinput);
+
+                // 고유한 경로(여기서는 댓글을 위한 새 경로)를 생성하기 위해 push() 대신 사용
+                // const commentsRef = ref(db, 'Comments/');
+                // const newCommentRef = push(commentsRef).key; // 새 댓글을 추가하기 위한 참조 생성
+
+                try {
+                    const newCommentRef = push(ref(db, 'commentdata')).key;
+                    await set(ref(db, 'commentdata/' + newCommentRef), {
+                        comment: commentinput // commentinput 변수의 값을 사용
+                        // 필요한 경우 여기에 더 많은 데이터 추가(예: 사용자 ID, 작성 시간 등)
+                    });
+                    alert("댓글이 성공적으로 작성되었습니다.");
+                    document.getElementById("commentinput").value = ''; // 입력 필드 초기화
+                } catch (error) {
+                    console.error("댓글 작성 오류:", error);
+                    alert("댓글 작성에 실패했습니다.");
+                }
+            });
+            loadComments(); // 댓글 목록 로딩
+        });
+
+        function loadComments() {
+            const dbRef = ref(getDatabase());
+            const commentsRef = ref(db, 'comments/');
+
+            on('value', commentsRef, (snapshot) => {
+                const comments = snapshot.val();
+                if (comments) {
+                    displayComments(comments);
+                } else {
+                    // 댓글이 없는 경우
+                    console.log("No comments available.");
+                }
+            });
+        }
+        // 댓글목록 관련 끝
+
+        window.onload = checkLoginStatus;
+
+        $(document).ready(function () {
+            // 세션 스토리지에서 현재 로그인한 사용자의 이름을 가져옵니다.
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                // 로그인한 사용자가 있으면 댓글 입력란에 이름을 미리 표시합니다.
+                $("#commentinput").attr("placeholder", `${loggedInUser} : 댓글 삭제나 수정이 불가하니 신중히 입력하세요`);
+            }
+
+            $("#commentbtn").click(function () {
+                const commentInput = $("#commentinput").val().trim(); // 댓글 입력값 가져오기 및 공백 제거
+
+                if (!commentInput) {
+                    alert("댓글을 입력하세요."); // 댓글 입력값이 없는 경우 알림
+                    return;
+                }
+
+                const commentsList = $("#commentsList"); // 댓글 목록 컨테이너 선택
+                const newComment = $("<li>").text(loggedInUser ? `${loggedInUser} : ${commentInput}` : commentInput); // 새 댓글 엘리먼트 생성
+                commentsList.append(newComment); // 새 댓글을 댓글 목록에 추가
+
+                $("#commentinput").val(''); // 입력 필드 초기화
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="header-before-login" style="display: none;">
+        <!--로그인 전 헤더-->
+        <header class="p-3 text-bg-dark">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <a href="main.html" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <img src="https://github.com/yuguri76/phoenix/blob/gyul/images/%EC%95%BC%EB%82%98%EB%91%90%EB%A1%9C%EA%B3%A0%EC%B5%9C%EC%A2%85%EB%B3%B82.png?raw=true"
+                            alt="야나두 로고" style="height: 230px;">
+                    </a>
+
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획전시</a></li>
+                        <li><a href="party.html" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
+                    </ul>
+
+                    <div class="text-end">
+                        <link rel="stylesheet" href="path/to/your/stylesheet.css">
+                        <button type="button" class="btn" onclick="location.href='Login.html'"
+                            style="color: white; background-color: #fc7600; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; border-radius: 10px; opacity: 0.9; padding: 10px 15px; text-align: center;">로그인</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <div id="header-after-login" style="display: none;">
+        <!--로그인 후 헤더-->
+        <header class="p-3 text-bg-dark">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <a href="main.html" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <img src="https://github.com/yuguri76/phoenix/blob/gyul/images/%EC%95%BC%EB%82%98%EB%91%90%EB%A1%9C%EA%B3%A0%EC%B5%9C%EC%A2%85%EB%B3%B82.png?raw=true"
+                            alt="야나두 로고" style="height: 230px;">
+                    </a>
+
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획전시</a></li>
+                        <li><a href="party.html" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
+                    </ul>
+
+                    <div class="text-end" style="display: flex; justify-content: end; gap: 20px;">
+                        <button type="button" class="btn" onclick="location.href='profile.html'"
+                            style="color: #fc7600; background-color: white; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; opacity: 0.9;border: 2px solid #fc7600; border-radius: 10px;">내
+                            프로필 보기</button>
+                        <button type="button" class="btn" onclick="logout()"
+                            style="color: white; background-color: #fc7600; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; border-radius: 10px; opacity: 0.9; color:white">로그아웃</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <div class="containerwrite" id="containerwrite">
+        <!-- 게시글 내용 -->
+        <h1>게시글 제목</h1>
+        <p>게시글 내용 </p>
+    </div>
+
+    <!-- 댓글 작성 양식 -->
+    <div class="commentbox">
+        <form id="comment-form">
+            <textarea id="commentinput"
+                style="font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold;"
+                placeholder="댓글 삭제나 수정이 불가하니 신중히 입력하세요"></textarea>
+            <button id="commentbtn" type="button" class="btn"
+                style="color : white ; background-color : #fc7600; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold;">댓글
+                작성</button>
+
+        </form>
+    </div>
+
+    <div class="commentsList" id="commentsSection"
+        style="font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold;">
+        <ul id="commentsList"></ul>
+    </div>
+
+    <script>
+        function checkLoginStatus() {
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            if (loggedInUser !== null) {
+                document.getElementById("header-after-login").style.display = "block";
+                document.getElementById("header-before-login").style.display = "none";
+            } else {
+                document.getElementById("header-before-login").style.display = "block";
+                document.getElementById("header-after-login").style.display = "none";
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem("loggedInUser");
+            checkLoginStatus(); // 로그아웃 후 즉시 로그인 상태 확인
+        }
+    </script>
+
+</body>
+
+</html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>야나두 프로필</title>
+    <title>야나두-프로필</title>
 
     <!-- 부트스트랩 가져오기 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -13,45 +13,69 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
-
-        * {
-            font-family: "Nanum Gothic", sans-serif;
-            font-weight: 400;
+        @font-face {
+            font-family: 'iceJaram-Rg';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/iceJaram-Rg.woff2') format('woff2');
+            font-weight: normal;
             font-style: normal;
-            color: #020715;
+        }
+
+        @font-face {
+            font-family: 'KCCChassam';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/KCCChassam.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SBAggroB';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
         }
 
         body {
-            background-color: #FBFBFA;
+            font-family: 'SBAggroB', sans-serif;
+            background-color: #FFFDF3;
+            color: #333;
+            font-weight: 700;
         }
 
-        .p-3 {
-            background-color: #7582F4;
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px 0;
         }
 
-        /* 야나두 로고 스타일 */
-        #logo {
-            font-weight: bold;
-            cursor: pointer;
-            background-color: transparent;
+        .nav-link {
+            color: #555 !important;
+            transition: color 0.3s ease;
+            font-family: 'iceJaram-Rg', sans-serif;
+            font-size: 30px;
+        }
+
+        .nav-link:hover {
+            color: #e2821c !important;
+        }
+
+        .btn {
+            font-weight: 500;
+        }
+
+        .banner-image {
+            width: 100%;
+            height: 450px;
+            background: url('https://image.zdnet.co.kr/2020/12/29/865ab83c58f41968b5b066453c03388b.png') no-repeat center center;
+            background-size: cover;
             border: none;
-            text-align: left;
-            font-size: 35px;
-            color: #79B96E;
-            z-index: 1;
-            margin-bottom: 0px;
-            margin-right: 20px;
+            padding: 50px;
         }
 
-        #subtext {
-            font-size: 17px;
-            font-weight: normal;
-            color: #79B96E;
-        }
-
-        #logo:hover {
-            transform: translateY(-2px);
+        .banner-text {
+            color: #333;
+            padding: 50px 10%;
+            text-align: center;
+            font-family: 'KCCChassam', sans-serif;
         }
 
         .myimfor {
@@ -60,7 +84,7 @@
         }
 
         .myimfor-box {
-            background-color: #79B96E;
+            background-color: #fbd4aa;
             width: 300px;
             height: 320px;
             margin: 30px 50px 30px 120px;
@@ -91,7 +115,7 @@
             margin-left: auto;
             margin-bottom: 30px;
             border-radius: 10px;
-            border: 2px solid #79B96E;
+            border: 2px solid #fbd4aa;
             overflow: auto;
         }
 
@@ -103,7 +127,7 @@
             padding: 20px;
             display: none;
             border-radius: 10px;
-            border: 2px solid #79B96E;
+            border: 2px solid #fbd4aa;
         }
 
         .mypostlist {
@@ -112,11 +136,11 @@
             margin: auto;
             margin-bottom: 50px;
             border-radius: 10px;
-            border: 2px solid #79B96E;
+            border: 2px solid #fbd4aa;
         }
 
         .mypostlist-box {
-            background-color: #79B96E;
+            background-color: #fbd4aa;
             width: 300px;
             height: 320px;
             margin: 20px 50px auto 120px;
@@ -127,30 +151,50 @@
         }
 
         .mypostlist-box-list {
-            border-bottom: solid 2px #020715;
-            margin-bottom: 10px;
-            padding: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .mypostlist-box-listbtn {
+            background-color: #FFFDF3;
+            width: 200px;
+            height: 50px;
+            text-align: center;
+            overflow: auto;
+            border: 2px solid #333;
+            font-size: 16px;
+        }
+
+        .mypostlist-box-listbtn:hover {
+            color: #e2821c !important;
+            border: 2px solid #e2821c !important;
         }
 
         .textheader {
             text-align: center;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
-            background-color: #FBFBFA;
+            background-color: #FFFDF3;
             border-radius: 2px;
         }
 
         .changebtn {
             background-color: #F7819F;
-            border-radius: 2px;
+            border-radius: 10px;
             float: right;
-            font-size: 13px;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .linediv {
+            background-color: #fbd4aa;
+            height: 20px;
         }
     </style>
 
     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js';
-        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js';
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
         import { getDatabase, ref, child, get, set, update } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
         // Firebase 구성
@@ -170,7 +214,25 @@
         const analytics = getAnalytics(app);
         const db = getDatabase();
 
-        const id = 'oplk123'; // 일단 직접 lol 선언하고, 후에 메인페이지에서 받아오기
+        // 페이지 로드 시 로그인 상태 확인
+        window.onload = function () {
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            if (loggedInUser !== null) {
+                document.getElementById("header-after-login").style.display = 'block';
+            } else {
+                alert('로그인 되지 않았습니다.');
+                window.location.href = 'main.html';
+            }
+        }
+
+        // 로그아웃 버튼
+        $("#logoutbtn").click(async function () {
+            sessionStorage.removeItem("loggedInUser");
+            alert('로그아웃 되었습니다.');
+            window.location.href = 'main.html';
+        });
+
+        const id = sessionStorage.getItem('loggedInUser');
         const userRef = ref(db, 'users/' + id + '/' + id);
 
         // DB(users 테이블)에서 프로필 정보(이름, 나이, 성별, 지역) 가져오기
@@ -285,34 +347,100 @@
                 $('#introduce-change').toggle();
             }
         });
+
+        // DB(plans_letter 테이블)에서 계획전시 정보(제목) 가져오기
+        const plansRef = ref(db, 'plans_letter/');
+        get(plansRef).then((planssnapshot) => {
+            const plansData = planssnapshot.val();
+            let a = 0;
+            plansData.forEach(planData => { //plans_letter 테이블 전체 검색
+                if(planData.writer == id) { // users 테이블의 id와 plans_letter 테이블의 writer가 같으면
+                    let temp_html_titleplan = `<div class="mypostlist-box-list"><button type="button" class="mypostlist-box-listbtn" id="plantitlebtn" value="${planData.id}">${planData.title}</button></div>`;
+                    $('#plantitlelist').append(temp_html_titleplan);
+                } else { // users 테이블의 id와 plans_letter 테이블의 writer가 다르면
+                    a++;
+                }
+            });
+            const plansDataNum = plansData.length-2;
+            if(a == plansDataNum) {
+                let temp_html_titleplan_empty = `<div class="mypostlist-box-list">게시된 글이 없습니다.</div>`;
+                $('#plantitlelist').append(temp_html_titleplan_empty);
+            }
+        }).catch((error) => {
+            console.error('Error getting user data: ', error);
+        });
+
+        // DB(party_letter 테이블)에서 파티모집 정보(제목) 가져오기
+        const partysRef = ref(db, 'party_letter/');
+        get(partysRef).then((partyssnapshot) => {
+            const partysData = partyssnapshot.val();
+            let b = 0;
+            partysData.forEach(partyData => { //party_letter 테이블 전체 검색
+                if(partyData.writer == id) { // users 테이블의 id와 party_letter 테이블의 writer가 같으면
+                    let temp_html_titleparty = `<div class="mypostlist-box-list"><button class="mypostlist-box-listbtn" id="partytitlebtn" value="${partyData.id}">${partyData.title}</button></div>`;
+                    $('#partytitlelist').append(temp_html_titleparty);
+                } else { // users 테이블의 id와 party_letter 테이블의 writer가 다르면
+                    b++;
+                }
+            });
+            const partysDataNum = partysData.length-2;
+            if(b == partysDataNum) {
+                let temp_html_titleparty_empty = `<div class="mypostlist-box-list">게시된 글이 없습니다.</div>`;
+                $('#partytitlelist').append(temp_html_titleparty_empty);
+            }
+        }).catch((error) => {
+            console.error('Error getting user data: ', error);
+        });
+
+        // 계획전시 제목들 버튼을 눌렀을 때 계획전시 글뷰로 이동
+        $(document).on("click", "#plantitlebtn",async function () { // 동적으로 생성된 버튼 클릭 이벤트 발생
+            const planbtnid = this.value;
+            sessionStorage.setItem('selectedPostId', planbtnid);
+            window.location.href = 'plan_writeview.html';
+        });
+
+        // 파티모집 제목들 버튼을 눌렀을 때 파티모집 글뷰로 이동
+        $(document).on("click", "#partytitlebtn",async function () { // 동적으로 생성된 버튼 클릭 이벤트 발생
+            const partybtnid = this.value;
+            sessionStorage.setItem('selectedPostId', partybtnid);
+            window.location.href = 'party_writeview.html';
+        });
     </script>
 </head>
 
 <body>
-    <header class="p-3 text-bg-dark"> <!-- 헤더 로그인 후 -->
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href="main.html" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                    <div id="logo">야나두 <span id="subtext">너도 할 수 있어</span></div>
-                </a>
+    <div id="header-after-login" style="display: none;">
+        <!--로그인 후 헤더-->
+        <header class="p-3 text-bg-dark">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <a href="main.html" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <img src="https://github.com/yuguri76/phoenix/blob/gyul/images/%EC%95%BC%EB%82%98%EB%91%90%EB%A1%9C%EA%B3%A0%EC%B5%9C%EC%A2%85%EB%B3%B82.png?raw=true"
+                            alt="야나두 로고" style="height: 230px;">
+                    </a>
 
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="#" class="nav-link px-2" style="color: #020715;">계획전시</a></li>
-                    <li><a href="#" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
-                </ul>
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획전시</a></li>
+                        <li><a href="party.html" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
+                    </ul>
 
-                <div class="text-end">
-                    <button type="button" class="btn" style="color: #020715; background-color: #79B96E;"
-                        onClick="location.href='profile.html'">내 프로필 보기</button>
-                    <button type="button" class="btn" style="color: #020715; background-color: #F7819F;">로그아웃</button>
+                    <div class="text-end" style="display: flex; justify-content: end; gap: 20px;">
+                        <button type="button" class="btn" onclick="location.href='profile.html'"
+                            style="color: #fc7600; background-color: white; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; opacity: 0.9;border: 2px solid #fc7600; border-radius: 10px;">내
+                            프로필 보기</button>
+                        <button type="button" class="btn" id="logoutbtn"
+                            style="color: white; background-color: #fc7600; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; border-radius: 10px; opacity: 0.9; color:white">로그아웃</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
-
-    <div>
-        배너
+        </header>
     </div>
+
+    <div class="banner-image"> <!-- 배너 이미지 -->
+        <h2 class="banner-text">"이 순간을 소중히"</h2>
+    </div>
+
+    <div class="linediv"></div>
 
     <div class="myimfor">
         <div class="myimfor-box"> <!-- 프로필 사진 -->
@@ -337,13 +465,13 @@
     </div>
 
     <div class="myintroduce" style="clear: both;"> <!-- 소개글 -->
-        <h4 class="textheader" style="background-color: #79B96E;">자기소개
+        <h4 class="textheader" style="background-color: #fbd4aa;">자기소개
             <button class="changebtn" id="textchangebtn">수정 도구 펼치기/접기</button>
         </h4>
         <div id="introduce"><span style="color: gray;">자기소개 수정 도구를 펼쳐 자기소개를 입력해주세요.</span></div>
     </div>
     <div class="myintroduce-change" id="introduce-change"> <!-- 소개 수정 도구 -->
-        <span class="input-group-text" style="background-color: #79B96E;">아래 칸에 수정할 내용을 입력하세요.</span>
+        <span class="input-group-text" style="background-color: #fbd4aa;">아래 칸에 수정할 내용을 입력하세요.</span>
         <form id="inputform">
             <textarea class="form-control" id="introduce-input" aria-label="With textarea" style="height: 120px;"
                 placeholder="내용을 입력하세요"></textarea>
@@ -354,18 +482,16 @@
     </div>
 
     <div class="mypostlist"> <!-- 내글 목록 -->
-        <h3 class="textheader" style="background-color: #79B96E; font-size: 22px;">내 글 목록</h4>
+        <h3 class="textheader" style="background-color: #fbd4aa; font-size: 22px;">내 글 목록</h4>
             <div class="mypostlist-box">
                 <h4 class="textheader">계획전시</h4>
-                <div class="mypostlist-box-list">계획1</div>
-                <div class="mypostlist-box-list">계획2</div>
-                <div class="mypostlist-box-list">계획3</div>
+                <div id="plantitlelist"> <!-- 계획전시 제목 버튼 자리 --> 
+                    <!-- <div class="mypostlist-box-list"><button type="button" class="mypostlist-box-listbtn" id="plantitlebtn">테스트 제목</button></div> -->
+                </div>
             </div>
             <div class="mypostlist-box">
                 <h4 class="textheader">파티모집</h4>
-                <div class="mypostlist-box-list">파티1</div>
-                <div class="mypostlist-box-list">파티2</div>
-                <div class="mypostlist-box-list">파티3</div>
+                <div id="partytitlelist"> <!-- 파티모집 제목 버튼 자리 --> </div>
             </div>
     </div>
 
