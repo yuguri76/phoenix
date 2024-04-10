@@ -378,24 +378,6 @@
                 } else {
                     document.getElementById("header-before-login").style.display = "block";
                     document.getElementById("header-after-login").style.display = "none";
-                    restrictAccess();
-                }
-            }
-
-            function restrictAccess() {
-                const fullPath = window.location.href;  // Use `href` instead of `pathname` to include the full URI
-                const fileName = fullPath.split('/').pop().split('?')[0].toLowerCase();  // This ensures query strings do not affect the file name extraction
-                const restrictedPages = ['plan_writeview.html', 'party_writeview.html'];
-
-
-                console.log("Full Path:", fullPath); // 전체 파일 경로 출력
-                console.log("File Name:", fileName); // 추출된 파일 이름 출력
-                console.log("Restricted Pages:", restrictedPages); // 제한된 페이지 목록 출력
-
-
-                if (restrictedPages.includes(fileName)) {
-                    alert("로그인 후 이용해주세요.");
-                    window.location.href = 'Login.html';
                 }
             }
 
