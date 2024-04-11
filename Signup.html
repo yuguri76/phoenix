@@ -20,6 +20,7 @@
             background-color: #FFFDF3;
         }
 
+
         #container {
             position: absolute;
             top: 50%;
@@ -66,7 +67,8 @@
             border: 1px solid #e2821c;
             border-radius: 15px;
             padding: 20px;
-            margin: 20px 200px 0 200px;
+            margin-top: 20px;
+            width: 60%;
         }
 
         .form-item {
@@ -192,6 +194,15 @@
             padding: 10px 20px;
             font-size: 15px;
             border-radius: 20px;
+        }
+
+        .custom1 {
+            width: 100%;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-items: center;
+            align-items: center;
         }
     </style>
 
@@ -344,44 +355,46 @@
             <img src="https://github.com/yuguri76/phoenix/blob/gyul/images/%EC%95%BC%EB%82%98%EB%91%90%EB%A1%9C%EA%B3%A0%EC%B5%9C%EC%A2%85%EB%B3%B82.png?raw=true"
                 alt="야나두 로고" style="height: 230px;">
         </a>
-        <h1 class="soakadldi">회원가입</h1>
-        <div class="registration-form">
-            <div class="form-item">
-                <label for="id">아이디:</label>
-                <input type="text" id="id" name="id">
-                <button class="Ekreo">중복확인</button>
+        <div class="custom1">
+            <h1 class="soakadldi">회원가입</h1>
+            <div class="registration-form">
+                <div class="form-item">
+                    <label for="id">아이디:</label>
+                    <input type="text" id="id" name="id">
+                    <button class="Ekreo">중복확인</button>
+                </div>
+                <div class="form-item">
+                    <label for="password">비밀번호:</label>
+                    <input type="password" id="password" name="password">
+                </div>
+                <div class="form-item">
+                    <label for="confirm_password">비밀번호 확인:</label>
+                    <input type="password" id="confirm_password" name="confirm_password">
+                </div>
+                <div class="information-rectangle">
+                    <p>이름 본명으로 쓰세요★</p>
+                    <p>개인정보 입력 후 수정 불가합니다.</p>
+                    <p>아이디, 비밀번호는 숫자 및 알파벳으로만 작성가능합니다.</p>
+                </div>
+                <div class="form-item">
+                    <label for="name">이름:</label>
+                    <input type="text" id="name" name="name">
+                </div>
+                <div class="form-item">
+                    <label for="age">나이:</label>
+                    <input type="text" id="age" name="age">
+                </div>
+                <div class="form-item">
+                    <label for="gender">성별:</label>
+                    <input type="text" id="gender" name="gender">
+                </div>
+                <div class="form-item">
+                    <label for="region">지역:</label>
+                    <input type="text" id="region" name="region">
+                </div>
             </div>
-            <div class="form-item">
-                <label for="password">비밀번호:</label>
-                <input type="password" id="password" name="password">
-            </div>
-            <div class="form-item">
-                <label for="confirm_password">비밀번호 확인:</label>
-                <input type="password" id="confirm_password" name="confirm_password">
-            </div>
-            <div class="information-rectangle">
-                <p>이름 본명으로 쓰세요★</p>
-                <p>개인정보 입력 후 수정 불가합니다.</p>
-                <p>아이디, 비밀번호는 숫자 및 알파벳으로만 작성가능합니다.</p>
-            </div>
-            <div class="form-item">
-                <label for="name">이름:</label>
-                <input type="text" id="name" name="name">
-            </div>
-            <div class="form-item">
-                <label for="age">나이:</label>
-                <input type="text" id="age" name="age">
-            </div>
-            <div class="form-item">
-                <label for="gender">성별:</label>
-                <input type="text" id="gender" name="gender">
-            </div>
-            <div class="form-item">
-                <label for="region">지역:</label>
-                <input type="text" id="region" name="region">
-            </div>
+            <button class="complete-button" id="complete-button">완료</button>
         </div>
-        <button class="complete-button" id="complete-button">완료</button>
     </div>
 </body>
 </body>
