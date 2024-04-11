@@ -361,8 +361,14 @@
 
                     // 댓글 항목을 생성하여 댓글 목록에 추가
                     const li = document.createElement("li");
-                    li.innerHTML = `<span class="username">${username} : ${comment}</span>  <span class="date">${date}</span>`;
+                    li.innerHTML = `<span type="button" class="username">${username} : ${comment}</span>  <span class="date">${date}</span>`;
                     commentsList.appendChild(li);
+
+                    // 댓글에 클릭 이벤트 리스너 추가
+                    li.addEventListener('click', function () {
+                        const username = commentData.username;
+                        redirectToUserProfile(username);
+                    });
                 }
             }
         }
@@ -383,6 +389,22 @@
             return `${year}.${month}.${day} ${hours}:${minutes}`;
         }
 
+        // 댓글 클릭테스트
+        function redirectToUserProfile(username) {
+            // 클릭된 댓글의 사용자 이름(username)을 사용하여 해당 사용자의 프로필 페이지로 이동
+            // 여기서는 간단히 사용자 이름을 쿼리 매개변수로 전달하여 프로필 페이지로 이동하는 것으로 가정합니다.
+            localStorage.setItem('profiledID',username);
+            const url = "popup.html";
+            const name = 'profilePopup';
+            const width = 1000;
+            const height = 500;
+            const left = (window.screen.width / 2) - (width / 2);
+            const top = (window.screen.height / 2) - (height / 2);
+            const options = `width=${width},height=${height},left=${left},top=${top}`;
+            window.open(url, name, options);
+            
+        }
+        // 댓글 클릭테스트
 
 
 
