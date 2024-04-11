@@ -49,7 +49,7 @@
                 let imageUrl = imageInput.value.trim();
                 console.log(imageUrl);
                 if (!imageUrl) {
-                    imageUrl = 'https://static.inven.co.kr/image_2011/hs/dataninfo/card/image/46058.png?v=2';
+                    imageUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS55w7KmLlOQadKSA5ylD6IRAwKkIGXlrgIXQ&s';
                 }
 
                 imagePreview.src = imageUrl;
@@ -61,7 +61,7 @@
 
                 let title = document.querySelector('input[name="title"]').value;
                 let content = document.querySelector('textarea[name="content"]').value;
-                let image = imageInput.value.trim() || 'https://static.inven.co.kr/image_2011/hs/dataninfo/card/image/46058.png?v=2';
+                let image = imageInput.value.trim() || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS55w7KmLlOQadKSA5ylD6IRAwKkIGXlrgIXQ&s';
                 let writer = sessionStorage.getItem('loggedInUser');
                 let date = new Date().toISOString();
 

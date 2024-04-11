@@ -120,6 +120,7 @@
         .team-introduction .col-2 {
             flex: 0 0 auto;
             width: 20%;
+            margin-bottom: 100px;
             /* 5개 카드이므로 전체 너비의 20%를 차지하도록 설정 */
         }
 
@@ -159,6 +160,52 @@
         .team-introduction img {
             border-radius: 0;
             /* 이미지의 모서리를 네모나게 만듭니다. */
+        }
+
+        .team-introduction .card-img-top {
+            height: 300px;
+            /* 이미지 높이를 고정합니다 */
+            width: 100%;
+            /* 이미지 너비를 카드 너비에 맞게 조정합니다 */
+            object-fit: cover;
+            /* 이미지 비율을 유지하면서 해당 영역을 꽉 채웁니다 */
+        }
+
+        .team-introduction .card {
+            display: flex;
+            flex-direction: column;
+            /* 카드를 수직 방향으로 정렬합니다 */
+            justify-content: space-between;
+            /* 상하 내용을 균등하게 배분합니다 */
+            height: 400px;
+            /* 카드 높이를 고정합니다 */
+        }
+
+        .team-introduction .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .team-introduction .card-title,
+        .team-introduction .card-text {
+            display: block;
+            text-overflow: ellipsis;
+            /* 긴 텍스트를 '...'로 축약합니다 */
+            overflow: hidden;
+            white-space: nowrap;
+            /* 텍스트를 한 줄로 표시합니다 */
+        }
+
+        .team-introduction .card-text {
+            max-height: 3.6em;
+            /* 텍스트 최대 높이를 제한 (여러 줄 가능) */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            /* 최대 2줄까지 표시 */
+            -webkit-box-orient: vertical;
         }
 
         .board-title {
@@ -305,7 +352,7 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js';
         import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js';
         import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js';
-        import { getDatabase, ref, child, get, set, query, orderByKey, limitToLast } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js';
+        import { getDatabase, ref, child, get, set, query, orderByKey, limitToLast, limitToFirst } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js';
 
 
         // Firebase 구성
@@ -334,21 +381,30 @@
         async function loadCards(boardName, containerId, detailPage) {
             const container = document.getElementById(containerId);
             const dbRef = ref(db, boardName);
-            const snapshot = await get(query(dbRef, orderByKey(), limitToLast(6)));
+            const snapshot = await get(query(dbRef, orderByKey('timestamp'), limitToLast(6)));
 
+            const posts = [];
             snapshot.forEach((childSnapshot) => {
+                posts.push(childSnapshot);
+            });
+
+            posts.reverse();
+
+            container.innerHTML = '';
+
+            posts.forEach((childSnapshot) => {
                 const cardData = childSnapshot.val();
                 const cardHTML = `
-                <div class="col-4">
-                    <div class="card" onclick="selectPostId('${childSnapshot.key}', '${detailPage}')" style="cursor: pointer;">
-                        <img src="${cardData.image || 'path/to/default-image.jpg'}" class="card-img-top" alt="Post Image">
-                        <div class="card-body">
-                            <h5 class="card-title">${cardData.title}</h5>
-                            <p class="card-text">${cardData.content}</p>
-                        </div>
-                    </div>
-                </div>`;
-                container.innerHTML += cardHTML;
+        <div class="col-4">
+            <div class="card" onclick="selectPostId('${childSnapshot.key}', '${detailPage}')" style="cursor: pointer;">
+                <img src="${cardData.image || 'path/to/default-image.jpg'}" class="card-img-top" alt="Post Image">
+                <div class="card-body">
+                    <h5 class="card-title">${cardData.title}</h5>
+                    <p class="card-text">${cardData.content}</p>
+                </div>
+            </div>
+        </div>`;
+                container.innerHTML += cardHTML; // Adding each card to the container
             });
         }
 
@@ -385,7 +441,7 @@
         <div class="container">
             <h2 class="text-center mb-4">만든 사람들</h2>
             <div class="row">
-                <!-- 팀원 카드 예시, 각 팀원을 위한 div를 .col-2 대신 위의 CSS 스타일을 적용 -->
+
                 <div class="col-2">
                     <div class="card">
                         <img src="https://postfiles.pstatic.net/MjAyNDA0MDlfMTM2/MDAxNzEyNTkxMDc1MzA5.dPC4pWkMs3UmV6AB5LEP2-ZR-nKL2pJeopxGsfPFaN0g.uB6xLoGEbDlaKqtJEsVT4bBrvD66a_SeH7xB2dMGSGog.JPEG/KakaoTalk_20240409_003736355.jpg?type=w773"
@@ -395,43 +451,48 @@
                             <p class="card-text">리더, INTP</p>
                         </div>
                     </div>
-  
-                    <div class="col-2">
-                        <div class="card">
-                            <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbmNSVz%2FbtsGvWwTYkV%2FY5nKeGjIj4M9UbC1lZiag0%2Fimg.jpg" class="card-img-top" alt="Team Member 1">
-                            <div class="card-body">
-                                <h5 class="card-title">김승수</h5>
-                                <p class="card-text">팀원, ISFJ</p>
-                            </div>
+                </div>
+
+                <div class="col-2">
+                    <div class="card">
+                        <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbmNSVz%2FbtsGvWwTYkV%2FY5nKeGjIj4M9UbC1lZiag0%2Fimg.jpg"
+                            class="card-img-top" alt="Team Member 1">
+                        <div class="card-body">
+                            <h5 class="card-title">김승수</h5>
+                            <p class="card-text">팀원, ISFJ</p>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-2">
                     <div class="card">
-                        <img src="profile1.jpg" class="card-img-top" alt="Team Member 1">
+                        <img src="https://velog.velcdn.com/images/nenney/post/d0096d98-2f4f-4c45-a2a5-4986e40fbe7e/image.jpg"
+                            class="card-img-top" alt="Team Member 1">
                         <div class="card-body">
                             <h5 class="card-title">최연환</h5>
-                            <p class="card-text">Some quick example text to build on the card title.</p>
+                            <p class="card-text">팀원, ISFJ</p>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-2">
                     <div class="card">
-                        <img src="profile1.jpg" class="card-img-top" alt="Team Member 1">
+                        <img src="https://postfiles.pstatic.net/MjAyNDA0MTFfMTkx/MDAxNzEyODI2MTkzMDYw.xlK2Ks4BtYQBPh-FcXzW3ix0hQOxtRgNISOufMS_AwMg.YYnex1Sk72s3XQRwsZJu4d8u_Lj3qzKy7HBnb416x9Ig.PNG/%EB%B0%95%EB%AF%BC%ED%98%81.png?type=w773"
+                            class="card-img-top" alt="Team Member 1">
                         <div class="card-body">
                             <h5 class="card-title">박민혁</h5>
-                            <p class="card-text">Some quick example text to build on the card title.</p>
+                            <p class="card-text">팀원, INTP</p>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-2">
-                        <div class="card">
-                            <img src="https://postfiles.pstatic.net/MjAyNDA0MDlfMTU5/MDAxNzEyNjU0MzY2ODE4.v9dcJIw6IFknQMnDXa2EniEf9mj-z-b7Pv6Z6wGbzyQg.7KiAzmThJuiNe4CDbUHlmdFF-AxbgbLbzdgh1ZjZNQwg.PNG/image.png?type=w966" class="card-img-top" alt="Team Member 1">
-                            <div class="card-body">
-                                <h5 class="card-title">신성훈</h5>
-                                <p class="card-text">팀원, ISFJ</p>
-                            </div>
-
+                <div class="col-2">
+                    <div class="card">
+                        <img src="https://postfiles.pstatic.net/MjAyNDA0MDlfMTU5/MDAxNzEyNjU0MzY2ODE4.v9dcJIw6IFknQMnDXa2EniEf9mj-z-b7Pv6Z6wGbzyQg.7KiAzmThJuiNe4CDbUHlmdFF-AxbgbLbzdgh1ZjZNQwg.PNG/image.png?type=w966"
+                            class="card-img-top" alt="Team Member 1">
+                        <div class="card-body">
+                            <h5 class="card-title">신성훈</h5>
+                            <p class="card-text">팀원, ISFJ</p>
                         </div>
                     </div>
                 </div>
