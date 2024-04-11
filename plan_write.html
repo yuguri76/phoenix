@@ -44,6 +44,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             const imageInput = document.getElementById('imageInput');
             const imagePreview = document.getElementById('imagePreview');
+            const submitButton = document.querySelector('input[type="submit"]');
+            const form = document.querySelector('form');
 
             imageInput.addEventListener('change', () => {
                 let imageUrl = imageInput.value.trim();
@@ -56,7 +58,7 @@
                 imagePreview.style.display = 'block';
             });
 
-            document.querySelector('form').addEventListener('submit', function (event) {
+            form.addEventListener('submit', function (event) {
                 event.preventDefault();
 
                 let title = document.querySelector('input[name="title"]').value;
@@ -71,9 +73,7 @@
                     let lastid = snapshot.val() || 0;
                     const newid = lastid + 1;
 
-                    const newplanref = ref(db, `plans_letter/${newid}`);
-
-                    set(newplanref, {
+                    set(ref(db, `plan_letter/${newid}`), {
                         id: newid,
                         title: title,
                         content: content,
@@ -82,13 +82,13 @@
                         date: date
                     }).then(() => {
                         alert('작성 완료!');
-                        document.querySelector('input[name="title"]').value = '';
-                        document.querySelector('textarea[name="content"]').value = '';
-                        set(lastplanidref, newid);
+                        form.reset();
+                        sessionStorage.setItem('selectedPostId', newid.toString());  // Save the last posted id to sessionStorage
                         window.location.href = 'plan_writeview.html';
                     }).catch((error) => {
                         console.error('Error saving data:', error);
                     });
+                    set(ref(db, 'lastplanid'), newid);
                 }).catch((error) => {
                     console.error('Error reading last post id:', error);
                 });
