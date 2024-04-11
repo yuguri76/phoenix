@@ -70,6 +70,7 @@
             border-color: #e2821c;
             box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.1);
             text-align: center;
+            overflow: auto;
         }
 
         #logo {
@@ -164,6 +165,22 @@
             margin-bottom: 50px;
             /* 게시판 섹션의 하단 간격 조정 */
         }
+
+        .writetitle {
+            background-color: #e2821c;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .writeimage {
+            text-align: center;
+            border: #e2821c solid 2px ;
+            margin-bottom: 20px;
+        }
+        
+        .writecontent {
+            border: #e2821c solid 2px ;
+        }
     </style>
 
     <script type="module">
@@ -189,6 +206,7 @@
         const analytics = getAnalytics(app);
         const db = getDatabase();
 
+        // 글 정보 불러와서 보여주기
         const planviewid = sessionStorage.getItem('selectedPostId');
         const planviewRef = ref(db, 'plans_letter/' + planviewid);
         get(planviewRef).then((planviewsnapshot) => {
@@ -196,7 +214,7 @@
                 const planviewData = planviewsnapshot.val();
                 let temp_html_title = `${planviewData.title}`;
                 let temp_html_content = `${planviewData.content}`;
-                let temp_html_image = `<img src="${planviewData.image}"/>`;
+                let temp_html_image = `<img src="${planviewData.image}" style="width: 300px; height: 300px;"/>`;
                 $('#veiwtitle').empty().append(temp_html_title);
                 $('#veiwcontent').empty().append(temp_html_content);
                 $('#veiwimage').empty().append(temp_html_image);
@@ -341,7 +359,7 @@
                     </a>
 
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                        <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획전시</a></li>
+                        <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획자랑</a></li>
                         <li><a href="party.html" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
                     </ul>
 
@@ -366,7 +384,7 @@
                     </a>
 
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                        <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획전시</a></li>
+                        <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획자랑</a></li>
                         <li><a href="party.html" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
                     </ul>
 
@@ -384,9 +402,9 @@
 
     <div class="containerwrite" id="containerwrite">
         <!-- 게시글 내용 -->
-        <h1 id="veiwtitle">게시글 제목</h1>
-        <div id="veiwimage"></div>
-        <p id="veiwcontent">게시글 내용 </p>
+        <div class="writetitle"><h1 id="veiwtitle">게시글 제목</h1></div>
+        <div class="writeimage"><div id="veiwimage"></div></div>
+        <div class="writecontent"><p id="veiwcontent">게시글 내용 </p></div>
     </div>
 
     <!-- 댓글 작성 양식 -->
