@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
-    <title>Document</title>
+    <title>계획자랑 글쓰기</title>
 
     <script type="module">
         document.addEventListener('DOMContentLoaded', function () {
@@ -51,7 +51,7 @@
                 let imageUrl = imageInput.value.trim();
 
                 if (!imageUrl) {
-                    imageUrl = 'https://static.inven.co.kr/image_2011/hs/dataninfo/card/image/46058.png?v=2';
+                    imageUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS55w7KmLlOQadKSA5ylD6IRAwKkIGXlrgIXQ&s';
                 }
 
                 imagePreview.src = imageUrl;
@@ -63,7 +63,7 @@
 
                 let title = document.querySelector('input[name="title"]').value;
                 let content = document.querySelector('textarea[name="content"]').value;
-                let image = imageInput.value.trim() || 'https://static.inven.co.kr/image_2011/hs/dataninfo/card/image/46058.png?v=2';
+                let image = imageInput.value.trim() || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS55w7KmLlOQadKSA5ylD6IRAwKkIGXlrgIXQ&s';
                 let writer = sessionStorage.getItem('loggedInUser');
                 let date = new Date().toISOString();
 
@@ -73,7 +73,7 @@
                     let lastid = snapshot.val() || 0;
                     const newid = lastid + 1;
 
-                    set(ref(db, `plan_letter/${newid}`), {
+                    set(ref(db, `plans_letter/${newid}`), {
                         id: newid,
                         title: title,
                         content: content,
@@ -83,7 +83,7 @@
                     }).then(() => {
                         alert('작성 완료!');
                         form.reset();
-                        sessionStorage.setItem('selectedPostId', newid.toString());  // Save the last posted id to sessionStorage
+                        sessionStorage.setItem('selectedPostId', newid.toString());
                         window.location.href = 'plan_writeview.html';
                     }).catch((error) => {
                         console.error('Error saving data:', error);
@@ -225,6 +225,7 @@
 
         input[type="submit"] {
             margin-top: 10px;
+            margin-bottom: 50px;
             width: 90px;
             height: 50px;
             font-size: 15px;

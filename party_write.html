@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
-    <title>Document</title>
+    <title>파티모집 글쓰기</title>
 
     <script type="module">
         document.addEventListener('DOMContentLoaded', function () {
@@ -50,7 +50,7 @@
                 let imageUrl = imageInput.value.trim();
 
                 if (!imageUrl) {
-                    imageUrl = 'https://static.inven.co.kr/image_2011/hs/dataninfo/card/image/46058.png?v=2';
+                    imageUrl = 'https://images.velog.io/images/welloff_jj/post/17036263-d9a5-40fe-b7f1-7014ddf0d752/image.png';
                 }
 
                 imagePreview.src = imageUrl;
@@ -62,7 +62,7 @@
 
                 let title = document.querySelector('input[name="title"]').value;
                 let content = document.querySelector('textarea[name="content"]').value;
-                let image = imageInput.value.trim() || 'https://static.inven.co.kr/image_2011/hs/dataninfo/card/image/46058.png?v=2';
+                let image = imageInput.value.trim() || 'https://images.velog.io/images/welloff_jj/post/17036263-d9a5-40fe-b7f1-7014ddf0d752/image.png';
                 let writer = sessionStorage.getItem('loggedInUser');
                 let date = new Date().toISOString();
 
@@ -226,6 +226,7 @@
 
         input[type="submit"] {
             margin-top: 10px;
+            margin-bottom: 50px;
             width: 90px;
             height: 50px;
             font-size: 15px;
