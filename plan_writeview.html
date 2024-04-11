@@ -381,9 +381,15 @@
         function redirectToUserProfile(username) {
             // 클릭된 댓글의 사용자 이름(username)을 사용하여 해당 사용자의 프로필 페이지로 이동
             // 여기서는 간단히 사용자 이름을 쿼리 매개변수로 전달하여 프로필 페이지로 이동하는 것으로 가정합니다.
-            // const url = `profile.html?username=${username}`;
-            // window.location.href = url;
-
+            localStorage.setItem('profiledID',username);
+            const url = "popup.html";
+            const name = 'profilePopup';
+            const width = 1000;
+            const height = 500;
+            const left = (window.screen.width / 2) - (width / 2);
+            const top = (window.screen.height / 2) - (height / 2);
+            const options = `width=${width},height=${height},left=${left},top=${top}`;
+            window.open(url, name, options);
             
         }
         // 댓글 클릭테스트 
