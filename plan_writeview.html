@@ -140,6 +140,10 @@
             border-bottom: 1px solid #ccc;
             padding: 15px;
             list-style-type: none;
+            display: flex;
+            justify-content: space-between;             /* 내부 요소를  오른쪽으로 정렬 */
+            align-items: center;            /* 수직 정렬을 위해 가운데 정렬 */
+            margin-bottom: 10px;
         }
 
         #commentsList {
@@ -166,20 +170,14 @@
             /* 게시판 섹션의 하단 간격 조정 */
         }
 
-        .writetitle {
-            background-color: #e2821c;
-            border-radius: 10px;
-            margin-bottom: 20px;
+        .comments-list li .username {
+            font-weight: bold;
         }
 
-        .writeimage {
-            text-align: center;
-            border: #e2821c solid 2px ;
-            margin-bottom: 20px;
-        }
-        
-        .writecontent {
-            border: #e2821c solid 2px ;
+        .comments-list li .date {
+            font-size: 0.8em;
+            color: gray;
+
         }
     </style>
 
@@ -218,7 +216,7 @@
                 $('#veiwtitle').empty().append(temp_html_title);
                 $('#veiwcontent').empty().append(temp_html_content);
                 $('#veiwimage').empty().append(temp_html_image);
-                
+
             } else {
                 alert('데이터 검색에 실패했습니다.');
             }
@@ -237,6 +235,8 @@
                 let comt = document.getElementById("commentinput").value;
                 let comment_date = new Date().toISOString();
                 const loggedInUser = sessionStorage.getItem('loggedInUser'); // Get logged-in user
+                const planviewid = sessionStorage.getItem('selectedPostId'); // 현재 보고 있는 게시글의 ID
+
 
                 const lastcomtidref = ref(db, 'lastcomtid');
 
@@ -250,15 +250,18 @@
                         id: newid,
                         comt: comt,
                         date: comment_date,
-                        username: loggedInUser // Add username to the comment data
+                        username: loggedInUser, // Add username to the comment data
+                        letter_id: planviewid
+
                     }).then(() => {
                         alert('작성 완료!');
                         document.getElementById("commentinput").value = '';
                         set(lastcomtidref, newid);
+                        location.reload();
                         // 새 댓글을 댓글 목록에 추가하는 부분
-                        const commentsList = $("#commentsList"); // 댓글 목록 컨테이너 선택
-                        const newComment = $("<li>").text(`${loggedInUser} : ${comt}`); // 새 댓글 엘리먼트 생성
-                        commentsList.append(newComment); // 새 댓글을 댓글 목록에 추가
+                        // const commentsList = $("#commentsList"); // 댓글 목록 컨테이너 선택
+                        // const newComment = $("<li>").text(`${loggedInUser} : ${comt}`); // 새 댓글 엘리먼트 생성
+                        // commentsList.append(newComment); // 새 댓글을 댓글 목록에 추가
                     }).catch((error) => {
                         console.error('Error saving data:', error);
                     });
@@ -291,29 +294,30 @@
 
         // 댓글 목록을 불러오는 함수
         function loadComments() {
+            const planviewid = sessionStorage.getItem('selectedPostId'); // 현재 보고 있는 게시글의 ID
             const commentsRef = ref(db, 'plans_comment');
 
             get(commentsRef).then((snapshot) => {
                 const comments = snapshot.val();
                 if (comments) {
-                    // 가져온 댓글 데이터를 댓글 목록에 표시하는 함수 호출
+                    const filteredComments = {}; // 필터링된 댓글을 저장할 객체
 
-
-
-
-                    displayComments(comments);
+                    for (const commentId in comments) {
+                        const comment = comments[commentId];
+                        if (comment.letter_id === planviewid) {
+                            filteredComments[commentId] = comment; // 일치하는 경우, 필터링된 객체에 추가(글에 맞는 댓글 불러오기)
+                        }
+                    }
+                    displayComments(filteredComments); // 필터링된 댓글 데이터를 댓글 목록에 표시
                 } else {
-                    // 댓글이 없는 경우
                     console.log("No comments available.");
                 }
-
             }).catch((error) => {
                 console.error('Error getting comments: ', error);
             });
         }
 
 
-        // 댓글 목록을 화면에 표시하는 함수
         function displayComments(comments) {
             const commentsList = document.getElementById("commentsList");
             commentsList.innerHTML = ''; // 기존 댓글 목록 초기화
@@ -324,10 +328,11 @@
                     const commentData = comments[commentId];
                     const comment = commentData.comt;
                     const username = commentData.username;
+                    const date = formatDate(commentData.date);
 
                     // 댓글 항목을 생성하여 댓글 목록에 추가
                     const li = document.createElement("li");
-                    li.innerText = `${username}: ${comment}`;
+                    li.innerHTML = `<span class="username">${username} : ${comment}</span>  <span class="date">${date}</span>`;
                     commentsList.appendChild(li);
                 }
             }
@@ -338,6 +343,16 @@
             loadComments();
         });
 
+        // 날짜 형식 변경 함수
+        function formatDate(rawDate) {
+            const date = new Date(rawDate);
+            const year = date.getFullYear();
+            const month = ('0' + (date.getMonth() + 1)).slice(-2); // 0부터 시작하므로 1을 더하고, 두 자리로 만듦
+            const day = ('0' + date.getDate()).slice(-2); // 두 자리로 만듦
+            const hours = ('0' + date.getHours()).slice(-2); // 두 자리로 만듦
+            const minutes = ('0' + date.getMinutes()).slice(-2); // 두 자리로 만듦
+            return `${year}.${month}.${day} ${hours}:${minutes}`;
+        }
 
 
 
