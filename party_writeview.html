@@ -117,7 +117,7 @@
         .commentbox {
             /* 댓글 작성칸 */
             position: absolute;
-            top: 205%;
+            top: 218%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 60%;
@@ -154,16 +154,17 @@
             /* 댓글 목록칸 */
             padding: 0;
             position: absolute;
-            top: 174%;
+            top: 173%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 60%;
-            height: 70%;
+            height: 60%;
             padding: 30px;
             border: 1px solid #ccc;
             border-radius: 20px;
             border-color: #e2821c;
             box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.1);
+            font-size: 35px;
             text-align: left;
             overflow: auto
         }
@@ -188,6 +189,10 @@
             background-color: #e2821c;
             border-radius: 10px;
             margin-bottom: 20px;
+            margin-top: 10px;
+            height: 70px;
+            padding: 15px;
+            color: white;
         }
 
         .writeimage {
@@ -241,9 +246,9 @@
                 let newDate = formatDate(partyviewData.date);
                 let temp_html_date = `${newDate}`;
                 let temp_html_writer = `${partyviewData.writer}`;
-                $('#veiwtitle').empty().append(temp_html_title);
-                $('#veiwcontent').empty().append(temp_html_content);
-                $('#veiwimage').empty().append(temp_html_image);
+                $('#viewtitle').empty().append(temp_html_title);
+                $('#viewcontent').empty().append(temp_html_content);
+                $('#viewimage').empty().append(temp_html_image);
                 $('#viewdate').empty().append(temp_html_date);
                 $('#viewwriter').empty().append(temp_html_writer);
 
@@ -478,15 +483,15 @@
     <div class="containerwrite" id="containerwrite">
         <!-- 게시글 내용 -->
         <div class="writetitle">
-            <h1 id="veiwtitle">게시글 제목</h1>
+            <h1 id="viewtitle">게시글 제목</h1>
         </div>
         <div id="viewdate" style="text-align: right; margin-bottom: 10px;">날짜</div>
         <div id="viewwriter" style="text-align: right; margin-bottom: 10px;">작성자</div>
         <div class="writeimage">
-            <div id="veiwimage"></div>
+            <div id="viewimage"></div>
         </div>
         <div class="writecontent">
-            <p id="veiwcontent">게시글 내용 </p>
+            <p id="viewcontent" style="font-size: 25px;">게시글 내용 </p>
         </div>
     </div>
 
@@ -507,7 +512,7 @@
     <div class="commentsList" id="commentsSection"
         style="font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold;">
         <ul id="commentsList"></ul>
-        <div style="position: absolute; top: 135%; left: 50%; transform: translateX(-50%);">댓글목록</div>
+        <div style="position: absolute; top: 135%; left: 50%; transform: translateX(-50%); font-size: 35px; font-weight: bold;">댓글목록</div>
     </div>
 
     <script>
