@@ -37,13 +37,14 @@
         const analytics = getAnalytics(app);
         const db = getDatabase();
 
- 
         const id = sessionStorage.getItem('loggedInUser'); // Get logged-in user ID
         const userRef = ref(db, 'users/' + id);
 
         document.addEventListener('DOMContentLoaded', () => {
             const imageInput = document.getElementById('imageInput');
             const imagePreview = document.getElementById('imagePreview');
+            const submitButton = document.querySelector('input[type="submit"]');
+            const form = document.querySelector('form');
 
             imageInput.addEventListener('change', () => {
                 let imageUrl = imageInput.value.trim();
@@ -56,7 +57,7 @@
                 imagePreview.style.display = 'block';
             });
 
-            document.querySelector('form').addEventListener('submit', function (event) {
+            form.addEventListener('submit', function (event) {
                 event.preventDefault();
 
                 let title = document.querySelector('input[name="title"]').value;
@@ -67,13 +68,13 @@
 
                 const lastpartyidref = ref(db, 'lastpartyid');
 
-                get(lastpartyidref).then((snapshot) => {
-                    let lastid = snapshot.val() || 0;
+                get(ref(db, 'lastpartyid')).then((snapshot) => {
+                    const lastid = snapshot.val() || 0;
                     const newid = lastid + 1;
 
                     const newpartyref = ref(db, `party_letter/${newid}`);
 
-                    set(newpartyref, {
+                    set(ref(db, `party_letter/${newid}`), {
                         id: newid,
                         title: title,
                         content: content,
@@ -82,13 +83,13 @@
                         date: date
                     }).then(() => {
                         alert('작성 완료!');
-                        document.querySelector('input[name="title"]').value = '';
-                        document.querySelector('textarea[name="content"]').value = '';
-                        set(lastpartyidref, newid);
+                        form.reset();
+                        sessionStorage.setItem('selectedPostId', newid.toString());  // Save the last posted id to sessionStorage
                         window.location.href = 'party_writeview.html';
                     }).catch((error) => {
                         console.error('Error saving data:', error);
                     });
+                    set(ref(db, 'lastpartyid'), newid);
                 }).catch((error) => {
                     console.error('Error reading last post id:', error);
                 });
@@ -337,6 +338,22 @@
             </tr>
         </table>
     </form>
+    <script>
+        function logout() {
+            sessionStorage.removeItem('loggedInUser');
+            window.location.href = 'main.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                document.getElementById("header-after-login").style.display = "block";
+            } else {
+                document.getElementById("header-before-login").style.display = "block";
+            }
+        });
+    </script>
+
 </body>
 
 </html>
