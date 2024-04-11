@@ -37,7 +37,7 @@
         const analytics = getAnalytics(app);
         const db = getDatabase();
 
-
+ 
         const id = sessionStorage.getItem('loggedInUser'); // Get logged-in user ID
         const userRef = ref(db, 'users/' + id);
 
@@ -208,7 +208,7 @@
             border-radius: 5px;
             padding-left: 10px;
             width: 840px;
-            height: 30px;
+            height: 40px;
             font-size: 16px;
         }
 
@@ -318,7 +318,7 @@
                 <td class="header"></td>
             </tr>
             <tr>
-                <td><input type="text" placeholder="제목을 입력하세요" name="title"></td>
+                <td><input type="text" placeholder="제목을 입력하세요" name="title" style="margin-bottom: 20px;"></td>
             </tr>
             <tr>
                 <td class="header">Comment</td>
