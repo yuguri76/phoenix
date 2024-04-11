@@ -151,9 +151,23 @@
         }
 
         .mypostlist-box-list {
-            border-bottom: solid 2px #333;
-            margin-bottom: 10px;
-            padding: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .mypostlist-box-listbtn {
+            background-color: #FFFDF3;
+            width: 200px;
+            height: 50px;
+            text-align: center;
+            overflow: auto;
+            border: 2px solid #333;
+            font-size: 16px;
+        }
+
+        .mypostlist-box-listbtn:hover {
+            color: #e2821c !important;
+            border: 2px solid #e2821c !important;
         }
 
         .textheader {
@@ -179,8 +193,8 @@
     </style>
 
     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js';
-        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js';
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
         import { getDatabase, ref, child, get, set, update } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
         // Firebase 구성
@@ -200,7 +214,25 @@
         const analytics = getAnalytics(app);
         const db = getDatabase();
 
-        const id = 'oplk123'; // 일단 직접 lol 선언하고, 후에 메인페이지에서 받아오기
+        // 페이지 로드 시 로그인 상태 확인
+        window.onload = function () {
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            if (loggedInUser !== null) {
+                document.getElementById("header-after-login").style.display = 'block';
+            } else {
+                alert('로그인 되지 않았습니다.');
+                window.location.href = 'main.html';
+            }
+        }
+
+        // 로그아웃 버튼
+        $("#logoutbtn").click(async function () {
+            sessionStorage.removeItem("loggedInUser");
+            alert('로그아웃 되었습니다.');
+            window.location.href = 'main.html';
+        });
+
+        const id = sessionStorage.getItem('loggedInUser');
         const userRef = ref(db, 'users/' + id + '/' + id);
 
         // DB(users 테이블)에서 프로필 정보(이름, 나이, 성별, 지역) 가져오기
@@ -315,11 +347,69 @@
                 $('#introduce-change').toggle();
             }
         });
+
+        // DB(plans_letter 테이블)에서 계획전시 정보(제목) 가져오기
+        const plansRef = ref(db, 'plans_letter/');
+        get(plansRef).then((planssnapshot) => {
+            const plansData = planssnapshot.val();
+            let a = 0;
+            plansData.forEach(planData => { //plans_letter 테이블 전체 검색
+                if(planData.writer == id) { // users 테이블의 id와 plans_letter 테이블의 writer가 같으면
+                    let temp_html_titleplan = `<div class="mypostlist-box-list"><button type="button" class="mypostlist-box-listbtn" id="plantitlebtn" value="${planData.id}">${planData.title}</button></div>`;
+                    $('#plantitlelist').append(temp_html_titleplan);
+                } else { // users 테이블의 id와 plans_letter 테이블의 writer가 다르면
+                    a++;
+                }
+            });
+            const plansDataNum = plansData.length-2;
+            if(a == plansDataNum) {
+                let temp_html_titleplan_empty = `<div class="mypostlist-box-list">게시된 글이 없습니다.</div>`;
+                $('#plantitlelist').append(temp_html_titleplan_empty);
+            }
+        }).catch((error) => {
+            console.error('Error getting user data: ', error);
+        });
+
+        // DB(party_letter 테이블)에서 파티모집 정보(제목) 가져오기
+        const partysRef = ref(db, 'party_letter/');
+        get(partysRef).then((partyssnapshot) => {
+            const partysData = partyssnapshot.val();
+            let b = 0;
+            partysData.forEach(partyData => { //party_letter 테이블 전체 검색
+                if(partyData.writer == id) { // users 테이블의 id와 party_letter 테이블의 writer가 같으면
+                    let temp_html_titleparty = `<div class="mypostlist-box-list"><button class="mypostlist-box-listbtn" id="partytitlebtn" value="${partyData.id}">${partyData.title}</button></div>`;
+                    $('#partytitlelist').append(temp_html_titleparty);
+                } else { // users 테이블의 id와 party_letter 테이블의 writer가 다르면
+                    b++;
+                }
+            });
+            const partysDataNum = partysData.length-2;
+            if(b == partysDataNum) {
+                let temp_html_titleparty_empty = `<div class="mypostlist-box-list">게시된 글이 없습니다.</div>`;
+                $('#partytitlelist').append(temp_html_titleparty_empty);
+            }
+        }).catch((error) => {
+            console.error('Error getting user data: ', error);
+        });
+
+        // 계획전시 제목들 버튼을 눌렀을 때 계획전시 글뷰로 이동
+        $(document).on("click", "#plantitlebtn",async function () { // 동적으로 생성된 버튼 클릭 이벤트 발생
+            const planbtnid = this.value;
+            sessionStorage.setItem('selectedPostId', planbtnid);
+            window.location.href = 'plan_writeview.html';
+        });
+
+        // 파티모집 제목들 버튼을 눌렀을 때 파티모집 글뷰로 이동
+        $(document).on("click", "#partytitlebtn",async function () { // 동적으로 생성된 버튼 클릭 이벤트 발생
+            const partybtnid = this.value;
+            sessionStorage.setItem('selectedPostId', partybtnid);
+            window.location.href = 'party_writeview.html';
+        });
     </script>
 </head>
 
 <body>
-    <div id="header-after-login" style="display: block;">
+    <div id="header-after-login" style="display: none;">
         <!--로그인 후 헤더-->
         <header class="p-3 text-bg-dark">
             <div class="container">
@@ -330,7 +420,7 @@
                     </a>
 
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                        <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획전시</a></li>
+                        <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획자랑</a></li>
                         <li><a href="party.html" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
                     </ul>
 
@@ -338,7 +428,7 @@
                         <button type="button" class="btn" onclick="location.href='profile.html'"
                             style="color: #fc7600; background-color: white; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; opacity: 0.9;border: 2px solid #fc7600; border-radius: 10px;">내
                             프로필 보기</button>
-                        <button type="button" class="btn" onclick="logout()"
+                        <button type="button" class="btn" id="logoutbtn"
                             style="color: white; background-color: #fc7600; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; border-radius: 10px; opacity: 0.9; color:white">로그아웃</button>
                     </div>
                 </div>
@@ -394,16 +484,22 @@
     <div class="mypostlist"> <!-- 내글 목록 -->
         <h3 class="textheader" style="background-color: #fbd4aa; font-size: 22px;">내 글 목록</h4>
             <div class="mypostlist-box">
-                <h4 class="textheader">계획전시</h4>
-                <div class="mypostlist-box-list">계획1</div>
-                <div class="mypostlist-box-list">계획2</div>
-                <div class="mypostlist-box-list">계획3</div>
+                <h4 class="textheader">
+                    <img src="https://github.com/yuguri76/phoenix/blob/main/images/orangewing.png?raw=true"
+                    style="height: 50px; width: auto; margin-right: 10px; vertical-align: middle;"
+                    alt="Orangewing Icon">
+                    계획자랑 게시판
+                </h4>
+                <div id="plantitlelist"> <!-- 계획전시 제목 버튼 자리 --> </div>
             </div>
             <div class="mypostlist-box">
-                <h4 class="textheader">파티모집</h4>
-                <div class="mypostlist-box-list">파티1</div>
-                <div class="mypostlist-box-list">파티2</div>
-                <div class="mypostlist-box-list">파티3</div>
+                <h4 class="textheader">
+                    <img src="https://github.com/yuguri76/phoenix/blob/main/images/orangewing.png?raw=true"
+                    style="height: 50px; width: auto; margin-right: 10px; vertical-align: middle;"
+                    alt="Orangewing Icon">
+                    파티모집 게시판
+                </h4>
+                <div id="partytitlelist"> <!-- 파티모집 제목 버튼 자리 --> </div>
             </div>
     </div>
 
