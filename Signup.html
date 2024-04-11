@@ -58,8 +58,33 @@
             margin-top: 20px;
         }
 
+        .registration-form {
+            border: 1px solid #e2821c;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+        }
 
-        .rectangle {
+        .form-item {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: inline-block;
+            width: 110px;
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 200px;
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+
+
+        .information-rectangle {
             width: 46%;
             background-color: #fbd4aa;
             border-radius: 40px;
@@ -80,7 +105,6 @@
 
         .inner-rectangle {
             border-radius: 20px;
-            border: 1px solid #e2821c;
             padding: 20px;
             margin-top: 20px;
             width: 400px;
@@ -94,15 +118,17 @@
             margin-left: 50px;
         }
 
+        .inner-rectangle div {
+            margin-bottom: 10px;
+            text-align: left;
+            margin-left: 50px;
+        }
+
         .inner-rectangle div label {
             width: 100px;
             display: inline-block;
             text-align: right;
             margin-right: 10px;
-        }
-
-        .inner-rectangle div input {
-            width: 200px
         }
 
         .space_login {
@@ -130,16 +156,18 @@
             font-family: 'WavvePADO-Regular', sans-serif;
             background-color: #fc7600;
             color: white;
-
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: none;
+            border-radius: 20px;
+            padding: 5px 10px;
         }
 
-        .soakadldi {
-            margin-top: -10px;
+        h1.soakadldi {
             color: #e2821c;
             font-size: 45px;
-            z-index: 1;
-            margin-bottom: 60px;
-
+            margin: 0;
+            margin-bottom: 20px;
         }
 
         .complete-button {
@@ -151,9 +179,8 @@
             transition: background-color 0.3s;
             border: none;
             padding: 10px 20px;
-            /* 내부 패딩 조절로 버튼 크기 증가 */
             font-size: 15px;
-            /* 폰트 크기 증가로 버튼의 높이 증가 */
+            border-radius: 20px;
         }
     </style>
 
@@ -302,53 +329,50 @@
 
 <body>
     <div id="container">
-        <a href="main.html" id="logo" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+        <a href="main.html" id="logo">
             <img src="https://github.com/yuguri76/phoenix/blob/gyul/images/%EC%95%BC%EB%82%98%EB%91%90%EB%A1%9C%EA%B3%A0%EC%B5%9C%EC%A2%85%EB%B3%B82.png?raw=true"
                 alt="야나두 로고" style="height: 230px;">
         </a>
         <h1 class="soakadldi">회원가입</h1>
-        <div class="space_login">
-            <div class="space_login_item">
+        <div class="registration-form">
+            <div class="form-item">
                 <label for="id">아이디:</label>
                 <input type="text" id="id" name="id">
                 <button class="Ekreo">중복확인</button>
             </div>
-            <div class="space_login_item">
+            <div class="form-item">
                 <label for="password">비밀번호:</label>
                 <input type="password" id="password" name="password">
             </div>
-            <div class="space_login_item">
+            <div class="form-item">
                 <label for="confirm_password">비밀번호 확인:</label>
                 <input type="password" id="confirm_password" name="confirm_password">
             </div>
-        </div>
-        <div class="rectangle">
-            <h4>이름 본명으로 쓰세요★</h4>
-            <h4>개인정보 입력 후 수정 불가합니다.</h4>
-            <h4>아이디, 비밀번호는 숫자 및 알파벳으로만 작성가능합니다.</h4>
-        </div>
-        <div class="inner-rectangle">
-            <div>
+            <div class="information-rectangle">
+                <p>이름 본명으로 쓰세요★</p>
+                <p>개인정보 입력 후 수정 불가합니다.</p>
+                <p>아이디, 비밀번호는 숫자 및 알파벳으로만 작성가능합니다.</p>
+            </div>
+            <div class="form-item">
                 <label for="name">이름:</label>
                 <input type="text" id="name" name="name">
             </div>
-            <div>
+            <div class="form-item">
                 <label for="age">나이:</label>
                 <input type="text" id="age" name="age">
             </div>
-            <div>
+            <div class="form-item">
                 <label for="gender">성별:</label>
                 <input type="text" id="gender" name="gender">
             </div>
-            <div>
+            <div class="form-item">
                 <label for="region">지역:</label>
                 <input type="text" id="region" name="region">
             </div>
         </div>
-        <div id="complete-button">
-            <button class="complete-button">완료</button>
-        </div>
+        <button class="complete-button" id="complete-button">완료</button>
     </div>
+</body>
 </body>
 
 </html>
