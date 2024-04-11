@@ -189,6 +189,27 @@
         const analytics = getAnalytics(app);
         const db = getDatabase();
 
+        const planviewid = sessionStorage.getItem('selectedPostId');
+        const planviewRef = ref(db, 'plans_letter/' + planviewid);
+        get(planviewRef).then((planviewsnapshot) => {
+            if (planviewsnapshot.exists()) {
+                const planviewData = planviewsnapshot.val();
+                let temp_html_title = `${planviewData.title}`;
+                let temp_html_content = `${planviewData.content}`;
+                let temp_html_image = `<img src="${planviewData.image}"/>`;
+                $('#veiwtitle').empty().append(temp_html_title);
+                $('#veiwcontent').empty().append(temp_html_content);
+                $('#veiwimage').empty().append(temp_html_image);
+                
+                sessionStorage.removeItem('selectedPostId');
+            } else {
+                alert('데이터 검색에 실패했습니다.');
+            }
+        }).catch((error) => {
+            console.error('Error getting user data: ', error);
+        });
+
+
         const id = sessionStorage.getItem('loggedInUser'); // Get logged-in user ID
         const userRef = ref(db, 'users/' + id);
 
@@ -249,7 +270,7 @@
             checkLoginStatus(); // 로그아웃 후 즉시 로그인 상태 확인
         }
 
-        
+
 
         // 댓글 목록을 불러오는 함수
         function loadComments() {
@@ -261,7 +282,7 @@
                     // 가져온 댓글 데이터를 댓글 목록에 표시하는 함수 호출
 
 
-       
+
 
                     displayComments(comments);
                 } else {
@@ -274,7 +295,7 @@
             });
         }
 
-        
+
         // 댓글 목록을 화면에 표시하는 함수
         function displayComments(comments) {
             const commentsList = document.getElementById("commentsList");
@@ -303,7 +324,7 @@
 
 
 
-       
+
 
     </script>
 </head>
@@ -363,8 +384,9 @@
 
     <div class="containerwrite" id="containerwrite">
         <!-- 게시글 내용 -->
-        <h1>게시글 제목</h1>
-        <p>게시글 내용 </p>
+        <h1 id="veiwtitle">게시글 제목</h1>
+        <div id="veiwimage"></div>
+        <p id="veiwcontent">게시글 내용 </p>
     </div>
 
     <!-- 댓글 작성 양식 -->
@@ -375,9 +397,6 @@
                 placeholder="댓글 삭제나 수정이 불가하니 신중히 입력하세요"></textarea>
 
             <button id="commentbtn" type="submit" class="btn"
-
-   
-
                 style="color : white ; background-color : #fc7600; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold;">댓글
                 작성</button>
 
@@ -395,7 +414,7 @@
 
             if (loggedInUser !== null) {
 
-          
+
 
                 document.getElementById("header-after-login").style.display = "block";
                 document.getElementById("header-before-login").style.display = "none";
