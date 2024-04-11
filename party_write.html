@@ -37,11 +37,8 @@
         const analytics = getAnalytics(app);
         const db = getDatabase();
 
- 
+
         const id = sessionStorage.getItem('loggedInUser'); // Get logged-in user ID
-
-        
-
         const userRef = ref(db, 'users/' + id);
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -49,9 +46,6 @@
             const imagePreview = document.getElementById('imagePreview');
 
             imageInput.addEventListener('change', () => {
-
-                
-
                 let imageUrl = imageInput.value.trim();
 
                 if (!imageUrl) {
@@ -68,7 +62,6 @@
                 let title = document.querySelector('input[name="title"]').value;
                 let content = document.querySelector('textarea[name="content"]').value;
                 let image = imageInput.value.trim() || 'https://static.inven.co.kr/image_2011/hs/dataninfo/card/image/46058.png?v=2';
-
                 let writer = sessionStorage.getItem('loggedInUser');
                 let date = new Date().toISOString();
 
@@ -83,24 +76,16 @@
                     set(newpartyref, {
                         id: newid,
                         title: title,
-
-                      
-
                         content: content,
-
                         image: image,
                         writer: writer,
                         date: date
                     }).then(() => {
                         alert('작성 완료!');
                         document.querySelector('input[name="title"]').value = '';
-
-                        
-
                         document.querySelector('textarea[name="content"]').value = '';
                         set(lastpartyidref, newid);
                         window.location.href = 'party_writeview.html';
-
                     }).catch((error) => {
                         console.error('Error saving data:', error);
                     });
@@ -113,17 +98,85 @@
 
     </script>
 
+    <!-- 부트스트랩 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            checkLoginStatus();
+        });
+
+        function checkLoginStatus() {
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                document.getElementById("header-after-login").style.display = "block";
+                document.getElementById("header-before-login").style.display = "none";
+            } else {
+                document.getElementById("header-before-login").style.display = "block";
+                document.getElementById("header-after-login").style.display = "none";
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('loggedInUser');
+            window.location.href = 'main.html';
+        }
+    </script>
+
+
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+        @font-face {
+            font-family: 'iceJaram-Rg';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/iceJaram-Rg.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'KCCChassam';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/KCCChassam.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SBAggroB';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'SBAggroB', sans-serif;
+            background-color: #FFFDF3;
+            color: #333;
+            font-weight: 700;
+        }
+
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px 0;
+        }
+
         #logo {
             font-weight: bold;
-            cursor: pointer;
-            background-color: transparent;
-            border: none;
-            text-align: left;
-            font-size: 50px;
-            color: #79B96E;
-            z-index: 1;
-            margin-bottom: 20px;
+            color: #e2821c;
+            text-decoration: none;
+            font-size: 30px;
         }
 
         #subtext {
@@ -131,8 +184,19 @@
             font-weight: normal;
         }
 
-        #logo:hover {
-            transform: translateY(-2px);
+        .nav-link {
+            color: #555 !important;
+            transition: color 0.3s ease;
+            font-family: 'iceJaram-Rg', sans-serif;
+            font-size: 30px;
+        }
+
+        .nav-link:hover {
+            color: #e2821c !important;
+        }
+
+        .btn {
+            font-weight: 500;
         }
 
         table {
@@ -140,16 +204,17 @@
         }
 
         input[type="text"] {
-            border: none;
-            border-bottom: 1px solid;
-            width: 500px;
+            border: 1.5px solid;
+            border-radius: 5px;
+            padding-left: 10px;
+            width: 840px;
             height: 30px;
-            font-size: 20px;
+            font-size: 16px;
         }
 
         textarea {
             border: 1.5px solid;
-            width: 500px;
+            width: 840px;
             height: 400px;
             border-radius: 5px;
             padding-left: 10px;
@@ -159,37 +224,94 @@
         }
 
         input[type="submit"] {
-            width: 100px;
-            height: 40px;
+            margin-top: 10px;
+            width: 90px;
+            height: 50px;
             font-size: 15px;
             border: 0;
-            outline: 1.5px rgb(68, 136, 244) solid;
+            outline: 1.5px solid;
             border-radius: 5px;
             padding-left: 10px;
-            background-color: #FFDB28;
+            background-color: #fc7600;
+            color: #FFFDF3;
+            float: right;
         }
 
-        input[type="submit"]:active {
-            width: 100px;
-            height: 40px;
+        input[type="submit"]:hover {
+            width: 90px;
+            height: 50px;
             font-size: 15px;
             border: 0;
             border-radius: 5px;
             outline: 1.5px solid;
             padding-left: 10px;
-            background-color: #79B96E;
+            background-color: #fc7600;
+            transform: scale(1.1);
+            /* 1.1배 크기로 확대됨 */
+            transition: transform 0.1s ease;
+            /* 부드럽게하는 애니메이션*/
         }
     </style>
 </head>
 
 <body>
-    <div id="logo">야나두 <span id="subtext">너도 할 수 있어</span></div>
+    <div id="header-before-login" style="display: none;">
+        <!--로그인 전 헤더-->
+        <header class="p-3 text-bg-dark">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <a href="main.html" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <img src="https://github.com/yuguri76/phoenix/blob/gyul/images/%EC%95%BC%EB%82%98%EB%91%90%EB%A1%9C%EA%B3%A0%EC%B5%9C%EC%A2%85%EB%B3%B82.png?raw=true"
+                            alt="야나두 로고" style="height: 230px;">
+                    </a>
+
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획자랑</a></li>
+                        <li><a href="party.html" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
+                    </ul>
+
+                    <div class="text-end">
+                        <link rel="stylesheet" href="path/to/your/stylesheet.css">
+                        <button type="button" class="btn" onclick="location.href='Login.html'"
+                            style="color: white; background-color: #fc7600; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; border-radius: 10px; opacity: 0.9; padding: 10px 15px; text-align: center;">로그인</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <div id="header-after-login" style="display: none;">
+        <!--로그인 후 헤더-->
+        <header class="p-3 text-bg-dark">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <a href="main.html" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <img src="https://github.com/yuguri76/phoenix/blob/gyul/images/%EC%95%BC%EB%82%98%EB%91%90%EB%A1%9C%EA%B3%A0%EC%B5%9C%EC%A2%85%EB%B3%B82.png?raw=true"
+                            alt="야나두 로고" style="height: 230px;">
+                    </a>
+
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="plan.html" class="nav-link px-2" style="color: #020715;">계획자랑</a></li>
+                        <li><a href="party.html" class="nav-link px-2" style="color: #020715;">파티모집</a></li>
+                    </ul>
+
+                    <div class="text-end" style="display: flex; justify-content: end; gap: 20px;">
+                        <button type="button" class="btn" onclick="location.href='profile.html'"
+                            style="color: #fc7600; background-color: white; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; opacity: 0.9;border: 2px solid #fc7600; border-radius: 10px;">내
+                            프로필 보기</button>
+                        <button type="button" class="btn" onclick="logout()"
+                            style="color: white; background-color: #fc7600; font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold; border-radius: 10px; opacity: 0.9; color:white">로그아웃</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
 
     <form>
         <table>
             <tr>
                 <td>
-                    <h2>파티모집</h2>
+                    <h2 style="margin-top: 30px;">파티모집</h2>
                 </td>
             </tr>
             <tr>
@@ -202,11 +324,7 @@
                 <td class="header">Comment</td>
             </tr>
             <tr>
-
-
-
                 <td><textarea placeholder="내용을 입력하세요" name="content"></textarea></td>
-
             </tr>
             <tr>
                 <td>
@@ -215,7 +333,7 @@
                 </td>
             </tr>
             <tr>
-                <td><input type="submit" value="등록"></td>
+                <td><input type="submit" value="작성"></td>
             </tr>
         </table>
     </form>
