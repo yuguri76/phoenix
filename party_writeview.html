@@ -401,9 +401,15 @@
 
     <div class="containerwrite" id="containerwrite">
         <!-- 게시글 내용 -->
-        <div class="writetitle"><h1 id="veiwtitle">게시글 제목</h1></div>
-        <div class="writeimage"><div id="veiwimage"></div></div>
-        <div class="writecontent"><p id="veiwcontent">게시글 내용 </p></div>
+        <div class="writetitle">
+            <h1 id="veiwtitle">게시글 제목</h1>
+        </div>
+        <div class="writeimage">
+            <div id="veiwimage"></div>
+        </div>
+        <div class="writecontent">
+            <p id="veiwcontent">게시글 내용 </p>
+        </div>
     </div>
 
     <!-- 댓글 작성 양식 -->
@@ -426,25 +432,40 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            checkLoginStatus();
+        });
+
         function checkLoginStatus() {
             const loggedInUser = sessionStorage.getItem('loggedInUser');
-
-            if (loggedInUser !== null) {
-
-
-
+            if (loggedInUser) {
                 document.getElementById("header-after-login").style.display = "block";
                 document.getElementById("header-before-login").style.display = "none";
             } else {
                 document.getElementById("header-before-login").style.display = "block";
                 document.getElementById("header-after-login").style.display = "none";
+                restrictAccess();
+            }
+        }
 
+        function restrictAccess() {
+            const fullPath = window.location.href;
+            const fileName = fullPath.split('/').pop().split('?')[0].toLowerCase();
+            const restrictedPages = ['plan_writeview.html', 'party_writeview.html'];
+
+            console.log("Full Path:", fullPath); // 전체 파일 경로 출력
+            console.log("File Name:", fileName); // 추출된 파일 이름 출력
+            console.log("Restricted Pages:", restrictedPages); // 제한된 페이지 목록 출력
+
+            if (restrictedPages.includes(fileName)) {
+                alert("로그인 후 이용해주세요.");
+                window.location.href = 'Login.html';
             }
         }
 
         function logout() {
-            sessionStorage.removeItem("loggedInUser");
-            checkLoginStatus(); // 로그아웃 후 즉시 로그인 상태 확인
+            sessionStorage.removeItem('loggedInUser');
+            window.location.href = 'main.html';
         }
     </script>
 
