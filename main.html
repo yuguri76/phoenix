@@ -378,6 +378,14 @@
             window.location.href = `${detailPage}?post=${postId}`;
         }
 
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더합니다.
+            const day = date.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
         async function loadCards(boardName, containerId, detailPage) {
             const container = document.getElementById(containerId);
             const dbRef = ref(db, boardName);
@@ -394,13 +402,15 @@
 
             posts.forEach((childSnapshot) => {
                 const cardData = childSnapshot.val();
+                const formattedDate = formatDate(cardData.date);
                 const cardHTML = `
         <div class="col-4">
             <div class="card" onclick="selectPostId('${childSnapshot.key}', '${detailPage}')" style="cursor: pointer;">
                 <img src="${cardData.image || 'path/to/default-image.jpg'}" class="card-img-top" alt="Post Image">
                 <div class="card-body">
                     <h5 class="card-title">${cardData.title}</h5>
-                    <p class="card-text">${cardData.content}</p>
+                    <p class="card-text">${cardData.writer}</p>
+                    <p class="card-text">${formattedDate}</p>
                 </div>
             </div>
         </div>`;
