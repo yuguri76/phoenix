@@ -212,6 +212,14 @@
         const analytics = getAnalytics(app);
         const db = getDatabase();
 
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const logoutButton = document.getElementById('logoutButton');
             if (logoutButton) {
@@ -264,13 +272,15 @@
 
             plansToShow.forEach(plan => {
                 $('#card').append(`
-        <div class="col">
-            <div type="button" class="card h-100" data-id="${plan.id}">
-                <h5 class="card-title">${plan.title}</h5>
-                <img src="${plan.image}" class="card-img-top" alt="...">
-            </div>
-        </div>
-    `);
+                <div class="col">
+                    <div type="button" class="card h-100" data-id="${plan.id}">
+                        <h5 class="card-title">${trimTitle(plan.title)}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">${plan.writer}</h6>
+                            <p class="card-text">${formatDate(plan.date)}</p>
+                        <img src="${plan.image}" class="card-img-top" alt="...">
+                    </div>
+                </div>
+            `);
             });
 
             // 페이지네이션 버튼 설정
@@ -279,14 +289,13 @@
 
         function setupPagination(totalPages, currentPage) {
             const paginationContainer = document.querySelector('.pagebtn');
-            paginationContainer.innerHTML = ''; // 기존 페이지네이션을 비웁니다.
+            paginationContainer.innerHTML = '';
+
             for (let i = 1; i <= totalPages; i++) {
                 const button = document.createElement('button');
                 button.innerText = i;
                 button.className = `btn btn-primary ${i === currentPage ? 'active' : ''}`;
-                button.addEventListener('click', function () {
-                    loadPlans(i);
-                });
+                button.addEventListener('click', function () { loadPlans(i); });
                 paginationContainer.appendChild(button);
             }
         }
@@ -303,34 +312,40 @@
             window.location.href = "plan_write.html";
         });
 
+        function trimTitle(title) {
+            return title.length > 15 ? title.substring(0, 14) + '...' : title;
+        }
+
         function loadAllPlans() {
             const planRef = ref(db, 'plans_letter');
 
             get(planRef).then((snapshot) => {
-                const plan = snapshot.val();
-                for (const planId in plan) {
-                    if (Object.hasOwnProperty.call(plan, planId)) {
-                        const planData = plan[planId];
-                        const title = planData.title;
-                        const image = planData.image;
+                const plans = snapshot.val();
+                $('#card').empty(); // 기존에 card 요소에 있던 내용을 지웁니다
 
-                        let temp_html_title = `${title}`;
-                        let temp_html_image = `<img src="${image}" class="card-img-top" alt="...">`;
-                        $('#title').empty().append(temp_html_title);
-                        $('#image').empty().append(temp_html_image);
+                for (const planId in plans) {
+                    const planData = plans[planId];
+                    const title = planData.title;
+                    const image = planData.image;
+                    const writer = planData.writer;
+                    const date = planData.date;
 
-                        let temp_html = `            
-                        <div class="col">
-                            <div class="card h-100">
-                                <h5 class="card-title">${title}</h5>
-                                <img src="${image}" class="card-img-top" alt="...">
-                            </div>
-                        </div>`;
-                        $('#card').append(temp_html);
-                    }
+                    // 각 계획 카드에 대한 HTML 코드를 올바르게 정의합니다
+                    let temp_html = `
+                <div class="col">
+                    <div class="card h-100">
+                        <h5 class="card-title">${title}</h5>
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">작성자: ${writer}</h6>
+                            <p class="card-text">날짜: ${formatDate(date)}</p>
+                            <img src="${image}" class="card-img-top" alt="Plan Image">
+                        </div>
+                    </div>
+                </div>`;
+                    $('#card').append(temp_html); // 새로운 계획 카드를 그리드에 추가합니다
                 }
             }).catch((error) => {
-                console.error('데이터를 가져오는 중 오류 발생:', error);
+                console.error('계획을 가져오는데 에러 발생:', error);
             });
         }
         loadAllPlans();
