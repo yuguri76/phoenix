@@ -190,6 +190,7 @@
             height: 500px;
             text-align: left;
             padding: 20px;
+            overflow: auto;
         }
 
         .comments-list li .date {
@@ -241,8 +242,8 @@
                 let temp_html_content = `${planviewData.content}`;
                 let temp_html_image = `<img src="${planviewData.image}" style="width: 300px; height: 300px;"/>`;
                 let newDate = formatDate(planviewData.date);
-                let temp_html_date = `${newDate}`;
-                let temp_html_writer = `${planviewData.writer}`;
+                let temp_html_date = `작성일시: ${newDate}`;
+                let temp_html_writer = `<button id="writerbtn" type="button" style="background-color: #FFFDF3; border-radius: 10px;" value="${planviewData.writer}">${planviewData.writer}</button>`;
                 $('#viewtitle').empty().append(temp_html_title);
                 $('#viewcontent').empty().append(temp_html_content);
                 $('#viewimage').empty().append(temp_html_image);
@@ -256,6 +257,18 @@
             console.error('Error getting user data: ', error);
         });
 
+        $(document).on("click", "#writerbtn", async function () { // 동적으로 생성된 버튼 클릭 이벤트 발생
+            const writerbtnId = this.value;
+            localStorage.setItem('profiledID', writerbtnId);
+            const url = "popup.html";
+            const name = 'profilePopup';
+            const width = 1000;
+            const height = 500;
+            const left = (window.screen.width / 2) - (width / 2);
+            const top = (window.screen.height / 2) - (height / 2);
+            const options = `width=${width},height=${height},left=${left},top=${top}`;
+            window.open(url, name, options);
+        });
 
         const id = sessionStorage.getItem('loggedInUser'); // Get logged-in user ID
         const userRef = ref(db, 'users/' + id);
@@ -396,7 +409,7 @@
         function redirectToUserProfile(username) {
             // 클릭된 댓글의 사용자 이름(username)을 사용하여 해당 사용자의 프로필 페이지로 이동
             // 여기서는 간단히 사용자 이름을 쿼리 매개변수로 전달하여 프로필 페이지로 이동하는 것으로 가정합니다.
-            localStorage.setItem('profiledID',username);
+            localStorage.setItem('profiledID', username);
             const url = "popup.html";
             const name = 'profilePopup';
             const width = 1000;
@@ -405,7 +418,7 @@
             const top = (window.screen.height / 2) - (height / 2);
             const options = `width=${width},height=${height},left=${left},top=${top}`;
             window.open(url, name, options);
-            
+
         }
         // 댓글 클릭테스트
     </script>
@@ -470,7 +483,7 @@
             <h1 id="viewtitle">게시글 제목</h1>
         </div>
         <div id="viewdate" style="text-align: right; margin-bottom: 10px;">날짜</div>
-        <div id="viewwriter" style="text-align: right; margin-bottom: 10px;">작성자</div>
+        <div id="viewwriter" style="text-align: right; margin-bottom: 10px;"> <!-- 작성자 자리 --> </div>
         <div class="writeimage">
             <div id="viewimage"></div>
         </div>
