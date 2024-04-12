@@ -239,7 +239,8 @@
             if (planviewsnapshot.exists()) {
                 const planviewData = planviewsnapshot.val();
                 let temp_html_title = `${planviewData.title}`;
-                let temp_html_content = `${planviewData.content}`;
+                let contentWithBreaks = planviewData.content.replace(/\n/g, '<br>');
+                let temp_html_content = `${contentWithBreaks}.`;
                 let temp_html_image = `<img src="${planviewData.image}" style="width: 300px; height: 300px;"/>`;
                 let newDate = formatDate(planviewData.date);
                 let temp_html_date = `작성일시: ${newDate}`;

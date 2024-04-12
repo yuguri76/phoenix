@@ -241,7 +241,8 @@
             if (partyviewsnapshot.exists()) {
                 const partyviewData = partyviewsnapshot.val();
                 let temp_html_title = `${partyviewData.title}`;
-                let temp_html_content = `${partyviewData.content}`;
+                let contentWithBreaks = partyviewData.content.replace(/\n/g, '<br>');
+                let temp_html_content = `${contentWithBreaks}.`;
                 let temp_html_image = `<img src="${partyviewData.image}" style="width: 300px; height: 300px;"/>`;
                 let newDate = formatDate(partyviewData.date);
                 let temp_html_date = `작성일시: ${newDate}`;
