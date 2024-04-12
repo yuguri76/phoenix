@@ -41,10 +41,12 @@
         const userRef = ref(db, 'users/' + id);
 
         document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('form');
+            const titleInput = document.querySelector('input[name="title"]');
+            const contentTextArea = document.querySelector('textarea[name="content"]');
             const imageInput = document.getElementById('imageInput');
             const imagePreview = document.getElementById('imagePreview');
             const submitButton = document.querySelector('input[type="submit"]');
-            const form = document.querySelector('form');
 
             imageInput.addEventListener('change', () => {
                 let imageUrl = imageInput.value.trim();
@@ -65,6 +67,16 @@
                 let image = imageInput.value.trim() || 'https://images.velog.io/images/welloff_jj/post/17036263-d9a5-40fe-b7f1-7014ddf0d752/image.png';
                 let writer = sessionStorage.getItem('loggedInUser');
                 let date = new Date().toISOString();
+
+                if (!title) {
+                    alert('제목을 작성해주세요');
+                    return;
+                }
+
+                if (!content) {
+                    alert('내용을 입력해주세요');
+                    return;
+                }
 
                 const lastpartyidref = ref(db, 'lastpartyid');
 
