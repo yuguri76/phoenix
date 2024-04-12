@@ -37,6 +37,12 @@
             font-weight: 500;
         }
 
+        #profileid {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 35px;
+        }
+
         .imfor {
             width: 1000px;
             margin: auto;
@@ -116,12 +122,14 @@
             if (profilesnapshot.exists()) {
                 const profileData = profilesnapshot.val();
                 if (profileData.id == profileID) {
+                    let temp_html_id = `<span style="color: #fc7600">${profileData.id}</span> 님의 프로필`;
                     let temp_html_name = `${profileData.name}`;
                     let temp_html_age = `${profileData.age}`;
                     let temp_html_gender = `${profileData.gender}`;
                     let temp_html_region = `${profileData.region}`;
                     let temp_html_image = `<img src="${profileData.profileimage}" style="margin-left: 55px; text-align: center; border-radius: 50%; width: 170px; height: 170px;"/>`;
                     let temp_html_intro = `${profileData.introduce}`;
+                    $('#profileid').empty().append(temp_html_id);
                     $('#imfor-name').empty().append(temp_html_name);
                     $('#imfor-age').empty().append(temp_html_age);
                     $('#imfor-gender').empty().append(temp_html_gender);
@@ -145,6 +153,7 @@
 </head>
 
 <body>
+    <div id="profileid"> 000 님의 프로필 </div>
     <div class="imfor">
         <div class="imfor-box"> <!-- 프로필 사진 -->
             <h4 class="textheader">프로필 사진</h4>
