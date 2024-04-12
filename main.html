@@ -105,6 +105,41 @@
             border-radius: 50%;
         }
 
+        .intro-card {
+            height: auto;
+            /* Increased height */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: flex;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            /* Aligns items from top to bottom */
+        }
+
+        .card-text,
+        .card-title {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            /* Allows text to be visible outside the box */
+            white-space: normal;
+            /* Allows text wrapping */
+            word-wrap: break-word;
+        }
+
+        .intro-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
         .card {
             width: 170px;
             height: 300px;
@@ -490,56 +525,66 @@
             <div class="row">
 
                 <div class="col-2">
-                    <div class="card">
+                    <div class="intro-card">
                         <img src="https://postfiles.pstatic.net/MjAyNDA0MDlfMTM2/MDAxNzEyNTkxMDc1MzA5.dPC4pWkMs3UmV6AB5LEP2-ZR-nKL2pJeopxGsfPFaN0g.uB6xLoGEbDlaKqtJEsVT4bBrvD66a_SeH7xB2dMGSGog.JPEG/KakaoTalk_20240409_003736355.jpg?type=w773"
                             class="card-img-top" alt="Team Member 1">
                         <div class="card-body">
                             <h5 class="card-title">유규리</h5>
                             <p class="card-text">리더, INTP</p>
+                            <a href="https://nbcamp2024.slack.com/team/U06K01GG031" target="_blank">Slack Profile</a>
+                            </p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-2">
-                    <div class="card">
+                    <div class="intro-card">
                         <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbmNSVz%2FbtsGvWwTYkV%2FY5nKeGjIj4M9UbC1lZiag0%2Fimg.jpg"
                             class="card-img-top" alt="Team Member 1">
                         <div class="card-body">
                             <h5 class="card-title">김승수</h5>
                             <p class="card-text">팀원, ISFJ</p>
+                            <a href="https://nbcamp2024.slack.com/team/U06ML96AG4A" target="_blank">Slack Profile</a>
+                            </p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-2">
-                    <div class="card">
+                    <div class="intro-card">
                         <img src="https://velog.velcdn.com/images/nenney/post/d0096d98-2f4f-4c45-a2a5-4986e40fbe7e/image.jpg"
                             class="card-img-top" alt="Team Member 1">
                         <div class="card-body">
                             <h5 class="card-title">최연환</h5>
                             <p class="card-text">팀원, ISFJ</p>
+                            <a href="https://nbcamp2024.slack.com/team/U06QDRVV82U" target="_blank">Slack Profile</a>
+                            </p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-2">
-                    <div class="card">
+                    <div class="intro-card">
                         <img src="https://postfiles.pstatic.net/MjAyNDA0MTFfMTkx/MDAxNzEyODI2MTkzMDYw.xlK2Ks4BtYQBPh-FcXzW3ix0hQOxtRgNISOufMS_AwMg.YYnex1Sk72s3XQRwsZJu4d8u_Lj3qzKy7HBnb416x9Ig.PNG/%EB%B0%95%EB%AF%BC%ED%98%81.png?type=w773"
                             class="card-img-top" alt="Team Member 1">
                         <div class="card-body">
                             <h5 class="card-title">박민혁</h5>
                             <p class="card-text">팀원, INTP</p>
+                            <a href="https://nbcamp2024.slack.com/team/U06LYE371RN" target="_blank">Slack Profile</a>
+                            </p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-2">
-                    <div class="card">
+                    <div class="intro-card">
                         <img src="https://postfiles.pstatic.net/MjAyNDA0MDlfMTU5/MDAxNzEyNjU0MzY2ODE4.v9dcJIw6IFknQMnDXa2EniEf9mj-z-b7Pv6Z6wGbzyQg.7KiAzmThJuiNe4CDbUHlmdFF-AxbgbLbzdgh1ZjZNQwg.PNG/image.png?type=w966"
                             class="card-img-top" alt="Team Member 1">
                         <div class="card-body">
                             <h5 class="card-title">신성훈</h5>
                             <p class="card-text">팀원, ISFJ</p>
+                            <a href="https://nbcamp2024.slack.com/team/U06R7N0V70X" target="_blank">Slack Profile</a>
+                            </p>
                         </div>
                     </div>
                 </div>
