@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>야나두 로그인</title>
+    <title>야나두-로그인</title>
     <style>
         @font-face {
             font-family: 'Pretendard-Regular';
@@ -159,7 +159,7 @@
                     const userData = snapshot.val();
                     // 비밀번호 확인
                     if (userData.password === password && userData.id === id) {
-                        alert('로그인 성공');
+                        alert('로그인 성공! 환영합니다:)');
                         // 로그인 성공 시 다음 페이지로 이동
                         window.location.href = 'main.html';
 
