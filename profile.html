@@ -76,6 +76,8 @@
             padding: 50px 10%;
             text-align: center;
             font-family: 'KCCChassam', sans-serif;
+            position: relative;
+            top: -20%;
         }
 
         .myimfor {
@@ -220,7 +222,7 @@
             if (loggedInUser !== null) {
                 document.getElementById("header-after-login").style.display = 'block';
             } else {
-                alert('로그인 되지 않았습니다.');
+                alert('로그인 후 이용해주세요.');
                 window.location.href = 'main.html';
             }
         }
@@ -379,7 +381,7 @@
                     let temp_html_titleparty = `<div class="mypostlist-box-list"><button class="mypostlist-box-listbtn" id="partytitlebtn" value="${partyData.id}">${partyData.title}</button></div>`;
                     $('#partytitlelist').append(temp_html_titleparty);
                     hasPlan = true;
-                } 
+                }
             });
             if (!hasPlan) {
                 let temp_html_titleparty_empty = `<div class="mypostlist-box-list">게시된 글이 없습니다.</div>`;
@@ -434,7 +436,7 @@
     </div>
 
     <div class="banner-image"> <!-- 배너 이미지 -->
-        <h2 class="banner-text">"이 순간을 소중히"</h2>
+        <h2 class="banner-text">"모든 이의 이야기가 펼쳐지는 곳"</h2>
     </div>
 
     <div class="linediv"></div>
