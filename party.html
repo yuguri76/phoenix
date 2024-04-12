@@ -92,55 +92,45 @@
         }
 
         .card {
-            padding-top: 30px;
-            border-color: #edc8ae;
-            width: 380px;
-            height: 400px;
             margin: 20px;
+            width: 380px;
+            height: 500px;
+            /* Fixed height */
             border: 1px solid #ccc;
             border-radius: 10px;
-            overflow: hidden;
+            padding-top: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* 카드 내 항목들을 중앙 정렬 */
-            justify-content: flex-start;
-            /* 항목들을 위에서부터 시작 */
-            padding: 10px;
+            justify-content: center;
+            /* Centers content vertically if less content */
         }
 
         .card img {
-            max-width: 100%;
-            max-height: 350px;
-            object-fit: cover;
             width: 100%;
-            height: auto;
-            align-self: center;
+            height: 350px;
+            /* Fixed image height */
+            object-fit: contain;
+            /* Ensures image fits without clipping and preserves aspect ratio */
+            background-color: #FFF;
+            /* White background to fill empty space */
         }
 
-
-        .card h5 {
-            margin-top: 5px;
-            /* 제목 위의 간격 */
-            margin-bottom: 5px;
-            /* 제목 아래의 간격 */
-            text-align: center;
-            width: 100%;
-            font-size: 18px;
-            /* 조금 더 큰 폰트 사이즈 */
-        }
-
-
+        .card h5,
         .card-details,
         .card-details1 {
-            text-align: center;
+            margin: 5px 0;
             width: 100%;
-            margin-top: 5px;
-            /* 세부정보 위의 간격 */
-            margin-bottom: 5px;
-            /* 세부정보 아래의 간격 */
+            text-align: center;
+        }
+
+        .card h5 {
+            font-size: 18px;
+        }
+
+        .card-details {
             font-size: 16px;
-            /* 세부정보 폰트 사이즈 */
+            color: #6c757d;
         }
 
         .writebtn {

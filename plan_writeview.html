@@ -509,13 +509,15 @@
     <div class="commentsList" id="commentsSection"
         style="font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold;">
         <ul id="commentsList"></ul>
-        <div style="position: absolute; top: 135%; left: 50%; transform: translateX(-50%); font-size: 35px; font-weight: bold;">댓글목록</div>
+        <div
+            style="position: absolute; top: 135%; left: 50%; transform: translateX(-50%); font-size: 35px; font-weight: bold;">
+            댓글목록</div>
     </div>
 
     <script>
-
         document.addEventListener('DOMContentLoaded', function () {
             checkLoginStatus();
+            restrictAccess();
         });
 
         function checkLoginStatus() {
@@ -526,20 +528,15 @@
             } else {
                 document.getElementById("header-before-login").style.display = "block";
                 document.getElementById("header-after-login").style.display = "none";
-                restrictAccess();
             }
         }
 
         function restrictAccess() {
             const fullPath = window.location.href;
             const fileName = fullPath.split('/').pop().split('?')[0].toLowerCase();
-            const restrictedPages = ['plan_writeview.html', 'party_writeview.html'];
+            const restrictedPages = ['plan_writeview.html', 'party_writeview.html', 'plan_write.html', 'party_write.html'];
 
-            console.log("Full Path:", fullPath);
-            console.log("File Name:", fileName);
-            console.log("Restricted Pages:", restrictedPages);
-
-            if (restrictedPages.includes(fileName)) {
+            if (restrictedPages.includes(fileName) && !sessionStorage.getItem('loggedInUser')) {
                 alert("로그인 후 이용해주세요.");
                 window.location.href = 'Login.html';
             }

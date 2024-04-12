@@ -342,7 +342,7 @@
             </tr>
             <tr>
                 <td>
-                    <input type="text" id="imageInput" placeholder="Image URL">
+                    <input type="text" id="imageInput" placeholder="Image URL을 넣어주세요. 따로 설정하지 않으면 디폴트 이미지가 들어갑니다.">
                     <img id="imagePreview" src="" style="display: none;">
                 </td>
             </tr>
@@ -351,20 +351,39 @@
             </tr>
         </table>
     </form>
+
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            checkLoginStatus();
+            restrictAccess();
+        });
+
+        function checkLoginStatus() {
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                document.getElementById("header-after-login").style.display = "block";
+                document.getElementById("header-before-login").style.display = "none";
+            } else {
+                document.getElementById("header-before-login").style.display = "block";
+                document.getElementById("header-after-login").style.display = "none";
+            }
+        }
+
+        function restrictAccess() {
+            const fullPath = window.location.href;
+            const fileName = fullPath.split('/').pop().split('?')[0].toLowerCase();
+            const restrictedPages = ['plan_writeview.html', 'party_writeview.html', 'plan_write.html', 'party_write.html'];
+
+            if (restrictedPages.includes(fileName) && !sessionStorage.getItem('loggedInUser')) {
+                alert("로그인 후 이용해주세요.");
+                window.location.href = 'Login.html';
+            }
+        }
+
         function logout() {
             sessionStorage.removeItem('loggedInUser');
             window.location.href = 'main.html';
         }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const loggedInUser = sessionStorage.getItem('loggedInUser');
-            if (loggedInUser) {
-                document.getElementById("header-after-login").style.display = "block";
-            } else {
-                document.getElementById("header-before-login").style.display = "block";
-            }
-        });
     </script>
 
 </body>
