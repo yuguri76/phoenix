@@ -396,7 +396,7 @@
         function redirectToUserProfile(username) {
             // 클릭된 댓글의 사용자 이름(username)을 사용하여 해당 사용자의 프로필 페이지로 이동
             // 여기서는 간단히 사용자 이름을 쿼리 매개변수로 전달하여 프로필 페이지로 이동하는 것으로 가정합니다.
-            localStorage.setItem('profiledID',username);
+            localStorage.setItem('profiledID', username);
             const url = "popup.html";
             const name = 'profilePopup';
             const width = 1000;
@@ -405,7 +405,7 @@
             const top = (window.screen.height / 2) - (height / 2);
             const options = `width=${width},height=${height},left=${left},top=${top}`;
             window.open(url, name, options);
-            
+
         }
         // 댓글 클릭테스트
     </script>
@@ -496,13 +496,15 @@
     <div class="commentsList" id="commentsSection"
         style="font-family: 'iceJaram-Rg', sans-serif; font-size: 25px; font-weight: bold;">
         <ul id="commentsList"></ul>
-        <div style="position: absolute; top: 135%; left: 50%; transform: translateX(-50%); font-size: 35px; font-weight: bold;">댓글목록</div>
+        <div
+            style="position: absolute; top: 135%; left: 50%; transform: translateX(-50%); font-size: 35px; font-weight: bold;">
+            댓글목록</div>
     </div>
 
     <script>
-
         document.addEventListener('DOMContentLoaded', function () {
             checkLoginStatus();
+            restrictAccess();
         });
 
         function checkLoginStatus() {
@@ -513,20 +515,15 @@
             } else {
                 document.getElementById("header-before-login").style.display = "block";
                 document.getElementById("header-after-login").style.display = "none";
-                restrictAccess();
             }
         }
 
         function restrictAccess() {
             const fullPath = window.location.href;
             const fileName = fullPath.split('/').pop().split('?')[0].toLowerCase();
-            const restrictedPages = ['plan_writeview.html', 'party_writeview.html'];
+            const restrictedPages = ['plan_writeview.html', 'party_writeview.html', 'plan_write.html', 'party_write.html'];
 
-            console.log("Full Path:", fullPath);
-            console.log("File Name:", fileName);
-            console.log("Restricted Pages:", restrictedPages);
-
-            if (restrictedPages.includes(fileName)) {
+            if (restrictedPages.includes(fileName) && !sessionStorage.getItem('loggedInUser')) {
                 alert("로그인 후 이용해주세요.");
                 window.location.href = 'Login.html';
             }
